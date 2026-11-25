@@ -14,9 +14,9 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
 body{background:var(--bg);color:var(--ink);font:13px/1.5 "JetBrains Mono",ui-monospace,Menlo,monospace}
-.stage{position:fixed;inset:0;background:radial-gradient(60% 70% at 64% 30%,#0a2236 0%,#051120 45%,#02050b 100%)}
+.stage{position:fixed;inset:0;background:#04050D}
 canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
-#glow{filter:blur(7px) saturate(1.5);opacity:1;mix-blend-mode:screen;pointer-events:none}
+#glow{filter:blur(9px) saturate(1.6);opacity:.95;mix-blend-mode:screen;pointer-events:none}
 .vignette{position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 90% at 50% 45%,transparent 55%,rgba(0,0,0,.75) 100%)}
 .scan{position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(255,255,255,.025) 0 1px,transparent 1px 3px);mix-blend-mode:overlay}
 
@@ -47,7 +47,7 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 @media(max-width:860px){.term{display:none}.hud .r{display:none}}
 @media(prefers-reduced-motion:reduce){.core,.cursor{animation:none}}
 
-/* ================= site: nav + sections below the octopus ================= */
+/* ================= site: nav + sections below the header ================= */
 html{scroll-behavior:smooth;scroll-padding-top:72px}
 body{overflow-x:hidden}
 .hero{position:relative;height:100vh;height:100svh;min-height:560px;overflow:hidden}
@@ -236,8 +236,8 @@ footer a:hover{color:#fff}
 
 <div class="hud">
   <div>
-    <div>octo.js &nbsp; platform <b>meta</b> &nbsp; subagents <b id="h-jobs">0</b>/8 running &nbsp; depth <b id="h-depth">0</b> m</div>
-    <div>spheres <b id="h-sph">0</b> &nbsp; chars <b id="h-chars">0</b> &nbsp; grid <b id="h-grid">0</b></div>
+    <div>medusa.js &nbsp; depth <b id="h-depth">0</b> m &nbsp; <b id="h-temp">0</b> °C &nbsp; bell ø <b id="h-bell">0</b> m</div>
+    <div>pulses <b id="h-beats">0</b> &nbsp; tentacles <b>48</b> &nbsp; points <b id="h-sph">0</b> &nbsp; chars <b id="h-chars">0</b> &nbsp; grid <b id="h-grid">0</b></div>
   </div>
   <div class="r" style="text-align:right">t <b id="h-t">00.00</b>s<br><b id="h-fps">0</b> fps</div>
 </div>
@@ -245,12 +245,12 @@ footer a:hover{color:#fff}
 <div class="copy">
   <div class="tag">Ads for local service businesses</div>
   <h1>Brief in.<br><span>Campaign out.</span></h1>
-  <p>Eight arms. Eight Quorum subagents. Your whole Meta ads operation, handled, with a human signing off.</p>
+  <p>Quorum runs your Meta ads with a team of AI agents, and a media buyer signs off on every move.</p>
   <div class="ctas"><a class="btn pri js-cta" href="#contact">Get a free sample ad →</a><a class="btn ghost" href="#services">What Quorum does</a></div>
 </div>
 
 <div class="term" aria-hidden="true">
-  <div class="bar"><span class="dot" style="background:#FF5F57"></span><span class="dot" style="background:#FEBC2E"></span><span class="dot" style="background:#28C840"></span>&nbsp; octo.js<span class="run" id="t-fps">running</span></div>
+  <div class="bar"><span class="dot" style="background:#FF5F57"></span><span class="dot" style="background:#FEBC2E"></span><span class="dot" style="background:#28C840"></span>&nbsp; medusa.js<span class="run" id="t-fps">running</span></div>
   <div class="code" id="code"></div>
 </div>
 </header>
@@ -293,9 +293,9 @@ footer a:hover{color:#fff}
 <!-- ============ AGENTS: the eight arms ============ -->
 <section class="sec alt" id="agents">
   <div class="wrap">
-    <div class="kicker rv">02 &nbsp;/&nbsp; The eight arms</div>
+    <div class="kicker rv">02 &nbsp;/&nbsp; The agents</div>
     <h2 class="rv">Eight subagents. <em>One campaign.</em></h2>
-    <p class="lead rv">Each arm of the octopus is a specialist agent with one job. They work in parallel, hand off to each other, and stop at one gate: a human sign-off.</p>
+    <p class="lead rv">Each agent is a specialist with one job. They work in parallel, hand off to each other, and stop at one gate: a human sign-off.</p>
     <div class="grid agents" id="agentGrid">
       <div class="card agent rv"><div class="id"><b>agent/research</b><span>01</span></div><h3>Research</h3><p>Reads your website and reviews, pulls the claims you can prove, and studies what competitors are running.</p><div class="st">reading website</div></div>
       <div class="card agent rv"><div class="id"><b>agent/hooks</b><span>02</span></div><h3>Hooks</h3><p>Writes the opening lines that stop the scroll: urgency, trust, price clarity. Scores them and keeps the best three.</p><div class="st">drafting hooks</div></div>
@@ -305,7 +305,7 @@ footer a:hover{color:#fff}
       <div class="card agent rv"><div class="id"><b>agent/budget</b><span>06</span></div><h3>Budget</h3><p>Paces spend every day, watches cost per lead, and shifts money toward the ads that are bringing in calls.</p><div class="st">pacing daily spend</div></div>
       <div class="card agent rv"><div class="id"><b>agent/testing</b><span>07</span></div><h3>Testing</h3><p>Runs hook against hook, cuts the losers early and scales the winners, so every month starts smarter.</p><div class="st">hook A vs hook B</div></div>
       <div class="card agent rv"><div class="id"><b>agent/reports</b><span>08</span></div><h3>Reports</h3><p>Tracks calls and leads, then writes the weekly summary in plain English. No dashboards to decode.</p><div class="st">tracking calls</div></div>
-      <div class="card human rv"><div class="mono">BH</div><div><h3>Plus the head: a real media buyer.</h3><p>Every ad, audience and budget change is checked by Bryant before it touches your money. The agents bring speed. The judgment stays human.</p></div></div>
+      <div class="card human rv"><div class="mono">BH</div><div><h3>Plus a real media buyer.</h3><p>Every ad, audience and budget change is checked by Bryant before it touches your money. The agents bring speed. The judgment stays human.</p></div></div>
     </div>
   </div>
 </section>
@@ -447,11 +447,11 @@ footer a:hover{color:#fff}
 </main>
 
 <script id="sim">
-// octo.js: a 3D octopus, ray-lit and printed as text. Every character is placed by this script.
-// 1. the body is ~900 spheres: an egg-shaped mantle, a head with two eyes, eight tapering arms, webbing, suckers
-// 2. each sphere is drawn into a depth buffer; every text cell keeps the nearest surface and its normal
-// 3. cells are lit like a photo: warm key light, cyan rim light, specular, mottled skin texture
-// 4. brightness picks the character, lit colour picks the ink; each arm is a Quorum subagent for your Meta ads
+// medusa.js: a translucent jellyfish, lit from above and printed as text. Every character is placed by this script.
+// 1. the body is ~22k points: a pulsing bell with sixteen ribs, four gonads, four frilled oral arms, 48 tentacles
+// 2. the bell is see-through, so every point adds light to its text cell instead of hiding what is behind it
+// 3. violet light falls from the surface; a teal glow rises from the lower left
+// 4. light in each cell picks the character, its mix of colours picks the ink
 const RAMP = " .,:;-~=+*xoO0%#&@$";
 const AGENTS = [
   ["research",  ["reading website", "pulling reviews", "scanning competitor ads"]],
@@ -463,15 +463,14 @@ const AGENTS = [
   ["testing",   ["hook A vs hook B", "cutting losers", "scaling winners"]],
   ["reports",   ["tracking calls", "writing weekly report", "sending summary"]],
 ];
-const SKIN = 1, SUCK = 2, EYE = 3;
 const A = document.getElementById("ascii"), ax = A.getContext("2d");
 const G = document.getElementById("glow"), gx = G.getContext("2d");
 const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
-let W, H, cw, chH, cols, rows, N, S, cx, cy, dpr;
-let zb, nxb, nyb, nzb, mat, pxb, pyb, pzb, ub, ink, keys;
-let mouse = { x: -1e4, y: -1e4 }, snow = [], tips = [], spheres = 0;
+let W, H, cw, chH, cols, rows, N, S, cx, cy, dpr, wide;
+let accI, accR, accG, accB, keys, cix;
+let mouse = { x: -1e4, y: -1e4 }, snow = [], points = 0;
 
-// ---------- noise for skin texture (object space, so it sticks to the body) ----------
+// ---------- noise (skin shimmer, sway) ----------
 function hash(i, j, k) {
   let h = Math.imul(i, 374761393) ^ Math.imul(j, 668265263) ^ Math.imul(k, 1440662683);
   h = Math.imul(h ^ (h >>> 13), 1274126177);
@@ -485,256 +484,161 @@ function noise(x, y, z) {
   return l(l(l(hash(i, j, k), hash(i + 1, j, k), u), l(hash(i, j + 1, k), hash(i + 1, j + 1, k), u), v),
            l(l(hash(i, j, k + 1), hash(i + 1, j, k + 1), u), l(hash(i, j + 1, k + 1), hash(i + 1, j + 1, k + 1), u), v), w);
 }
+const sstep = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+
+// ---------- light ----------
+const VIOLET = [.58, .34, 1], LILAC = [.86, .62, 1], PINK = [1, .46, .86], INDIGO = [.36, .38, 1], TEAL = [.22, 1, .82];
+
+// ---------- anatomy: fixed sample sets, posed every frame ----------
+const TH_MAX = 1.78, NT = 48;
+const bell = Array.from({ length: 9000 }, () => {
+  const th = Math.acos(1 - rnd() * (1 - Math.cos(TH_MAX))), ph = rnd() * 6.2832;
+  return [th, ph, Math.pow(Math.abs(Math.cos(ph * 8)), 28)];        // theta, phi, rib strength
+});
+const gonads = Array.from({ length: 1600 }, (_, i) => [i % 4, rnd() * 6.2832, rnd()]);
+const arms = Array.from({ length: 4400 }, (_, i) => [i % 4, Math.pow(rnd(), .8), rnd() * 2 - 1]);
+const tent = Array.from({ length: NT }, (_, k) => ({ k, len: 3.1 + rnd() * 1.4, ph: rnd() * 6.28 }));
+const TSTEP = 74;
 
 function resize() {
   dpr = Math.min(devicePixelRatio || 1, 2);
-  W = innerWidth; H = innerHeight;
-  cw = W < 700 ? 5 : 6; chH = Math.round(cw * 1.7);
+  W = innerWidth; H = innerHeight; wide = W > 860;
+  cw = W < 700 ? 4 : 5; chH = Math.round(cw * 1.75);
   cols = Math.ceil(W / cw); rows = Math.ceil(H / chH); N = cols * rows;
-  zb = new Float32Array(N); nxb = new Float32Array(N); nyb = new Float32Array(N); nzb = new Float32Array(N);
-  pxb = new Float32Array(N); pyb = new Float32Array(N); pzb = new Float32Array(N); ub = new Float32Array(N);
-  mat = new Uint8Array(N); ink = new Uint16Array(N); keys = new Uint32Array(N);
+  accI = new Float32Array(N); accR = new Float32Array(N); accG = new Float32Array(N); accB = new Float32Array(N);
+  keys = new Uint32Array(N); cix = new Uint8Array(N);
   A.width = W * dpr; A.height = H * dpr; ax.setTransform(dpr, 0, 0, dpr, 0, 0);
   G.width = W / 2; G.height = H / 2;
-  const wide = W > 860;
-  S = wide ? Math.min(W * .072, H * .118) : Math.min(W * .125, H * .085);
-  cx = W * (wide ? .66 : .5); cy = H * (wide ? .42 : .36);
-  snow = Array.from({ length: Math.round(N / 160) }, () => ({ x: Math.random() * W, y: Math.random() * H, s: .1 + Math.random() * .4, p: Math.random() * 6.28 }));
+  S = wide ? Math.min(H * .19, W * .12) : Math.min(W * .22, H * .12);
+  cx = W * (wide ? .64 : .52); cy = H * (wide ? .24 : .2);
+  snow = Array.from({ length: Math.round(N / 220) }, () => ({ x: Math.random() * W, y: Math.random() * H, s: .1 + Math.random() * .35, p: Math.random() * 6.28 }));
   document.getElementById("h-grid").textContent = cols + "x" + rows;
 }
 
-// ---------- camera ----------
-let cyw, syw, cp, sp;
-function cam(yaw, pitch) { cyw = Math.cos(yaw); syw = Math.sin(yaw); cp = Math.cos(pitch); sp = Math.sin(pitch); }
-// object -> view (x right, y up, z toward viewer)
-function view(x, y, z, o) {
-  const x1 = x * cyw + z * syw, z1 = -x * syw + z * cyw;
-  o[0] = x1; o[1] = y * cp - z1 * sp; o[2] = y * sp + z1 * cp;
+// body -> screen: spin about the body axis, lean the swim axis, tip toward the camera
+let cyaw, syaw, ctl, stl, cpi, spi, bob = 0;
+function pose(t) {
+  const yaw = t * .12 + (mouse.x > -1e3 ? (mouse.x / W - .5) * .5 : 0), tilt = -.34 + Math.sin(t * .23) * .06, pitch = .32;
+  cyaw = Math.cos(yaw); syaw = Math.sin(yaw); ctl = Math.cos(tilt); stl = Math.sin(tilt); cpi = Math.cos(pitch); spi = Math.sin(pitch);
 }
-const V = [0, 0, 0];
-
-// ---------- sphere impostor into the depth buffer ----------
-function sphere(x, y, z, r, m, u) {
-  view(x, y, z, V);
-  const sx = cx + V[0] * S, sy = cy - V[1] * S, rp = r * S, cz = V[2];
-  if (rp < 1.2) return;
-  spheres++;
-  const c0 = Math.max(0, (sx - rp) / cw | 0), c1 = Math.min(cols - 1, (sx + rp) / cw | 0);
-  const r0 = Math.max(0, (sy - rp) / chH | 0), r1 = Math.min(rows - 1, (sy + rp) / chH | 0);
-  for (let row = r0; row <= r1; row++) {
-    const dy = ((row + .5) * chH - sy) / rp;
-    for (let c = c0; c <= c1; c++) {
-      const dx = ((c + .5) * cw - sx) / rp, d2 = dx * dx + dy * dy;
-      if (d2 >= 1) continue;
-      const nz = Math.sqrt(1 - d2), depth = cz + nz * r, i = row * cols + c;
-      if (depth <= zb[i]) continue;
-      zb[i] = depth; nxb[i] = dx; nyb[i] = -dy; nzb[i] = nz; mat[i] = m; ub[i] = u;
-      // back to object space for texture: p = centre + (inverse camera) normal * r
-      const y1 = -dy * cp + nz * sp, z1 = dy * sp + nz * cp;
-      pxb[i] = x + (dx * cyw - z1 * syw) * r; pyb[i] = y + y1 * r; pzb[i] = z + (dx * syw + z1 * cyw) * r;
-    }
-  }
+function splat(x, y, z, w, c) {
+  const x1 = x * cyaw - z * syaw, z1 = x * syaw + z * cyaw;           // spin
+  const y2 = y * cpi - z1 * spi, z2 = y * spi + z1 * cpi;             // pitch toward camera
+  const X = x1 * ctl - y2 * stl, Y = x1 * stl + y2 * ctl + bob;       // lean
+  const col = ((cx + X * S) / cw) | 0, row = ((cy - Y * S) / chH) | 0;
+  if (col < 0 || row < 0 || col >= cols || row >= rows) return;
+  const i = row * cols + col;
+  w *= z2 < 0 ? .62 : 1;                                              // far side is seen through the bell
+  const tl = sstep(.6, 3.6, -Y - X * .7) * .85;                       // teal glow from the lower left
+  const r = c[0] + (TEAL[0] - c[0]) * tl, g = c[1] + (TEAL[1] - c[1]) * tl, b = c[2] + (TEAL[2] - c[2]) * tl;
+  accI[i] += w; accR[i] += w * r; accG[i] += w * g; accB[i] += w * b; points++;
 }
 
-// ---------- the animal ----------
-const EYES = [[-.43, .16, .4], [.43, .16, .4]];
+// bell surface at (theta, phi), pulse p in 0..1
+function bellAt(th, ph, p, t, o) {
+  const R = 1 - .13 * p, Hh = .64 + .1 * p, m = sstep(.95, TH_MAX, th);
+  const rr = R * Math.sin(th) * (1 - .2 * p * m) + .04 * Math.sin(ph * 8 + t * 1.7) * m;
+  o[0] = rr * Math.cos(ph); o[2] = rr * Math.sin(ph);
+  o[1] = Hh * Math.cos(th) + .06 * Math.sin(ph * 6 - t * 2.1) * m - .12 * p * m;
+  return o;
+}
+
 function build(t) {
-  const breath = Math.sin(t * 1.1);
-  // mantle: an egg-shaped sac rising up and back from the head
-  const lean = -1.0 + Math.sin(t * .37) * .1, sway = Math.sin(t * .29) * .1;
-  for (let i = 0; i <= 34; i++) {
-    const u = i / 34;
-    const r = (.52 + .62 * Math.sin(Math.PI * Math.min(1, u * .88 + .1))) * (1 + .045 * breath) * (u > .88 ? 1 - (u - .88) * 3.4 : 1);
-    const len = u * 1.75;
-    sphere(Math.sin(sway) * len, .25 + Math.cos(lean) * len, Math.sin(lean) * len, r * .98, SKIN, -1 - u);
+  points = 0; accI.fill(0); accR.fill(0); accG.fill(0); accB.fill(0);
+  const T = 2.7, ph = (t % T) / T, beats = Math.floor(t / T);
+  const p = ph < .24 ? sstep(0, .24, ph) : 1 - sstep(.24, 1, ph);    // quick squeeze, slow release
+  bob = .16 * Math.sin(t * 2 * Math.PI / T - 1.2) + .08 * Math.sin(t * .31);
+  pose(t);
+  const o = [0, 0, 0];
+
+  // bell: translucent dome, bright at the silhouette, ribs and margin
+  for (const [th, phi, rib] of bell) {
+    bellAt(th, phi, p, t, o);
+    const sx = Math.sin(th) * Math.cos(phi), sz = Math.sin(th) * Math.sin(phi), sy = Math.cos(th);
+    const facing = Math.abs((sx * syaw + sz * cyaw) * cpi + sy * spi);            // normal . view
+    const fres = Math.pow(1 - facing, 2.2);
+    const mar = sstep(1.5, TH_MAX, th), top = 1 - sstep(0, .9, th);
+    const sh = noise(o[0] * 4 + t * .3, o[1] * 4, o[2] * 4);
+    const w = .05 + .6 * fres + .5 * rib * (th / TH_MAX) + .55 * mar + .08 * top + .14 * sh;
+    splat(o[0], o[1], o[2], w, rib > .3 ? LILAC : th < .55 ? LILAC : VIOLET);
   }
-  // head and eyes
-  sphere(0, 0, 0, .64, SKIN, -.5);
-  sphere(0, -.18, .12, .56, SKIN, -.4);
-  for (const e of EYES) {
-    sphere(e[0] * 1.02, e[1] + .06, e[2] - .06, .22, SKIN, -.3);   // eye socket ridge
-    sphere(e[0], e[1], e[2], .19, EYE, 0);
+  // gonads: four glowing horseshoes under the crown
+  for (const [k, s, r] of gonads) {
+    const a = k * Math.PI / 2 + Math.PI / 4 + Math.sin(s) * .38, rad = .34 + .12 * Math.cos(s) + r * .03;
+    const y = (.42 + .06 * Math.sin(s * 2)) * (.64 + .1 * p) / .64;
+    splat(rad * Math.cos(a) * (1 - .12 * p), y, rad * Math.sin(a) * (1 - .12 * p), .42, PINK);
   }
-  // eight arms
-  tips = [];
-  const roots = [];
-  for (let k = 0; k < 8; k++) {
-    const phi = (k + .5) / 8 * Math.PI * 2 + Math.PI / 2;
-    const ox = Math.cos(phi), oz = Math.sin(phi);          // outward direction
-    const lx = -oz, lz = ox;                                 // sideways direction
-    const L = 3.8 + .4 * Math.sin(k * 2.3);
-    const dorsal = k % 3 === 0 ? 1 : -1;                     // some tips coil up, most coil under
-    const coil = (3.2 + 1.4 * Math.sin(t * .42 + k * 1.7)) * dorsal;
-    let x = ox * .46, y = -.42, z = oz * .46, th = -.62 + .18 * Math.sin(t * .33 + k);
-    const n = 78, ds = L / n, pts = [];
-    for (let i = 0; i <= n; i++) {
-      const s = i / n;
-      const kap = .12 + coil * s * s + .9 * Math.sin(t * .9 + k * .8 - s * 5.5) * s;
-      th += kap * ds;
-      const lat = .38 * Math.sin(t * .55 + k * 1.1 - s * 3) * s;
-      const ct = Math.cos(th), st = Math.sin(th);
-      x += (ct * ox + lx * lat * .08) * ds; y += st * ds; z += (ct * oz + lz * lat * .08) * ds;
-      const r = .33 * Math.pow(1 - s, .72) + .055;
-      sphere(x, y, z, r, SKIN, s);
-      // suckers: pale rings along the oral side
-      if (i % 2 === 0 && s > .06 && s < .97) {
-        const nxp = -st * ox, nyp = ct, nzp = -st * oz;          // the arm's dorsal normal
-        sphere(x - nxp * r * .78, y - nyp * r * .78, z - nzp * r * .78, r * .36, SUCK, s);
-      }
-      if (i === 10) roots.push([x, y, z]);
-      pts.push([x, y, z]);
-    }
-    tips.push(pts[n - 3]);
+  // oral arms: four frilled curtains twisting down from the mouth
+  for (const [k, u, v] of arms) {
+    const L = 2.7 * (1 - .1 * p), y = -.02 - u * L, a0 = k * Math.PI / 2 + .4, spread = .18 * u;
+    const sway = .3 * u * Math.sin(t * .7 + k * 1.7 + u * 2.6), swz = .22 * u * Math.cos(t * .55 + k + u * 2.2);
+    const a = k * Math.PI / 2 + u * 2.4 + t * .25, wdt = (.08 + .26 * Math.sin(Math.min(1, u * 1.15) * Math.PI)) * (1 + .15 * p);
+    const ruf = .1 * Math.sin(v * 7 + u * 26 - t * 2.4) * wdt * 3;
+    const ca = Math.cos(a), sa = Math.sin(a);
+    const x = ca * v * wdt - sa * ruf + sway + Math.cos(a0) * spread, z = sa * v * wdt + ca * ruf + swz + Math.sin(a0) * spread;
+    splat(x, y, z, .22 + 1.3 * Math.pow(Math.abs(v), 3) + .25 * (1 - u), Math.abs(v) > .6 ? PINK : LILAC);
   }
-  // webbing between neighbouring arms
-  for (let k = 0; k < 8; k++) {
-    const a = roots[k], b = roots[(k + 1) % 8];
-    for (let j = 1; j < 6; j++) {
-      const f = j / 6, sag = Math.sin(f * Math.PI) * .1;
-      sphere(a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f - sag, a[2] + (b[2] - a[2]) * f, .13, SKIN, .1);
+  // tentacles: 48 threads from the margin, trailing and swaying
+  for (const { k, len, ph: q } of tent) {
+    const phi = k / NT * 6.2832;
+    bellAt(TH_MAX, phi, p, t, o);
+    const rx = o[0], ry = o[1], rz = o[2];
+    for (let j = 0; j < TSTEP; j++) {
+      const s = j / TSTEP, d = s * len * (1 + .05 * p);
+      const x = rx * (1 - .2 * s) + .6 * s * Math.sin(t * 1.05 - s * 4.2 + q) + .18 * Math.sin(s * 9 - t * 1.7 + q) * s - .35 * s * s;
+      const z = rz * (1 - .2 * s) + .55 * s * Math.cos(t * .85 - s * 3.6 + q * 1.3) + .18 * Math.cos(s * 8 - t * 1.4 + q) * s;
+      splat(x, ry - d, z, 2.1 * Math.pow(1 - s, .7) + .35, s < .25 ? VIOLET : INDIGO);
     }
   }
+  return { beats, p };
 }
 
-// ---------- shading ----------
-const KEY = (() => { const v = [-.45, .78, .5], l = Math.hypot(...v); return v.map(c => c / l); })();
-const HALF = (() => { const v = [KEY[0], KEY[1], KEY[2] + 1], l = Math.hypot(...v); return v.map(c => c / l); })();
-const NR = RAMP.length - 1;
-function shade(t) {
-  let chars = 0, nk = 0;
-  for (let i = 0; i < N; i++) {
-    const m = mat[i];
-    if (!m) continue;
-    const nx = nxb[i], ny = nyb[i], nz = nzb[i];
-    const px = pxb[i], py = pyb[i], pz = pzb[i];
-    let ar, ag, ab;
-    if (m === SKIN) {
-      const mott = noise(px * 2.3 + 11, py * 2.3, pz * 2.3);
-      const fine = noise(px * 7.5, py * 7.5 + 5, pz * 7.5);
-      const s = ub[i];
-      let tone = .55 + .6 * mott;
-      if (fine > .7) tone *= 1.35;                  // papillae
-      if (mott < .35) tone *= .6;                   // dark mottling
-      const tipFade = s > 0 ? s * .35 : 0;
-      ar = (196 + 30 * tipFade) * tone; ag = (82 + 60 * tipFade) * tone; ab = (58 + 50 * tipFade) * tone;
-    } else if (m === SUCK) {
-      ar = 238; ag = 196; ab = 168;
-    } else {
-      // eye: gold iris with a dark horizontal slit pupil
-      const e = px < 0 ? EYES[0] : EYES[1];
-      const ex = px - e[0], ey = py - e[1], ez = pz - e[2], el = Math.hypot(ex, ey, ez) || 1;
-      const f = (ex * e[0] * .9 + ez * .8) / el;
-      const slit = Math.abs(ey / el) < .2 && f > .55;
-      if (slit) { ar = 6; ag = 6; ab = 8; } else { ar = 214; ag = 176; ab = 92; }
-    }
-    const dif = Math.max(0, nx * KEY[0] + ny * KEY[1] + nz * KEY[2]);
-    const rim = Math.pow(1 - nz, 2.6);
-    const spec = Math.pow(Math.max(0, nx * HALF[0] + ny * HALF[1] + nz * HALF[2]), m === EYE ? 60 : 22) * (m === EYE ? 1.2 : .45);
-    const amb = .32 + .12 * ny;
-    let r = ar * (amb + dif * 1.15) + 34 * rim * 1.3 + 255 * spec;
-    let g = ag * (amb + dif * 1.1) + 211 * rim * 1.3 + 250 * spec;
-    let b = ab * (amb + dif * 1.0) + 238 * rim * 1.3 + 245 * spec;
-    r = Math.min(255, r); g = Math.min(255, g); b = Math.min(255, b);
-    const lum = Math.max(r, g, b) / 255 * .6 + (r * .3 + g * .55 + b * .15) / 255 * .4;
-    const ci = Math.max(4, Math.min(NR, Math.round(Math.pow(lum, .7) * NR)));
-    ink[i] = ci; chars++;
-    keys[nk++] = ((r >> 4) << 8 | (g >> 4) << 4 | (b >> 4)) << 19 | (i >>> 0);
-  }
-  return { chars, nk };
-}
-
-// ---------- frame ----------
+// ---------- draw ----------
+const NR = RAMP.length;
 function frame(t) {
-  zb.fill(-1e9); mat.fill(0); spheres = 0;
-  const md = mouse.x > -1e3 ? (mouse.x / W - .5) : 0;
-  cam(.5 * Math.sin(t * .11) + md * .7, .5 + .08 * Math.sin(t * .17));
-  cy = H * (W > 860 ? .42 : .36) + Math.sin(t * .4) * 6;
-  build(t);
-  const { chars, nk } = shade(t);
-  const list = keys.subarray(0, nk).sort();
+  const st = build(t);
+  ax.globalCompositeOperation = "source-over";
+  ax.fillStyle = "#04050D"; ax.fillRect(0, 0, W, H);
+  let g = ax.createRadialGradient(cx, cy, 0, cx, cy, S * 3.2);                 // violet light from above
+  g.addColorStop(0, "rgba(140,70,230,.32)"); g.addColorStop(.5, "rgba(90,40,180,.12)"); g.addColorStop(1, "rgba(0,0,0,0)");
+  ax.fillStyle = g; ax.fillRect(0, 0, W, H);
+  const tx = cx - S * 2.2, ty = cy + S * 4.4;
+  g = ax.createRadialGradient(tx, ty, 0, tx, ty, S * 3);                      // teal glow below
+  g.addColorStop(0, "rgba(30,190,160,.22)"); g.addColorStop(1, "rgba(0,0,0,0)");
+  ax.fillStyle = g; ax.fillRect(0, 0, W, H);
 
-  ax.clearRect(0, 0, W, H);
-  ax.textBaseline = "top";
-  ax.font = `${Math.round(chH * .95)}px "JetBrains Mono", ui-monospace, monospace`;
-  // background: god rays and drifting particles, kept faint so the animal reads
-  for (let c = 0; c < cols; c += 1) {
-    const x = c * cw, ray = Math.pow(Math.max(0, Math.sin(x * .0035 + Math.sin(t * .12) * 1.4)), 60);
-    if (ray < .05) continue;
-    ax.fillStyle = `rgba(80,170,220,${ray * .22})`;
-    for (let r = 0; r < rows * .7; r += 2) if (hash(c, r, (t * 2) | 0) < ray * .5) ax.fillText(r % 4 ? "'" : ".", x, r * chH);
+  ax.font = `600 ${Math.round(chH * .98)}px "JetBrains Mono",ui-monospace,Menlo,monospace`; ax.textBaseline = "top";
+  for (const f of snow) {                                                     // drifting particles
+    f.y -= f.s; f.x += Math.sin(t * .4 + f.p) * .15; if (f.y < 0) { f.y = H; f.x = Math.random() * W; }
+    ax.fillStyle = `rgba(150,130,255,${.12 + .1 * Math.sin(t + f.p)})`; ax.fillText(".", f.x, f.y);
   }
-  ax.fillStyle = "rgba(120,200,235,.55)";
-  for (const f of snow) {
-    f.y += f.s; f.x += Math.sin(t * .5 + f.p) * .12;
-    if (f.y > H) { f.y = -4; f.x = Math.random() * W; }
-    ax.fillText(".", f.x, f.y);
+  let n = 0, chars = 0;
+  for (let i = 0; i < N; i++) {
+    const I = accI[i]; if (I < .05) continue;
+    const lum = 1 - Math.exp(-I * .34);
+    const ci = Math.round(Math.pow(lum, .85) * (NR - 1)); if (ci < 1) continue;
+    const hot = Math.max(0, lum - .8) * 3, b = .28 + .9 * lum;
+    const r = Math.min(1, (accR[i] / I * (1 - hot) + hot) * b), gg = Math.min(1, (accG[i] / I * (1 - hot) + hot) * b), bb = Math.min(1, (accB[i] / I * (1 - hot) + hot) * b);
+    const key = (Math.round(r * 15) << 8) | (Math.round(gg * 15) << 4) | Math.round(bb * 15);
+    cix[i] = ci; keys[n++] = ((key << 19) | i) >>> 0;                    // colour in the high bits, cell in the low
   }
-  // the animal, grouped by ink colour
+  const sorted = keys.subarray(0, n).sort();
   let cur = -1;
-  for (let j = 0; j < nk; j++) {
-    const kk = list[j], col = kk >>> 19, i = kk & 0x7ffff;
-    if (col !== cur) {
-      cur = col;
-      ax.fillStyle = `rgb(${(col >> 8 & 15) * 17},${(col >> 4 & 15) * 17},${(col & 15) * 17})`;
+  for (let j = 0; j < n; j++) {
+    const key = sorted[j] >>> 19, i = sorted[j] & 0x7FFFF, ci = cix[i];
+    if (key !== cur) {
+      cur = key;
+      ax.fillStyle = `rgb(${((key >> 8) & 15) * 17},${((key >> 4) & 15) * 17},${(key & 15) * 17})`;
     }
-    ax.fillText(RAMP[ink[i]], (i % cols) * cw, (i / cols | 0) * chH);
+    ax.fillText(RAMP[ci], (i % cols) * cw, ((i / cols) | 0) * chH); chars++;
   }
-  gx.clearRect(0, 0, G.width, G.height);
-  gx.drawImage(A, 0, 0, G.width, G.height);
-  drawCards(t);
-  hud.chars = chars;
-}
-
-// ---------- subagent cards at the arm tips ----------
-function drawCards(t) {
-  // callouts: left-side arms report to a column on the left, right-side arms to the right
-  const small = W < 700, wide = W > 860, fs = small ? 9 : 11, fs2 = small ? 8 : 10, pad = 7;
-  const bh = small ? fs + 10 : fs + fs2 + 16, gap = small ? 6 : 10;
-  const items = tips.map((p, k) => {
-    view(p[0], p[1], p[2], V);
-    const [name, steps] = AGENTS[k];
-    const step = steps[Math.floor(t * .35 + k * .29) % steps.length];
-    const top = small ? name : `agent/${name}`, sub = `> ${step}`;
-    ax.font = `700 ${fs}px "JetBrains Mono", ui-monospace, monospace`;
-    const w1 = ax.measureText(top).width + 14;
-    ax.font = `400 ${fs2}px "JetBrains Mono", ui-monospace, monospace`;
-    const w2 = small ? 0 : ax.measureText(sub).width;
-    return { k, top, sub, tx: cx + V[0] * S, ty: cy - V[1] * S, bw: Math.max(w1, w2) + pad * 2 };
-  });
-  const colW = Math.max(...items.map(i => i.bw));
-  for (const side of [-1, 1]) {
-    const group = items.filter(i => (i.tx < cx) === (side < 0)).sort((a, b) => a.ty - b.ty);
-    const yMin = 86, yMax = wide ? (side < 0 ? H * .56 : H - 290) : H - bh - 24;
-    let y = yMin;
-    const ideal = group.map(i => i.ty - bh / 2);
-    group.forEach((it, j) => {
-      y = Math.max(y, Math.min(ideal[j], yMax - (group.length - 1 - j) * (bh + gap)));
-      it.y = y; y += bh + gap;
-      it.x = side < 0 ? Math.max(8, Math.min(cx - S * 4.4 - colW, W)) : Math.min(W - colW - 8, cx + S * 4.4);
-      if (small) it.x = side < 0 ? 8 : W - colW - 8;
-    });
-  }
-  ax.textBaseline = "middle";
-  for (const it of items) {
-    const left = it.x < cx, ax2 = left ? it.x + colW : it.x, ay = it.y + bh / 2;
-    ax.strokeStyle = "rgba(245,196,81,.32)"; ax.lineWidth = 1;
-    ax.beginPath(); ax.moveTo(it.tx, it.ty); ax.lineTo(ax2 + (left ? 14 : -14), ay); ax.lineTo(ax2, ay); ax.stroke();
-    ax.fillStyle = "rgba(245,196,81,.95)"; ax.beginPath(); ax.arc(it.tx, it.ty, 2.2, 0, Math.PI * 2); ax.fill();
-    ax.fillStyle = "rgba(3,10,18,.82)"; ax.strokeStyle = "rgba(245,196,81,.5)";
-    ax.beginPath(); ax.roundRect(it.x, it.y, colW, bh, 5); ax.fill(); ax.stroke();
-    ax.fillStyle = `rgba(110,231,168,${.55 + .45 * Math.sin(t * 4 + it.k)})`;
-    ax.beginPath(); ax.arc(it.x + pad + 3, it.y + pad + fs / 2 + 1, 3, 0, Math.PI * 2); ax.fill();
-    ax.font = `700 ${fs}px "JetBrains Mono", ui-monospace, monospace`;
-    ax.fillStyle = "#F5C451"; ax.fillText(it.top, it.x + pad + 12, it.y + pad + fs / 2 + 1);
-    if (!small) {
-      ax.font = `400 ${fs2}px "JetBrains Mono", ui-monospace, monospace`;
-      ax.fillStyle = "#8FB0C6"; ax.fillText(it.sub, it.x + pad, it.y + pad + fs + 6 + fs2 / 2);
-    }
-  }
+  hud.chars = chars; hud.beats = st.beats; hud.p = st.p;
+  gx.clearRect(0, 0, G.width, G.height); gx.drawImage(A, 0, 0, G.width, G.height);
 }
 
 // ---------- loop, HUD and the code window ----------
-const hud = { chars: 0 }, $ = id => document.getElementById(id);
+const hud = { chars: 0, beats: 0, p: 0 }, $ = id => document.getElementById(id);
 let last = 0, start = performance.now(), fpsN = 0, fpsT = 0, visible = true, heroOn = true;
 function loop(now) {
   if (visible && heroOn && now - last >= 1000 / 30) {
@@ -744,8 +648,9 @@ function loop(now) {
       const fps = Math.round(fpsN * 1000 / (now - fpsT)); fpsN = 0; fpsT = now;
       $("h-fps").textContent = fps; $("t-fps").textContent = `running  ${fps} fps`;
       $("h-t").textContent = t.toFixed(2).padStart(5, "0");
-      $("h-chars").textContent = hud.chars; $("h-jobs").textContent = AGENTS.length;
-      $("h-sph").textContent = spheres; $("h-depth").textContent = (318 + Math.sin(t * .21) * 4).toFixed(1);
+      $("h-chars").textContent = hud.chars; $("h-sph").textContent = points;
+      $("h-beats").textContent = hud.beats; $("h-bell").textContent = (.42 * (1 - .13 * hud.p)).toFixed(2);
+      $("h-depth").textContent = (612 + Math.sin(t * .17) * 3).toFixed(1); $("h-temp").textContent = (3.9 + Math.sin(t * .05) * .1).toFixed(1);
     }
   }
   if (!still) requestAnimationFrame(loop);
@@ -775,7 +680,7 @@ document.addEventListener("visibilitychange", () => { visible = !document.hidden
 
 resize();
 (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => {
-  if (still) frame(3); else requestAnimationFrame(loop);
+  if (still) frame(4); else requestAnimationFrame(loop);
 });
 </script>
 
@@ -808,7 +713,7 @@ const BOOKING_URL   = "";                        // e.g. https://cal.com/yournam
   }), { rootMargin: "-45% 0px -50% 0px" });
   q("section[id]").forEach(s => spy.observe(s));
 
-  // pause the octopus while it's scrolled away
+  // pause the jellyfish while it's scrolled away
   new IntersectionObserver(([e]) => { heroOn = e.isIntersecting; }).observe(hero);
 
   // reveal on scroll, and play demo videos only while visible
@@ -821,14 +726,14 @@ const BOOKING_URL   = "";                        // e.g. https://cal.com/yournam
   }), { threshold: .35 });
   q(".reel video").forEach(v => vids.observe(v));
 
-  // agent cards: live status lines, same jobs as the octopus arms
+  // agent cards: live status lines, one per agent
   const sts = q("#agentGrid .agent .st");
   if (!still) setInterval(() => {
     const i = Math.floor(Math.random() * sts.length), jobs = AGENTS[i][1];
     sts[i].textContent = jobs[(jobs.indexOf(sts[i].textContent) + 1) % jobs.length];
   }, 900);
 
-  // about: ASCII monogram, drawn with the octopus' character ramp
+  // about: ASCII monogram, drawn with the header's character ramp
   const pre = document.getElementById("mono"), C = 40, R = 26;
   const PW = C * 8, PH = R * 14;   // mask drawn at real cell proportions, sampled at each cell centre
   const m = document.createElement("canvas"); m.width = PW; m.height = PH;
