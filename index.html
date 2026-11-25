@@ -671,7 +671,7 @@ footer a:hover{color:var(--ink)}
     gx.clearRect(0, 0, GL.width, GL.height); gx.drawImage(C, 0, 0, GL.width, GL.height);
   }
 
-  let on = true, vis = true, last = 0, clock = 0;
+  let on = true, vis = true, last = 0, clock = 15.5;   // open on the solar-system flight
   new IntersectionObserver(([e]) => { on = e.isIntersecting; }).observe(host);
   document.addEventListener("visibilitychange", () => { vis = !document.hidden; });
   function loop(now) {
