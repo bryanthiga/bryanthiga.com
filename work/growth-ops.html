@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>Growth ops agent · Case study</title>
+<meta name="description" content="A small agent system that runs the daily work of paid growth: ad performance reviews, creative briefs, test plans and weekly roll-ups. It recommends; a person decides.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="case.css">
+</head>
+<body>
+<nav class="nav" aria-label="Main">
+  <div class="wrap">
+    <a class="mark" href="../" aria-label="Home">BH.</a>
+    <ul>
+      <li><a href="../#projects">Projects</a></li>
+      <li><a href="../#work">Work</a></li>
+      <li><a href="../assets/resume.pdf" download>Résumé</a></li>
+    </ul>
+    <a class="btn dark" href="../#contact">Get in touch</a>
+  </div>
+</nav>
+
+<main>
+  <header class="col">
+    <a class="back" href="../#projects">← All projects</a>
+    <p class="kicker">Case study · Internal tool</p>
+    <h1>Growth ops agent</h1>
+    <p class="lede">A small agent system that runs the daily work of paid growth: reviewing ad performance, writing creative briefs, planning tests and rolling up the week. It recommends. A person decides.</p>
+    <dl class="facts">
+      <div><dt>Role</dt><dd>Designed and built solo</dd></div>
+      <div><dt>Stack</dt><dd>Python (standard library), Claude, Codex, OpenRouter</dd></div>
+      <div><dt>Size</dt><dd>About 400 lines, plus skills written as plain files</dd></div>
+    </dl>
+  </header>
+
+  <section class="part col">
+    <div class="label">The problem</div>
+    <h2>Growth work is a loop.</h2>
+    <p>Most of a growth marketer's week repeats: read the numbers, decide what to scale and what to cut, brief new creative, plan the next test, and report. Each step is structured enough to hand to a model. None of them should touch an ad account on their own.</p>
+    <p>I wanted the loop to run on a schedule, leave a written trail I could check, and stop short of anything that sends, spends or publishes.</p>
+  </section>
+
+  <section class="part">
+    <div class="col">
+      <div class="label">The loop</div>
+      <h2>What runs, and when.</h2>
+      <p>Scheduled skills run on their own. The rest run when I ask. Every output is a markdown file, so it can be read, compared and edited like any other document.</p>
+    </div>
+    <div class="flow" style="--n:5">
+      <ol>
+        <li><b>Plan today</b>Weekdays 8:00. Top three priorities, and which ad tests are due to read out.</li>
+        <li><b>Ad performance review</b>Weekdays 9:00. Every ad set labelled Scale, Hold, Fix or Kill.</li>
+        <li><b>Creative brief</b>On request. Ten new concepts plus iterations of the current winner.</li>
+        <li><b>A/B test plan</b>On request. Hypothesis, metrics, sample size and the decision rule.</li>
+        <li class="gate"><b>Weekly growth review</b>Mondays 10:00. Spend against target, learnings, next week's tests.</li>
+      </ol>
+      <p class="loop">↺ Concluded tests are written back into each product's notes, so next week's briefs start from what was learned.</p>
+    </div>
+  </section>
+
+  <section class="part col">
+    <div class="label">Skills</div>
+    <h2>Each skill is a written procedure.</h2>
+    <p>A skill is a short plain-text file: when it runs, what it reads, what it must produce and what it must never do. Adding a new one means writing a new file. No code changes.</p>
+    <div class="skills">
+      <div><i>weekdays 9:00</i><b>Ad performance review</b><p>Compares campaigns, ad sets and ads on spend, CPA, ROAS, CTR, hook rate and frequency over 1, 3 and 7 days. Shows the number behind every Scale / Hold / Fix / Kill call, and flags anything under about 50 conversions as low confidence.</p><span class="out">→ reports/ad-review-&lt;product&gt;-&lt;date&gt;.md</span></div>
+      <div><i>on request</i><b>Creative brief</b><p>Ten concepts, each with an angle, a three-second hook, a format, the audience pain it hits and what it tests. Starts from the latest performance review.</p><span class="out">→ reports/creative-brief-&lt;product&gt;-&lt;date&gt;.md</span></div>
+      <div><i>on request</i><b>A/B test plan</b><p>Hypothesis, variants, primary and guardrail metrics, sample size and run time with the assumptions stated, stop rules and the decision rule.</p><span class="out">→ research/test-&lt;product&gt;-&lt;slug&gt;.md</span></div>
+      <div><i>on request</i><b>Funnel audit</b><p>Maps ad → landing page → checkout → activation, finds the biggest drop-off at each step and ranks a test backlog by impact, confidence and ease.</p><span class="out">→ reports/funnel-audit-&lt;product&gt;-&lt;date&gt;.md</span></div>
+      <div><i>on request</i><b>Competitor ad research</b><p>Finds competitors' long-running ads, which signal that they work, and notes angle, hook, offer and format. Ends with what to steal, what to avoid and how to stand apart.</p><span class="out">→ research/competitors-&lt;product&gt;-&lt;date&gt;.md</span></div>
+      <div><i>mondays 10:00</i><b>Weekly growth review</b><p>Rolls up the week's reviews and tests: spend, CPA and ROAS against target, what was learned and next week's test queue. Proposes priorities but doesn't add them.</p><span class="out">→ reports/weekly-growth-&lt;date&gt;.md</span></div>
+    </div>
+  </section>
+
+  <section class="part col">
+    <div class="label">Routing</div>
+    <h2>The cheapest tier that can do the job.</h2>
+    <p>Every request is sorted before any model is called. Most status questions never reach a model.</p>
+    <div class="tiers">
+      <div><i>tier 1</i><b>Rules</b><p>Status, priorities and the skills list are answered from files. No model call.</p></div>
+      <div><i>tier 2</i><b>Fast model</b><p>Short questions get a quick answer from a small model.</p></div>
+      <div><i>tier 3</i><b>Skill + strong model</b><p>Anything matching a skill, or real work, runs with that skill's procedure and access to the notes.</p></div>
+    </div>
+    <p style="margin-top:26px">Models sit behind a fallback chain. If one is capped, out of credit or fails, the next one takes the request, and the reason is shown.</p>
+    <div class="chain"><span>OpenRouter</span><em>→</em><span>Codex</span><em>→</em><span>Hermes</span><em>→</em><span>Claude Code</span><em>→</em><span>Claude API</span></div>
+  </section>
+
+  <section class="part col">
+    <div class="label">Guardrails</div>
+    <h2>Recommend only.</h2>
+    <ul class="rules">
+      <li><b>Never send, spend or publish.</b> Every model call carries this rule. Work is drafted and stops for approval.</li>
+      <li><b>No changes to the ad account.</b> The performance review can't change budgets, pause ads or edit campaigns. It only recommends.</li>
+      <li><b>Updates to people need sign-off.</b> Stakeholder updates are drafted, then wait for approval before going anywhere.</li>
+      <li><b>Every request leaves a receipt.</b> Time, tier, model and output are logged, so any answer can be traced.</li>
+      <li><b>Secrets stay where they are.</b> API keys are read in place when needed and never copied, cached or logged. The dashboard only shows which keys exist.</li>
+      <li><b>It can watch, not act.</b> It reports the status and recent errors of the other systems I run. For the trading bot it is explicitly barred from placing, cancelling or changing orders.</li>
+    </ul>
+  </section>
+
+  <section class="part col">
+    <div class="label">Why it's built this way</div>
+    <h2>Plain files, small code.</h2>
+    <p><strong>Markdown as memory.</strong> Priorities, product notes, reports and receipts are all plain files. I can read them, any agent can work in them, and nothing is locked in a database.</p>
+    <p><strong>Procedures as files.</strong> Writing a skill is closer to writing a good brief than writing code, and anyone who knows the work can review it.</p>
+    <p><strong>No dependencies.</strong> The router and dashboard are about 400 lines of standard-library Python, so there's very little that can break.</p>
+  </section>
+
+  <div class="col">
+    <div class="next">
+      <div><small>Next case study</small><a class="t" href="quorum.html">Quorum →</a></div>
+      <a class="btn line" href="../#projects">All projects</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="yr"></span></span>
+    <nav><a href="../#projects">Projects</a><a href="../#work">Work</a><a href="../assets/resume.pdf" download>Résumé</a></nav>
+  </div>
+</footer>
+<script>document.getElementById("yr").textContent = new Date().getFullYear();</script>
+</body>
+</html>

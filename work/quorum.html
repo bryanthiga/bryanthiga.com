@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>Quorum · Case study</title>
+<meta name="description" content="How Quorum works: eight AI agents run Meta ads for local service businesses, and a person signs off on everything that spends money.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="case.css">
+</head>
+<body>
+<nav class="nav" aria-label="Main">
+  <div class="wrap">
+    <a class="mark" href="../" aria-label="Home">BH.</a>
+    <ul>
+      <li><a href="../#projects">Projects</a></li>
+      <li><a href="../#work">Work</a></li>
+      <li><a href="../assets/resume.pdf" download>Résumé</a></li>
+    </ul>
+    <a class="btn dark" href="../#contact">Get in touch</a>
+  </div>
+</nav>
+
+<main>
+  <header class="col">
+    <a class="back" href="../#projects">← All projects</a>
+    <p class="kicker">Case study · Agency</p>
+    <h1>Quorum</h1>
+    <p class="lede">An ads team made of AI agents for local service businesses. The agents do the repeatable work of running Meta ads; a person signs off on everything that spends money.</p>
+    <dl class="facts">
+      <div><dt>Role</dt><dd>Designed, built and run solo</dd></div>
+      <div><dt>Stack</dt><dd>Node.js, Claude, Remotion</dd></div>
+      <div><dt>Status</dt><dd>Live</dd></div>
+    </dl>
+  </header>
+
+  <figure class="film">
+    <div class="frame"><video src="../assets/quorum.mp4" poster="../assets/quorum.jpg" controls muted playsinline preload="metadata"></video></div>
+    <figcaption>The customer's view of the process, built in Remotion.</figcaption>
+  </figure>
+
+  <section class="part col">
+    <div class="label">The problem</div>
+    <h2>Small budgets, the same amount of work.</h2>
+    <p>A landscaper or a cleaning company spending a few thousand dollars a month on Meta needs the same work as a bigger account: research, hooks, creative in every placement size, audiences, daily budget decisions and a report. An agency retainer usually costs more than the ad spend, and doing it yourself takes hours you don't have.</p>
+    <p>Most of that work is repeatable. The judgment calls are few, but they're the ones that matter: what you're allowed to claim, which ad gets more money, and when to stop. Quorum hands the repeatable parts to agents and keeps the judgment calls with a person.</p>
+  </section>
+
+  <section class="part col">
+    <div class="label">Where it started</div>
+    <h2>My own media-buying engine.</h2>
+    <p>Before Quorum there was the automation engine I built for my own media buying. It launches creative, checks every campaign every two hours, and applies CPA guardrails that pause ad sets running over target, scale the ones holding under it, and reactivate paused ones.</p>
+    <div class="nums">
+      <div><b>103</b><span>Node.js automation scripts</span></div>
+      <div><b>146</b><span>hooks in a tested library</span></div>
+      <div><b>18</b><span>angles</span></div>
+      <div><b>10</b><span>creative styles</span></div>
+    </div>
+    <p>Quorum takes that engine and splits it into agents with one job each, so it can run for businesses other than mine.</p>
+  </section>
+
+  <section class="part">
+    <div class="col">
+      <div class="label">How it works</div>
+      <h2>Eight agents, one sign-off.</h2>
+      <p>Each agent has a single job and produces something a person can check. Nothing touches the ad account until the review step is passed.</p>
+    </div>
+    <div class="flow" style="--n:6">
+      <ol>
+        <li><b>Research</b>Reads the site and reviews, pulls the claims that can be proven, studies competitor ads.</li>
+        <li><b>Hooks</b>Writes the opening lines, scores them and keeps the best three.</li>
+        <li><b>Creative</b>Cuts 15-second videos and stills from the client's photos, in every placement size.</li>
+        <li><b>Audiences + campaign</b>Maps the service area, keeps past customers out of prospecting, builds the campaign.</li>
+        <li class="gate"><b>Human review</b>Every ad, audience and budget change is checked by a person before it spends a dollar.</li>
+        <li><b>Budget, testing, reports</b>Paces spend daily, runs hook against hook, writes the weekly report.</li>
+      </ol>
+      <p class="loop">↺ Test results feed the next round of hooks and creative.</p>
+    </div>
+  </section>
+
+  <section class="part col">
+    <div class="label">The agents</div>
+    <h2>Who does what.</h2>
+    <ol class="rows">
+      <li><b>01 · Research</b><span>Reads the client's site and reviews, pulls the claims that can be proven, studies competitor ads.</span></li>
+      <li><b>02 · Hooks</b><span>Writes the opening lines that stop the scroll, scores them, keeps the best three.</span></li>
+      <li><b>03 · Creative</b><span>Cuts 15-second videos and stills from the client's own photos, in their colours.</span></li>
+      <li><b>04 · Audiences</b><span>Maps the service area and keeps past customers out of prospecting.</span></li>
+      <li><b>05 · Campaign</b><span>Builds the campaign in the client's ad account, then waits for an OK.</span></li>
+      <li><b>06 · Budget</b><span>Paces spend daily and shifts money toward the ads that bring in calls.</span></li>
+      <li><b>07 · Testing</b><span>Runs hook against hook, cuts losers early, scales winners.</span></li>
+      <li><b>08 · Reports</b><span>Tracks calls and leads and writes a plain-English weekly summary.</span></li>
+    </ol>
+  </section>
+
+  <section class="part col">
+    <div class="label">Design decisions</div>
+    <h2>Agents draft. People decide.</h2>
+    <ul class="rules">
+      <li><b>One job per agent.</b> A narrow job gives an output you can check. One large prompt doing everything is hard to review and hard to fix.</li>
+      <li><b>Only what's true.</b> Every claim in an ad comes from the client's website or from the client. Reviews are quoted word for word.</li>
+      <li><b>A person approves first.</b> No ad, audience or budget change goes live without a human sign-off.</li>
+      <li><b>The client's money stays in the client's account.</b> Ad spend goes straight to Meta on their card.</li>
+      <li><b>A website is the whole brief.</b> No intake forms or onboarding deck. The research agent starts from the site.</li>
+    </ul>
+  </section>
+
+  <div class="col">
+    <div class="next">
+      <div><small>Next case study</small><a class="t" href="growth-ops.html">Growth ops agent →</a></div>
+      <a class="btn line" href="../quorum.html">Visit the Quorum site</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="yr"></span></span>
+    <nav><a href="../#projects">Projects</a><a href="../#work">Work</a><a href="../assets/resume.pdf" download>Résumé</a></nav>
+  </div>
+</footer>
+<script>document.getElementById("yr").textContent = new Date().getFullYear();</script>
+</body>
+</html>

@@ -208,7 +208,9 @@ footer a:hover{color:var(--ink)}
 .reels3 video{width:100%;aspect-ratio:9/16;object-fit:cover;border-radius:10px;display:block}
 .tile .jelly{position:absolute;inset:0;height:auto}
 .minor{display:grid;grid-template-columns:1fr 1fr;gap:0 56px;margin-top:40px;border-top:1px solid var(--line)}
-.minor>div{padding:24px 0;border-bottom:1px solid var(--line2)}
+.minor>div,.minor>a{padding:24px 0;border-bottom:1px solid var(--line2)}
+.minor a.case{display:block;text-decoration:none}
+.minor a.case:hover h4{color:var(--accent)}
 .minor h4{font:500 18px/1.3 var(--sans);margin-bottom:6px}
 .minor p{color:var(--ink2);font-size:15px}
 .sheet{border:0;padding:0;border-radius:18px;width:min(980px,calc(100% - 32px));max-height:calc(100vh - 48px);background:var(--paper);color:var(--ink);overflow:auto;box-shadow:0 40px 100px -30px rgba(0,0,0,.6)}
@@ -303,6 +305,8 @@ footer a:hover{color:var(--ink)}
     </div>
 
     <div class="minor rv">
+      <a class="case" href="work/growth-ops.html"><span class="tag">Case study · Internal tool</span><h4>Growth ops agent <span aria-hidden="true">→</span></h4><p>Runs the daily loop of paid growth: performance reviews, creative briefs, test plans and weekly roll-ups. It recommends; a person decides.</p></a>
+      <a class="case" href="work/quorum.html"><span class="tag">Case study · Agency</span><h4>How Quorum works <span aria-hidden="true">→</span></h4><p>Eight agents, one human sign-off, and the media-buying engine it grew out of.</p></a>
       <div><span class="tag">In development</span><h4>Creative intelligence</h4><p>Sorts ad creative by angle and hook, shows what is working, and recommends the next test.</p></div>
       <div><span class="tag">E-commerce tooling</span><h4>Etsy listing automation</h4><p>Validates listing data and creates or publishes listings in Etsy Shop Manager from a single file.</p></div>
     </div>
@@ -382,7 +386,7 @@ footer a:hover{color:var(--ink)}
 <footer>
   <div class="wrap">
     <span>© <span id="yr"></span></span>
-    <nav><a href="#work">Work</a><a href="#projects">Projects</a><a href="quorum.html">Quorum</a><a href="assets/resume.pdf" download>Résumé</a></nav>
+    <nav><a href="#work">Work</a><a href="#projects">Projects</a><a href="work/quorum.html">Case studies</a><a href="quorum.html">Quorum</a><a href="assets/resume.pdf" download>Résumé</a></nav>
   </div>
 </footer>
 <script id="sky-sim">
@@ -1008,12 +1012,12 @@ const PROJECTS = {
     text: ["A Meta ads service for local service businesses. Eight specialised AI agents handle research, hooks, creative, audiences, campaign builds, budgets, testing and reporting. Every ad, audience and budget change still goes through a human before it spends a dollar.",
            "It grew out of my own automation engine for media buying, and every ad, audience and budget change is reviewed by a human before it goes live."],
     facts: ["Eight agents, one human sign-off", "103 automation scripts", "146 tested hooks, 18 angles, 10 creative styles", "Campaign checks every two hours", "CPA guardrails that pause, scale and reactivate", "Weekly plain-English reporting"],
-    link: ["quorum.html", "Visit Quorum"] },
+    link: [["work/quorum.html", "Read the case study"], ["quorum.html", "Visit Quorum", "line"]] },
   sharkbait: { tag: "Web app · Live", title: "Sharkbait",
     text: ["A live shark tracker. It pulls shark reports from news and wildlife sources, classifies each one as an attack, a warning or a sighting, identifies the species, and pins it on a map in real time.",
            "Beachgoers can check the water before they go out, filter by date and type, and sign up to be notified when sharks are spotted near them."],
     facts: ["Real-time map of sightings, warnings and attacks", "Species identification (great white, whale, tiger and more)", "Filters for today, 7 days, 30 days and all time", "\"Going surfing?\" check for a spot", "Accounts with alerts for nearby sightings", "Automated ingestion from news and wildlife reports"],
-    link: ["https://sharkbait.io", "Visit sharkbait.io"] },
+    link: [["https://sharkbait.io", "Visit sharkbait.io"]] },
   trading: { tag: "Autonomous system · Paper trading", title: "Trading bot",
     text: ["An autonomous intraday trading system for US stocks. Every 30 seconds it builds a list of stocks in play, scans them for technical setups, and sends each candidate to Claude, which decides whether to take it, pass, or reduce size.",
            "Hard-coded risk gates sit between the model and the broker, so no single judgment can break the rules. It runs on paper trading only: the goal is to prove or disprove an edge before any real money is involved."],
@@ -1034,8 +1038,8 @@ const PROJECTS = {
     if (p.note) { const el = document.createElement("p"); el.style.cssText = "font-size:13px;color:var(--muted)"; el.textContent = p.note; $("sheet-text").append(el); }
     $("sheet-facts").innerHTML = ""; p.facts.forEach(f => { const li = document.createElement("li"); li.textContent = f; $("sheet-facts").append(li); });
     $("sheet-actions").innerHTML = "";
-    if (p.link) { const a = document.createElement("a"); a.className = "btn dark"; a.href = p.link[0]; a.textContent = p.link[1] + " →";
-      if (/^https?:/.test(p.link[0])) { a.target = "_blank"; a.rel = "noopener"; } $("sheet-actions").append(a); }
+    (p.link || []).forEach(([href, label, style]) => { const a = document.createElement("a"); a.className = "btn " + (style || "dark"); a.href = href; a.textContent = label + " →";
+      if (/^https?:/.test(href)) { a.target = "_blank"; a.rel = "noopener"; } $("sheet-actions").append(a); });
     const media = $("sheet-media"); media.innerHTML = "";
     const src = tile.querySelector(".media");
     if (key !== "medusa" && src) { const c = src.cloneNode(true); c.removeAttribute("id"); c.querySelectorAll("[id]").forEach(e => e.removeAttribute("id"));
