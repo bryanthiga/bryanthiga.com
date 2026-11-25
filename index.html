@@ -617,89 +617,91 @@ footer a:hover{color:var(--ink)}
       }
     }
 
-    // --- aurora over a frozen lake: colourful ray curtains, stars, a pine treeline, a mirror lake with drifting ice
+    // --- aurora over a frozen lake: navy sky, ray curtains with a crisp lit edge, a pine treeline, ice with streaked reflections
     if (aAur > .01) {
       const hz = Math.round((wide ? .6 : .46) * rows), ta = T - 38;
       const sky = new Float32Array(cols * hz), skC = new Float32Array(cols * hz * 3);
       const mixc = (a, b, t) => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t];
-      const EDGE_G = [.55, 1, .72], EDGE_C = [.4, .95, 1], BODY_G = [.2, 1, .5], BODY_T = [.15, .85, .85];
-      const TOP_V = [.68, .3, 1], TOP_M = [1, .26, .9], TOP_R = [1, .25, .5], FRINGE = [1, .32, .72];
-      const RIB = [[.26, .3, 0, 1, 0], [.4, .22, 1.9, .8, .45], [.16, .17, 3.4, .55, .85]];  // edge height, ray length, phase, strength, warmth
-      for (const [base, len, ph, st, warm] of RIB) {
+      const EDGE = [.8, 1, 1], LOW = [.22, 1, .88], MID = [.1, .92, .74], HIGH = [.25, .72, 1], PINK = [1, .36, .7], ROSE = [1, .32, .5];
+      // edge height, sway, ray length, phase, strength, how much pink at the tops
+      const RIB = [[.16, .045, .18, 3.4, .45, 1], [.3, .085, .34, 0, 1, .75], [.47, .05, .22, 1.9, .7, .2]];
+      for (const [base, amp, len, ph, st, pink] of RIB) {
+        const sx = Math.min(1, Math.max(.45, W / 1200));                                         // fewer, gentler waves on narrow screens
+        const yAt = x => (x *= sx, base + amp * Math.sin(x * 4.2 + ta * .12 + ph) + amp * .45 * Math.sin(x * 9.5 - ta * .23 + ph * 2) + .01 * Math.sin(x * 31 + ta * .6));
         for (let c = 0; c < cols; c++) {
-          const x = c / cols;
-          const yb = (base + .075 * Math.sin(x * 3.6 + ta * .16 + ph) + .035 * Math.sin(x * 11 - ta * .31 + ph * 2) + .02 * Math.sin(x * 27 + ta * .5)) * rows;
-          const fold = .55 + .45 * Math.sin(x * 23 + ta * .4 + ph * 3);                        // brighter where the curtain folds toward us
-          const ray = Math.pow(hash(c, (ph * 10) | 0) * .5 + vnoise(c * .55 + ta * .9, ph * 4) * .5, 1.8) * 1.6 + .15;
-          const hgt = (len * (.6 + .8 * vnoise(c * .08 - ta * .1, ph + 9))) * rows;
-          const pulse = .7 + .3 * Math.sin(ta * .7 + x * 8 + ph);
-          const hue = Math.min(1, Math.max(0, vnoise(x * 2.4 + ph * 5 + ta * .06, ph * 3) * 1.1 - .05 + warm * .35));   // drifts along the curtain
-          const edgeC = mixc(EDGE_G, EDGE_C, hue * .8), bodyC = mixc(BODY_G, BODY_T, hue);
-          const topC = hue < .5 ? mixc(TOP_V, TOP_M, hue * 2) : mixc(TOP_M, TOP_R, hue * 2 - 1);
-          for (let r = Math.max(0, Math.floor(yb - hgt)); r < Math.min(hz, Math.ceil(yb + 3)); r++) {
-            const f = (yb - r) / hgt;
+          const x = c / cols, yn = yAt(x), yb = yn * rows;
+          const slope = Math.abs(yAt(x + .002) - yn) / .002;
+          const fold = 1 + 1.3 * sstep(.2, .75, slope);                                         // seen edge-on where it bends: a bright pillar
+          const clump = vnoise(c * .04 + ta * .05, ph * 3), stripe = vnoise(c * .42 + ta * .3, ph * 7 + ta * .2);   // broad bundles of thin rays
+          const ray = (.12 + 1.9 * Math.pow(clump, 1.3)) * (.15 + 1.7 * Math.pow(stripe, 2.4)) * (.75 + .25 * hash(c, ph * 10 | 0));
+          const hgt = Math.max(4, len * rows * (.45 + .9 * vnoise(c * .03 - ta * .08, ph + 9)) * (.6 + .6 * stripe) * Math.sqrt(fold));
+          const lit = (.55 + .45 * vnoise(x * 7 + ta * .35, ph * 2)) * (.8 + .2 * Math.sin(ta * .9 + x * 6 + ph));
+          const pk = pink * sstep(.35, .7, vnoise(x * 2.2 + ta * .04, ph * 5));
+          const topC = mixc(HIGH, mixc(PINK, ROSE, vnoise(x * 5, ph)), pk);
+          for (let r = Math.max(0, Math.floor(yb - hgt)); r < Math.min(hz, Math.ceil(yb + 5)); r++) {
+            const d = yb - r, f = d / hgt;
             let w, col;
-            if (f < 0) { w = Math.exp(f * hgt * .9) * 2.2 * fold * fold; col = FRINGE; }       // pink lower border where it is strongest
+            if (d < 0) { w = Math.exp(d * 1.1) * .9; col = LOW; }                                // soft glow just under the edge
             else {
-              w = Math.exp(-f * 9) * 2.2 + Math.pow(1 - f, 1.3) * ray * 1.35;
-              const t1 = sstep(0, .07, f), t2 = sstep(.14, .58, f);
-              col = t2 > 0 ? mixc(bodyC, topC, t2) : mixc(edgeC, bodyC, t1);
-              w *= 1 + 1.1 * t2;                                                                    // violet tops need more light to read
+              const edge = Math.exp(-d * 1.5) * 6.5;                                             // the thin lit hem
+              const body = Math.pow(Math.max(0, 1 - f), 1.35 - .85 * pk) * ray * 2.4 * (1 + 1.8 * pk * sstep(.4, .85, f));
+              w = edge + body;
+              col = d < 1.5 ? EDGE : f < .3 ? mixc(LOW, MID, f / .3) : mixc(MID, topC, sstep(.3, .8, f));
             }
-            w *= st * fold * pulse * 3;
+            w *= st * fold * lit * 1.5;
             if (w < .02) continue;
             const k = r * cols + c;
             sky[k] += w; skC[k * 3] += w * col[0]; skC[k * 3 + 1] += w * col[1]; skC[k * 3 + 2] += w * col[2];
           }
         }
       }
-      // faint red-violet airglow high in the sky
-      for (let r = 0; r < hz * .5; r++) for (let c = 0; c < cols; c++) {
-        const w = Math.max(0, vnoise(c * .035 + ta * .04, r * .09 + 2) - .45) * 1.1 * (1 - r / (hz * .5));
-        if (w > .03) { const k = r * cols + c; sky[k] += w; skC[k * 3] += w * .8; skC[k * 3 + 1] += w * .22; skC[k * 3 + 2] += w * .62; }
-      }
       // pointed pines along the far shore
       const tree = c => { const id = Math.floor(c / 5), pos = ((c % 5) + 5) % 5, h = 1 + Math.floor(hash(id, 41) * 4 + (vnoise(c * .05, 6) > .55 ? 2 : 0));
         return Math.max(1, Math.round(h * (1 - Math.abs(pos - 2) / 3))); };
       const isStar = (c, r) => hash(c, r * 7 + 3) > .985;
-      // average aurora colour per column, used to tint the ice
-      const tint = new Float32Array(cols * 3);
+      // per column: average aurora colour (tints the ice) and how much aurora there is (feeds the streaks on the water)
+      const tint = new Float32Array(cols * 3), colW = new Float32Array(cols);
       for (let c = 0; c < cols; c++) { let s0 = 0, s1 = 0, s2 = 0, sw = 0;
         for (let r = 0; r < hz; r++) { const k = r * cols + c; sw += sky[k]; s0 += skC[k * 3]; s1 += skC[k * 3 + 1]; s2 += skC[k * 3 + 2]; }
-        tint[c * 3] = sw > .1 ? s0 / sw : .3; tint[c * 3 + 1] = sw > .1 ? s1 / sw : .9; tint[c * 3 + 2] = sw > .1 ? s2 / sw : .7; }
+        colW[c] = Math.min(2.2, sw / (hz * .12));
+        tint[c * 3] = sw > .1 ? s0 / sw : .3; tint[c * 3 + 1] = sw > .1 ? s1 / sw : .9; tint[c * 3 + 2] = sw > .1 ? s2 / sw : .8; }
+      const NAVY = [.3, .46, 1];
       for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
         const k = r * cols + c;
         if (r < hz) {
           if (r >= hz - tree(c)) continue;                                                     // silhouette: leave it dark
-          const glow = r > hz - 10 ? 1.4 * Math.pow(1 - (hz - r) / 10, 2) : 0;
-          if (sky[k] > .02) { const m = sky[k]; put(k, (sky[k] + glow) * aAur, [skC[k * 3] / m, skC[k * 3 + 1] / m, skC[k * 3 + 2] / m]); }
-          else if (glow) put(k, glow * aAur, [.25, .85, .7]);
-          if (isStar(c, r) && sky[k] < .4) put(k, (1 + .8 * Math.sin(T * 2 + c)) * aAur, [.9, .95, 1]);   // stars
+          const h = r / hz, fill = (.05 + .3 * h * h) * (.7 + .3 * hash(c, r));                // faint navy grain, lighter toward the horizon
+          const glow = r > hz - 8 ? 1.1 * Math.pow(1 - (hz - r) / 8, 2) : 0;
+          put(k, (fill + glow) * aAur, glow ? [.4, .75, 1] : NAVY);
+          if (sky[k] > .02) { const m = sky[k]; put(k, m * aAur, [skC[k * 3] / m, skC[k * 3 + 1] / m, skC[k * 3 + 2] / m]); }
+          if (isStar(c, r) && sky[k] < .6) put(k, (1.1 + .8 * Math.sin(T * 2 + c)) * aAur, [.9, .95, 1]);   // stars
           continue;
         }
-        // lake: still water mirroring the sky, with ice floes drifting on it
+        // lake: dark water mirroring the sky, ice floes drifting on it
         const dy = (r - hz + 1) / (rows - hz), z = 1 / (dy + .06), u = (c / cols - .5) * z;
-        if (r === hz) { put(k, (.55 + .35 * vnoise(c * .3, 1)) * aAur, [.75, .9, 1]); continue; }  // pale snow line on the far shore
+        if (r === hz) { put(k, (.7 + .4 * vnoise(c * .3, 1)) * aAur, [.75, .9, 1]); continue; }  // pale snow line on the far shore
         const wob = Math.sin(r * 1.3 - T * 1.9 + vnoise(c * .08, r * .4) * 3) * (.3 + dy * 2.6);
-        const mr = hz - 1 - Math.round((r - hz - 1) * .9), mc = Math.round(c + wob);
-        let ref = 0, rcol = null;
-        if (mr >= 0 && mc >= 0 && mc < cols && mr < hz - tree(mc)) {
+        const mr = hz - 1 - Math.round((r - hz - 1) * .9), mc = Math.min(cols - 1, Math.max(0, Math.round(c + wob)));
+        let ref = 0, rcol = [tint[mc * 3], tint[mc * 3 + 1], tint[mc * 3 + 2]];
+        if (mr >= 0 && mr < hz - tree(mc)) {
           const mk = mr * cols + mc;
-          if (sky[mk] > .03) { const m = sky[mk]; ref = m; rcol = [skC[mk * 3] / m, skC[mk * 3 + 1] / m, skC[mk * 3 + 2] / m]; }
+          if (sky[mk] > .03) { const m = sky[mk]; ref = m * .55; rcol = [skC[mk * 3] / m, skC[mk * 3 + 1] / m, skC[mk * 3 + 2] / m]; }
           else if (isStar(mc, mr) && dy < .5) { ref = .7 * (1 - dy * 2); rcol = [.85, .92, 1]; }
         }
-        const n = fbm(u * 2.4 + T * .02, z * 1.5, 1.7), ice = n > .565;
+        const streak = Math.pow(vnoise(c * .6 + T * .15, r * .035 - T * .2), 2) * 1.6;            // long vertical smears of the aurora's light
+        ref += colW[mc] * streak * (1 - .55 * dy);
+        put(k, (.16 + .1 * dy) * aAur, [.22, .38, .9]);                                         // the water itself is deep blue, not black
+        const n = fbm(u * 2.4 + T * .02, z * 1.5, 1.7), ice = n > .545;
         if (ice) {
-          const e = Math.max(0, 1 - (n - .565) / .028);                                        // bright rim along each floe's edge
-          const crack = Math.abs(vnoise(u * 3.2, z * 2.4) - .5) < .025 ? .55 : 0;
+          const e = Math.max(0, 1 - (n - .545) / .03);                                         // bright rim along each floe's edge
+          const crack = Math.abs(vnoise(u * 3.2, z * 2.4) - .5) < .022 ? .5 : 0;
           const tx = vnoise(u * 7, z * 5) * .35;
-          const lum = (.85 + .9 * dy + tx * 1.6 + e * 1.9 + ref * .3) * (1 - crack);
-          const tc = [tint[c * 3], tint[c * 3 + 1], tint[c * 3 + 2]];
-          put(k, lum * aAur, mixc([.7, .84, .96], tc, .35 + .3 * e));
+          const lum = (1.5 + 1.1 * dy + tx * 1.6 + e * 2 + ref * .4) * (1 - crack);
+          put(k, lum * aAur, mixc([.74, .86, 1], rcol, .15 + .25 * e + .15 * Math.min(1, ref)));
         } else if (ref > .03) {
-          const band = .72 + .28 * Math.sin(r * 2.3 - T * 2.2 + c * .02);                     // ripple streaks
-          put(k, ref * (1.25 - .45 * dy) * band * aAur, rcol);
-        } else if (hash(c, r * 13 + (T * 4 | 0)) > .996) put(k, .5 * aAur, [.6, .95, .85]);    // glints
+          const band = .7 + .3 * Math.sin(r * 2.3 - T * 2.2 + c * .02);                        // ripples
+          put(k, ref * (1.3 - .5 * dy) * band * aAur, rcol);
+        } else if (hash(c, r * 13 + (T * 4 | 0)) > .996) put(k, .5 * aAur, [.6, .95, .9]);     // glints
       }
       // shooting star every ~7 s
       const sp = ta % 7; if (sp < .9) { const sx = (.3 + .5 * hash(Math.floor(ta / 7), 3)) * W, sy = .06 * H; for (let j = 0; j < 20; j++) splat(sx + (sp * 280 - j * 6), sy + (sp * 75 - j * 1.6), (1 - j / 20) * 2.4 * aAur, [.9, .95, 1]); }
@@ -735,7 +737,9 @@ footer a:hover{color:var(--ink)}
     }
     if (aAur > .01) {
       const g = cx.createLinearGradient(0, 0, 0, H);
-      g.addColorStop(0, `rgba(8,4,20,${aAur})`); g.addColorStop(.4, `rgba(4,12,26,${.85 * aAur})`); g.addColorStop(.58, `rgba(6,26,32,${.6 * aAur})`); g.addColorStop(1, `rgba(1,3,8,${aAur})`);
+      const hzf = wide ? .6 : .46;   // navy sky, lightest at the horizon, then dark blue water
+      g.addColorStop(0, `rgba(4,8,28,${aAur})`); g.addColorStop(hzf * .55, `rgba(9,22,58,${aAur})`); g.addColorStop(hzf, `rgba(22,48,92,${aAur})`);
+      g.addColorStop(Math.min(1, hzf + .04), `rgba(8,20,48,${aAur})`); g.addColorStop(1, `rgba(3,8,22,${aAur})`);
       cx.fillStyle = g; cx.fillRect(0, 0, W, H);
     }
     if (aGal > .01) {
@@ -763,7 +767,7 @@ footer a:hover{color:var(--ink)}
       cx.fillText(RAMP[cix[i]], (i % cols) * cw, ((i / cols) | 0) * chH);
     }
     gx.clearRect(0, 0, GL.width, GL.height); gx.drawImage(C, 0, 0, GL.width, GL.height);
-    GL.style.opacity = (.85 * (1 - .55 * aAur)).toFixed(2);
+    GL.style.opacity = (.85 * (1 - .2 * aAur)).toFixed(2);
   }
 
   let on = true, vis = true, last = 0, clock = +(new URLSearchParams(location.search).get("t")) || 15.5;   // open on the solar-system flight (?t= jumps to a scene)
