@@ -166,7 +166,7 @@ footer a:hover{color:var(--ink)}
 .sky{position:absolute;inset:0}
 .sky canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 #skyglow{filter:blur(10px) saturate(1.4);opacity:.85;mix-blend-mode:screen;pointer-events:none}
-.sky-fade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,6,11,.94) 0%,rgba(5,6,11,.72) 34%,rgba(5,6,11,0) 62%),linear-gradient(0deg,rgba(5,6,11,.7),rgba(5,6,11,0) 30%)}
+.sky-fade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,6,11,.7) 0,rgba(5,6,11,0) 16%),linear-gradient(90deg,rgba(5,6,11,.94) 0%,rgba(5,6,11,.72) 34%,rgba(5,6,11,0) 62%),linear-gradient(0deg,rgba(5,6,11,.7),rgba(5,6,11,0) 30%)}
 .hero-in{position:relative;z-index:2;width:100%}
 .hero h1{max-width:720px;font-size:clamp(46px,6.2vw,90px);color:#fff}
 .hero h1 em{color:#AFC2FF}
@@ -400,7 +400,7 @@ footer a:hover{color:var(--ink)}
   const host = document.getElementById("top");
   const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const RAMP = " .,:;-~=+*xoO0%#&@$", NR = RAMP.length;
-  const LOOP = 48;
+  const LOOP = 84;   // solar system -> aurora -> Oahu -> galaxy -> dive back in
   let W, H, cw, chH, cols, rows, N, dpr, U, ox, oy, wide;
   let aI, aR, aG, aB, keys, cix;
   let seed = 11; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
@@ -531,9 +531,11 @@ footer a:hover{color:var(--ink)}
     const t = T % LOOP, dt = Math.min(.1, Math.max(0, T - lastT)); lastT = T;
     aI.fill(0); aR.fill(0); aG.fill(0); aB.fill(0);
     // phases
-    const aSolar = sstep(13, 16, t) * (1 - sstep(39, 42, t));
-    const aGal = Math.min(1, 1 - sstep(13, 16, t) + sstep(39, 42, t));
-    const zoom = t < 28 ? 1 - sstep(8, 16, t) : sstep(40, 48, t);    // 0 = at home, 1 = whole galaxy
+    const aSolar = sstep(13, 16, t) * (1 - sstep(37.5, 40.5, t));
+    const aAur = sstep(38, 41, t) * (1 - sstep(55, 58, t));
+    const aOahu = sstep(55, 58, t) * (1 - sstep(74, 77, t));
+    const aGal = t < 30 ? 1 - sstep(13, 16, t) : sstep(74, 77, t);
+    const zoom = t < 30 ? 1 - sstep(8, 16, t) : 1;                     // 0 = at home, 1 = whole galaxy
     const speed = .012 + .09 * aSolar;
     // a wandering camera for the solar system: smooth random drift in position, distance, tilt and angle
     const wn = (k, f) => vnoise(T * f, k * 7.3) * 2 - 1;
@@ -546,7 +548,7 @@ footer a:hover{color:var(--ink)}
       if (s.z <= .02) { s.z = 1; s.x = (Math.random() * 2 - 1) * 1.6; s.y = (Math.random() * 2 - 1) * 1.1; continue; }
       const px = scx + s.x / s.z * F, py = scy + s.y / s.z * F;
       const b = Math.min(1.3, (1 - s.z) * 1.3) * .8;
-      splat(px, py, b * (.7 + .3 * Math.sin(T * 1.3 + s.x * 9)), s.c);
+      splat(px, py, b * (.7 + .3 * Math.sin(T * 1.3 + s.x * 9)) * (1 - aOahu) * (1 - aAur * .6), s.c);
     }
 
     // --- solar system: first-person flight out through the planets
@@ -616,6 +618,91 @@ footer a:hover{color:var(--ink)}
       }
     }
 
+    // --- aurora over a frozen lake: curtains, a treeline, ice floes, reflections
+    if (aAur > .01) {
+      const hz = (wide ? .58 : .44) * rows | 0, ta = T - 38;
+      const sky = new Float32Array(cols * hz), skC = new Float32Array(cols * hz * 3);
+      const RIB = [[.2, .22, .0, 1], [.34, .16, 1.7, .8], [.12, .12, 3.1, .55]];       // base height, ray length, phase, strength
+      for (let c = 0; c < cols; c++) {
+        const x = c / cols;
+        for (const [base, len, ph, st] of RIB) {
+          const yb = (base + .07 * Math.sin(x * 4.2 + ta * .18 + ph) + .04 * Math.sin(x * 9.5 - ta * .27 + ph * 2) + .03 * (vnoise(x * 6 + ta * .05, ph) - .5)) * rows;
+          const hgt = (len + .12 * vnoise(x * 7 - ta * .08, ph + 9)) * rows, ray = .25 + 1.5 * Math.pow(vnoise(c * .85 + ta * .35, ph * 5 + ta * .08), 2.2);
+          const pulse = .75 + .25 * Math.sin(ta * .5 + x * 6 + ph);
+          for (let r = Math.max(0, (yb - hgt) | 0); r < Math.min(hz, yb + 3); r++) {
+            const f = (yb - r) / hgt; if (f < -.15) continue;
+            const w = (f < 0 ? Math.exp(f * 18) * 1.6 : Math.pow(1 - f, 1.6) * ray + Math.exp(-f * 14) * 1.2) * st * pulse * 1.9;
+            const k = r * cols + c, top = Math.max(0, Math.min(1, f));
+            sky[k] += w; skC[k * 3] += w * (.22 + .5 * top * top); skC[k * 3 + 1] += w * (1 - .55 * top * top); skC[k * 3 + 2] += w * (.62 + .38 * top);
+          }
+        }
+      }
+      // shooting star every ~7 s
+      const sp = ta % 7; if (sp < .9) { const sx = (.25 + .5 * hash(Math.floor(ta / 7), 3)) * W, sy = .08 * H; for (let j = 0; j < 18; j++) splat(sx + (sp * 260 - j * 6), sy + (sp * 70 - j * 1.6), (1 - j / 18) * 2 * aAur, [.9, .95, 1]); }
+      const tree = c => 1 + Math.floor(3.5 * vnoise(c * .09, 4) + 2.5 * Math.pow(vnoise(c * .45, 8), 3));
+      for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
+        const k = r * cols + c;
+        if (r < hz) {
+          if (r >= hz - tree(c)) continue;                                   // treeline silhouette
+          const w = sky[k] + (r > hz - 12 ? .25 * (1 - (hz - r) / 12) : 0);
+          if (w > .02) { const m = sky[k] || 1; put(k, w * aAur, sky[k] > .02 ? [skC[k * 3] / m, skC[k * 3 + 1] / m, skC[k * 3 + 2] / m] : [.2, .7, .7]); }
+          continue;
+        }
+        // water and ice: perspective below the horizon
+        const dy = (r - hz + 1) / (rows - hz), z = 1 / (dy + .04), u = (c / cols - .5) * z;
+        const ice = fbm(u * 1.6, z * .9, 1.7) > .54;
+        const mr = hz - 1 - Math.round((r - hz) * .9), mc = Math.round(c + Math.sin(r * .7 + T * 2.2) * 1.2);
+        const ref = mr >= 0 && mc >= 0 && mc < cols ? sky[mr * cols + mc] : 0;
+        if (ice) put(k, (.9 + 1.1 * dy + ref * .4) * aAur, [.74, .86, 1]);
+        else if (ref > .05) { const mk = mr * cols + mc, m = sky[mk]; put(k, ref * .55 * aAur, [skC[mk * 3] / m, skC[mk * 3 + 1] / m, skC[mk * 3 + 2] / m]); }
+      }
+    }
+
+    // --- Oahu: a drone drifting along the windward coast below a fluted green ridge
+    if (aOahu > .01) {
+      const to = T - 55, zm = 1 + .06 * sstep(0, 22, to), pan = .02 * Math.sin(to * .12);
+      const bump = (x, c, w) => Math.exp(-((x - c) * (x - c)) / (w * w));
+      const ridge = x => .42 - .24 * bump(x, .66, .15) - .19 * bump(x, .86, .1) - .11 * bump(x, 1, .08) - .06 * bump(x, .52, .06) + .03 * (vnoise(x * 22, 2) - .5) + .014 * (vnoise(x * 90, 5) - .5);
+      const shore = v => v < .44 ? .03 : .03 + .62 * Math.pow((v - .44) / .56, 1.25);
+      for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
+        const k = r * cols + c, x0 = wide ? .34 : 0, u = ((c / cols - x0) / (1 - x0) - .5) / zm + .5 + pan, v = (r / rows - .45) / zm + .45;
+        let w = 0, col;
+        const top = ridge(u), foot = .52 + .07 * (u - .3), sh = shore(v);
+        if (u > .27 && v > top && v < foot) {                                   // the ridge: cliff faces, flutes, green ledges
+          const flute = vnoise(u * 120, v * 5), ledge = vnoise(u * 30, v * 22 + 5), d = (v - top) / (foot - top);
+          const green = ledge > .62 || d > .74 ? 1 : 0, lit = .15 + .85 * Math.pow(flute, 1.5);
+          col = green ? mix([.2, .46, .2], [.46, .74, .34], lit) : mix([.26, .3, .27], [.72, .74, .66], lit);
+          w = (.8 + 1.8 * lit) * (1 - .2 * d);
+        } else if (v < .405) {                                                   // sky and clouds
+          const cl = fbm(u * 3.2 - to * .012, v * 7, 3.3) - .15 * (v / .4);
+          if (cl > .43) { const d = Math.min(1, (cl - .43) * 5); col = mix([.78, .84, .95], [1, 1, 1], d); w = 1.5 + 1.6 * d; }
+          else { col = mix([.25, .5, 1], [.62, .82, 1], v / .4); w = .75 + .35 * (v / .4); }
+          if (u > .08 && u < .2 && v > .39) { col = [.45, .55, .65]; w = .8; }   // far headland
+          const ix = (u - .14) / .022, iy = (v - .4) / .018;                     // the little islet
+          if (iy < 0 && iy > -1 && Math.abs(ix) < 1 + iy) { col = [.3, .4, .32]; w = 1.6; }
+        } else if (u < sh) {                                                     // ocean: deep blue to turquoise, rolling surf
+          const near = Math.min(1, (sh - u) / .12), wave = Math.sin((sh - u) * 160 - to * 2.4 + vnoise(u * 20, v * 20) * 3);
+          col = mix([.12, .82, .86], [.1, .36, .82], Math.min(1, near * 1.3 + (.6 - v) * .8));
+          w = 1.15 + .4 * wave * (1 - near) + .25 * vnoise(u * 50 + to * .3, v * 50);
+          if (sh - u < .012 + .006 * Math.sin(v * 60 - to * 2)) { col = [1, 1, 1]; w = 2.3; }   // foam line
+        } else if (u < sh + .03) { col = [1, .86, .6]; w = 1.6 + .3 * vnoise(u * 80, v * 80); }     // sand
+        else if (u < sh + .042) { col = [.42, .42, .44]; w = 1.1 + .6 * vnoise(u * 120, v * 120); } // rock wall
+        else if (u < sh + .075) {                                                // the road, with a centre line and cars
+          const lane = (u - sh - .042) / .033;
+          col = [.5, .5, .54]; w = 1.05;
+          if (Math.abs(lane - .5) < .06 && Math.sin(v * 140) > 0) { col = [1, .85, .3]; w = 1.6; }
+          for (let j = 0; j < 5; j++) { const cv = ((j * .23 + to * (j & 1 ? .035 : -.03)) % 1 + 1) % 1 * .6 + .42;
+            if (Math.abs(v - cv) < .007 && Math.abs(lane - (j & 1 ? .25 : .75)) < .18) { col = j % 3 ? [1, 1, 1] : [.95, .3, .25]; w = 2.6; } }
+        } else {                                                                 // fields, trees, roofs
+          const tr = fbm(u * 14, v * 14, 7.1), g = vnoise(u * 40, v * 40);
+          if (tr > .6) { col = mix([.1, .35, .14], [.2, .5, .2], g); w = 1.9; }
+          else { col = mix([.38, .7, .28], [.55, .8, .35], g); w = 1.2 + .3 * g; }
+          if (hash((u * 60) | 0, (v * 90) | 0) > .992) { col = [.9, .9, .92]; w = 2.2; }
+        }
+        if (w > 0) put(k, w * 1.9 * aOahu, col);
+      }
+    }
+
     // --- galaxy: zoom out from home to the whole disk
     if (aGal > .01) {
       const rot = T * .02, inc = 1.05 + my * .08, roll = -.42 + mx * .06;
@@ -642,6 +729,16 @@ footer a:hover{color:var(--ink)}
     if (aSolar > .01) {
       const g = cx.createRadialGradient(W * 1.02, H * .05, 0, W * 1.02, H * .05, Math.max(W, H) * .75);
       g.addColorStop(0, `rgba(255,170,90,${.2 * aSolar})`); g.addColorStop(.5, `rgba(255,120,60,${.05 * aSolar})`); g.addColorStop(1, "rgba(0,0,0,0)");
+      cx.fillStyle = g; cx.fillRect(0, 0, W, H);
+    }
+    if (aOahu > .01) {
+      const g = cx.createLinearGradient(0, 0, 0, H);
+      g.addColorStop(0, `rgba(24,58,120,${.75 * aOahu})`); g.addColorStop(.42, `rgba(70,110,160,${.55 * aOahu})`); g.addColorStop(.6, `rgba(10,60,70,${.5 * aOahu})`); g.addColorStop(1, `rgba(6,20,30,${.6 * aOahu})`);
+      cx.fillStyle = g; cx.fillRect(0, 0, W, H);
+    }
+    if (aAur > .01) {
+      const g = cx.createLinearGradient(0, 0, 0, H);
+      g.addColorStop(0, `rgba(3,6,18,${aAur})`); g.addColorStop(.55, `rgba(6,26,36,${.7 * aAur})`); g.addColorStop(1, `rgba(2,5,12,${aAur})`);
       cx.fillStyle = g; cx.fillRect(0, 0, W, H);
     }
     if (aGal > .01) {
@@ -671,7 +768,7 @@ footer a:hover{color:var(--ink)}
     gx.clearRect(0, 0, GL.width, GL.height); gx.drawImage(C, 0, 0, GL.width, GL.height);
   }
 
-  let on = true, vis = true, last = 0, clock = 15.5;   // open on the solar-system flight
+  let on = true, vis = true, last = 0, clock = +(new URLSearchParams(location.search).get("t")) || 15.5;   // open on the solar-system flight (?t= jumps to a scene)
   new IntersectionObserver(([e]) => { on = e.isIntersecting; }).observe(host);
   document.addEventListener("visibilitychange", () => { vis = !document.hidden; });
   function loop(now) {
