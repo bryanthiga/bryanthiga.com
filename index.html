@@ -14,7 +14,7 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
 body{background:var(--bg);color:var(--ink);font:13px/1.5 "JetBrains Mono",ui-monospace,Menlo,monospace;overflow:hidden}
-.stage{position:fixed;inset:0;background:radial-gradient(70% 60% at 62% 40%,#071a2c 0%,#040b16 55%,var(--bg) 100%)}
+.stage{position:fixed;inset:0;background:radial-gradient(60% 70% at 64% 30%,#0a2236 0%,#051120 45%,#02050b 100%)}
 canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 #glow{filter:blur(7px) saturate(1.5);opacity:1;mix-blend-mode:screen;pointer-events:none}
 .vignette{position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 90% at 50% 45%,transparent 55%,rgba(0,0,0,.75) 100%)}
@@ -31,6 +31,7 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 .copy h1{font-weight:800;font-size:clamp(34px,6vw,76px);line-height:.98;letter-spacing:-.03em;margin:12px 0 14px;text-shadow:0 0 30px rgba(34,211,238,.35)}
 .copy h1 span{color:var(--cyan)}
 .copy p{color:#8FB0C6;font-size:clamp(13px,1.3vw,15px)}
+.copy p.soon{margin-top:6px;color:#5B7A93;font-size:12px}
 .cursor{display:inline-block;width:.55em;height:1em;background:var(--cyan);vertical-align:-2px;margin-left:4px;animation:blink 1s steps(1) infinite}
 @keyframes blink{50%{opacity:0}}
 
@@ -58,8 +59,8 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 <div class="hud">
   <div>
     <div class="brand"><span class="core"></span>BRYBOT</div>
-    <div>jelly.js &nbsp; depth <b id="h-depth">0</b> m &nbsp; pulse <b id="h-pulse">0</b> &nbsp; tentacles <b id="h-tent">0</b></div>
-    <div>chars <b id="h-chars">0</b> &nbsp; grid <b id="h-grid">0</b></div>
+    <div>octo.js &nbsp; platform <b>meta</b> &nbsp; subagents <b id="h-jobs">0</b>/8 running &nbsp; depth <b id="h-depth">0</b> m</div>
+    <div>spheres <b id="h-sph">0</b> &nbsp; chars <b id="h-chars">0</b> &nbsp; grid <b id="h-grid">0</b></div>
   </div>
   <div class="r" style="text-align:right">t <b id="h-t">00.00</b>s<br><b id="h-fps">0</b> fps</div>
 </div>
@@ -67,215 +68,315 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 <main class="copy">
   <div class="tag">Ads for local service businesses</div>
   <h1>Brief in.<br><span>Campaign out.</span></h1>
-  <p>New site coming soon<span class="cursor"></span></p>
+  <p>Eight arms. Eight BRYBOT subagents. Your whole Meta ads operation, handled, with a human signing off.</p>
+  <p class="soon">New site coming soon<span class="cursor"></span></p>
 </main>
 
 <div class="term" aria-hidden="true">
-  <div class="bar"><span class="dot" style="background:#FF5F57"></span><span class="dot" style="background:#FEBC2E"></span><span class="dot" style="background:#28C840"></span>&nbsp; jelly.js<span class="run" id="t-fps">running</span></div>
+  <div class="bar"><span class="dot" style="background:#FF5F57"></span><span class="dot" style="background:#FEBC2E"></span><span class="dot" style="background:#28C840"></span>&nbsp; octo.js<span class="run" id="t-fps">running</span></div>
   <div class="code" id="code"></div>
 </div>
 
 <script id="sim">
-// jelly.js: an ASCII jellyfish. Every character is placed by this script.
-// 1. the bell pulses; each contraction lifts it a little
-// 2. tentacles are chains of points: they lag behind, sag and drift in the current
-// 3. everything adds light into a grid; brighter cells get denser characters
-const RAMP = " .,:;-=+*oa#%0@";
+// octo.js: a 3D octopus, ray-lit and printed as text. Every character is placed by this script.
+// 1. the body is ~900 spheres: an egg-shaped mantle, a head with two eyes, eight tapering arms, webbing, suckers
+// 2. each sphere is drawn into a depth buffer; every text cell keeps the nearest surface and its normal
+// 3. cells are lit like a photo: warm key light, cyan rim light, specular, mottled skin texture
+// 4. brightness picks the character, lit colour picks the ink; each arm is a BRYBOT subagent for your Meta ads
+const RAMP = " .,:;-~=+*xoO0%#&@$";
+const AGENTS = [
+  ["research",  ["reading website", "pulling reviews", "scanning competitor ads"]],
+  ["hooks",     ["drafting hooks", "scoring first 3 seconds", "picking top 3"]],
+  ["creative",  ["cutting 15s video", "sizing for Reels", "exporting stills"]],
+  ["audiences", ["mapping service area", "building audiences", "excluding past buyers"]],
+  ["campaign",  ["building campaign", "setting placements", "ready for your OK"]],
+  ["budget",    ["pacing daily spend", "moving budget to winners", "checking cost per lead"]],
+  ["testing",   ["hook A vs hook B", "cutting losers", "scaling winners"]],
+  ["reports",   ["tracking calls", "writing weekly report", "sending summary"]],
+];
+const SKIN = 1, SUCK = 2, EYE = 3;
 const A = document.getElementById("ascii"), ax = A.getContext("2d");
 const G = document.getElementById("glow"), gx = G.getContext("2d");
 const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
-let W, H, cw, chH, cols, rows, light, lvl, dpr, R0;
-let mouse = { x: -1e4, y: -1e4 };
-const TENT = 22, SEGS = 26;
-let tent = [], snow = [];
+let W, H, cw, chH, cols, rows, N, S, cx, cy, dpr;
+let zb, nxb, nyb, nzb, mat, pxb, pyb, pzb, ub, ink, keys;
+let mouse = { x: -1e4, y: -1e4 }, snow = [], tips = [], spheres = 0;
 
-function palette(n) {
-  // deep sea blue -> brand cyan -> white-hot
-  const out = [];
-  for (let i = 0; i < n; i++) {
-    const k = i / (n - 1);
-    const a = k < .55 ? k / .55 : 1, b = k < .55 ? 0 : (k - .55) / .45;
-    const r = 18 + 16 * a + 200 * b, g = 60 + 151 * a + 40 * b, bl = 120 + 118 * a + 17 * b;
-    out.push(`rgb(${r | 0},${g | 0},${bl | 0})`);
-  }
-  return out;
+// ---------- noise for skin texture (object space, so it sticks to the body) ----------
+function hash(i, j, k) {
+  let h = Math.imul(i, 374761393) ^ Math.imul(j, 668265263) ^ Math.imul(k, 1440662683);
+  h = Math.imul(h ^ (h >>> 13), 1274126177);
+  return ((h ^ (h >>> 16)) >>> 0) / 4294967295;
 }
-const COLORS = palette(RAMP.length);
+function noise(x, y, z) {
+  const i = Math.floor(x), j = Math.floor(y), k = Math.floor(z);
+  const fx = x - i, fy = y - j, fz = z - k;
+  const u = fx * fx * (3 - 2 * fx), v = fy * fy * (3 - 2 * fy), w = fz * fz * (3 - 2 * fz);
+  const l = (a, b, t) => a + (b - a) * t;
+  return l(l(l(hash(i, j, k), hash(i + 1, j, k), u), l(hash(i, j + 1, k), hash(i + 1, j + 1, k), u), v),
+           l(l(hash(i, j, k + 1), hash(i + 1, j, k + 1), u), l(hash(i, j + 1, k + 1), hash(i + 1, j + 1, k + 1), u), v), w);
+}
 
 function resize() {
   dpr = Math.min(devicePixelRatio || 1, 2);
   W = innerWidth; H = innerHeight;
-  cw = W < 700 ? 6 : 8; chH = Math.round(cw * 1.62);
-  cols = Math.ceil(W / cw); rows = Math.ceil(H / chH);
-  light = new Float32Array(cols * rows); lvl = new Uint8Array(cols * rows);
+  cw = W < 700 ? 5 : 6; chH = Math.round(cw * 1.7);
+  cols = Math.ceil(W / cw); rows = Math.ceil(H / chH); N = cols * rows;
+  zb = new Float32Array(N); nxb = new Float32Array(N); nyb = new Float32Array(N); nzb = new Float32Array(N);
+  pxb = new Float32Array(N); pyb = new Float32Array(N); pzb = new Float32Array(N); ub = new Float32Array(N);
+  mat = new Uint8Array(N); ink = new Uint16Array(N); keys = new Uint32Array(N);
   A.width = W * dpr; A.height = H * dpr; ax.setTransform(dpr, 0, 0, dpr, 0, 0);
   G.width = W / 2; G.height = H / 2;
-  R0 = Math.max(60, Math.min(170, Math.min(W, H) * .17));
-  tent = [];
-  for (let k = 0; k < TENT; k++) {
-    const pts = [];
-    for (let i = 0; i < SEGS; i++) pts.push({ x: W * .6, y: H * .4 + i * 6, px: W * .6, py: H * .4 + i * 6 });
-    tent.push(pts);
-  }
-  snow = Array.from({ length: Math.round(cols * rows / 110) }, () => ({ x: Math.random() * W, y: Math.random() * H, s: .15 + Math.random() * .5, p: Math.random() * 6.28 }));
+  const wide = W > 860;
+  S = wide ? Math.min(W * .072, H * .118) : Math.min(W * .125, H * .085);
+  cx = W * (wide ? .66 : .5); cy = H * (wide ? .42 : .36);
+  snow = Array.from({ length: Math.round(N / 160) }, () => ({ x: Math.random() * W, y: Math.random() * H, s: .1 + Math.random() * .4, p: Math.random() * 6.28 }));
   document.getElementById("h-grid").textContent = cols + "x" + rows;
 }
 
-function add(x, y, v) {
-  const c = x / cw | 0, r = y / chH | 0;
-  if (c >= 0 && c < cols && r >= 0 && r < rows) light[r * cols + c] += v;
+// ---------- camera ----------
+let cyw, syw, cp, sp;
+function cam(yaw, pitch) { cyw = Math.cos(yaw); syw = Math.sin(yaw); cp = Math.cos(pitch); sp = Math.sin(pitch); }
+// object -> view (x right, y up, z toward viewer)
+function view(x, y, z, o) {
+  const x1 = x * cyw + z * syw, z1 = -x * syw + z * cyw;
+  o[0] = x1; o[1] = y * cp - z1 * sp; o[2] = y * sp + z1 * cp;
 }
-function blob(x, y, rad, v) {
-  // soft round splat, radius in px
-  const rc = Math.ceil(rad / cw) + 1, rr = Math.ceil(rad / chH) + 1;
-  const c0 = x / cw | 0, r0 = y / chH | 0;
-  for (let r = r0 - rr; r <= r0 + rr; r++) {
-    if (r < 0 || r >= rows) continue;
-    for (let c = c0 - rc; c <= c0 + rc; c++) {
-      if (c < 0 || c >= cols) continue;
-      const dx = (c + .5) * cw - x, dy = (r + .5) * chH - y, d = Math.hypot(dx, dy) / rad;
-      if (d < 1) light[r * cols + c] += v * (1 - d * d);
+const V = [0, 0, 0];
+
+// ---------- sphere impostor into the depth buffer ----------
+function sphere(x, y, z, r, m, u) {
+  view(x, y, z, V);
+  const sx = cx + V[0] * S, sy = cy - V[1] * S, rp = r * S, cz = V[2];
+  if (rp < 1.2) return;
+  spheres++;
+  const c0 = Math.max(0, (sx - rp) / cw | 0), c1 = Math.min(cols - 1, (sx + rp) / cw | 0);
+  const r0 = Math.max(0, (sy - rp) / chH | 0), r1 = Math.min(rows - 1, (sy + rp) / chH | 0);
+  for (let row = r0; row <= r1; row++) {
+    const dy = ((row + .5) * chH - sy) / rp;
+    for (let c = c0; c <= c1; c++) {
+      const dx = ((c + .5) * cw - sx) / rp, d2 = dx * dx + dy * dy;
+      if (d2 >= 1) continue;
+      const nz = Math.sqrt(1 - d2), depth = cz + nz * r, i = row * cols + c;
+      if (depth <= zb[i]) continue;
+      zb[i] = depth; nxb[i] = dx; nyb[i] = -dy; nzb[i] = nz; mat[i] = m; ub[i] = u;
+      // back to object space for texture: p = centre + (inverse camera) normal * r
+      const y1 = -dy * cp + nz * sp, z1 = dy * sp + nz * cp;
+      pxb[i] = x + (dx * cyw - z1 * syw) * r; pyb[i] = y + y1 * r; pzb[i] = z + (dx * syw + z1 * cyw) * r;
     }
   }
 }
 
+// ---------- the animal ----------
+const EYES = [[-.43, .16, .4], [.43, .16, .4]];
+function build(t) {
+  const breath = Math.sin(t * 1.1);
+  // mantle: an egg-shaped sac rising up and back from the head
+  const lean = -1.0 + Math.sin(t * .37) * .1, sway = Math.sin(t * .29) * .1;
+  for (let i = 0; i <= 34; i++) {
+    const u = i / 34;
+    const r = (.52 + .62 * Math.sin(Math.PI * Math.min(1, u * .88 + .1))) * (1 + .045 * breath) * (u > .88 ? 1 - (u - .88) * 3.4 : 1);
+    const len = u * 1.75;
+    sphere(Math.sin(sway) * len, .25 + Math.cos(lean) * len, Math.sin(lean) * len, r * .98, SKIN, -1 - u);
+  }
+  // head and eyes
+  sphere(0, 0, 0, .64, SKIN, -.5);
+  sphere(0, -.18, .12, .56, SKIN, -.4);
+  for (const e of EYES) {
+    sphere(e[0] * 1.02, e[1] + .06, e[2] - .06, .22, SKIN, -.3);   // eye socket ridge
+    sphere(e[0], e[1], e[2], .19, EYE, 0);
+  }
+  // eight arms
+  tips = [];
+  const roots = [];
+  for (let k = 0; k < 8; k++) {
+    const phi = (k + .5) / 8 * Math.PI * 2 + Math.PI / 2;
+    const ox = Math.cos(phi), oz = Math.sin(phi);          // outward direction
+    const lx = -oz, lz = ox;                                 // sideways direction
+    const L = 3.8 + .4 * Math.sin(k * 2.3);
+    const dorsal = k % 3 === 0 ? 1 : -1;                     // some tips coil up, most coil under
+    const coil = (3.2 + 1.4 * Math.sin(t * .42 + k * 1.7)) * dorsal;
+    let x = ox * .46, y = -.42, z = oz * .46, th = -.62 + .18 * Math.sin(t * .33 + k);
+    const n = 78, ds = L / n, pts = [];
+    for (let i = 0; i <= n; i++) {
+      const s = i / n;
+      const kap = .12 + coil * s * s + .9 * Math.sin(t * .9 + k * .8 - s * 5.5) * s;
+      th += kap * ds;
+      const lat = .38 * Math.sin(t * .55 + k * 1.1 - s * 3) * s;
+      const ct = Math.cos(th), st = Math.sin(th);
+      x += (ct * ox + lx * lat * .08) * ds; y += st * ds; z += (ct * oz + lz * lat * .08) * ds;
+      const r = .33 * Math.pow(1 - s, .72) + .055;
+      sphere(x, y, z, r, SKIN, s);
+      // suckers: pale rings along the oral side
+      if (i % 2 === 0 && s > .06 && s < .97) {
+        const nxp = -st * ox, nyp = ct, nzp = -st * oz;          // the arm's dorsal normal
+        sphere(x - nxp * r * .78, y - nyp * r * .78, z - nzp * r * .78, r * .36, SUCK, s);
+      }
+      if (i === 10) roots.push([x, y, z]);
+      pts.push([x, y, z]);
+    }
+    tips.push(pts[n - 3]);
+  }
+  // webbing between neighbouring arms
+  for (let k = 0; k < 8; k++) {
+    const a = roots[k], b = roots[(k + 1) % 8];
+    for (let j = 1; j < 6; j++) {
+      const f = j / 6, sag = Math.sin(f * Math.PI) * .1;
+      sphere(a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f - sag, a[2] + (b[2] - a[2]) * f, .13, SKIN, .1);
+    }
+  }
+}
+
+// ---------- shading ----------
+const KEY = (() => { const v = [-.45, .78, .5], l = Math.hypot(...v); return v.map(c => c / l); })();
+const HALF = (() => { const v = [KEY[0], KEY[1], KEY[2] + 1], l = Math.hypot(...v); return v.map(c => c / l); })();
+const NR = RAMP.length - 1;
+function shade(t) {
+  let chars = 0, nk = 0;
+  for (let i = 0; i < N; i++) {
+    const m = mat[i];
+    if (!m) continue;
+    const nx = nxb[i], ny = nyb[i], nz = nzb[i];
+    const px = pxb[i], py = pyb[i], pz = pzb[i];
+    let ar, ag, ab;
+    if (m === SKIN) {
+      const mott = noise(px * 2.3 + 11, py * 2.3, pz * 2.3);
+      const fine = noise(px * 7.5, py * 7.5 + 5, pz * 7.5);
+      const s = ub[i];
+      let tone = .55 + .6 * mott;
+      if (fine > .7) tone *= 1.35;                  // papillae
+      if (mott < .35) tone *= .6;                   // dark mottling
+      const tipFade = s > 0 ? s * .35 : 0;
+      ar = (196 + 30 * tipFade) * tone; ag = (82 + 60 * tipFade) * tone; ab = (58 + 50 * tipFade) * tone;
+    } else if (m === SUCK) {
+      ar = 238; ag = 196; ab = 168;
+    } else {
+      // eye: gold iris with a dark horizontal slit pupil
+      const e = px < 0 ? EYES[0] : EYES[1];
+      const ex = px - e[0], ey = py - e[1], ez = pz - e[2], el = Math.hypot(ex, ey, ez) || 1;
+      const f = (ex * e[0] * .9 + ez * .8) / el;
+      const slit = Math.abs(ey / el) < .2 && f > .55;
+      if (slit) { ar = 6; ag = 6; ab = 8; } else { ar = 214; ag = 176; ab = 92; }
+    }
+    const dif = Math.max(0, nx * KEY[0] + ny * KEY[1] + nz * KEY[2]);
+    const rim = Math.pow(1 - nz, 2.6);
+    const spec = Math.pow(Math.max(0, nx * HALF[0] + ny * HALF[1] + nz * HALF[2]), m === EYE ? 60 : 22) * (m === EYE ? 1.2 : .45);
+    const amb = .32 + .12 * ny;
+    let r = ar * (amb + dif * 1.15) + 34 * rim * 1.3 + 255 * spec;
+    let g = ag * (amb + dif * 1.1) + 211 * rim * 1.3 + 250 * spec;
+    let b = ab * (amb + dif * 1.0) + 238 * rim * 1.3 + 245 * spec;
+    r = Math.min(255, r); g = Math.min(255, g); b = Math.min(255, b);
+    const lum = Math.max(r, g, b) / 255 * .6 + (r * .3 + g * .55 + b * .15) / 255 * .4;
+    const ci = Math.max(4, Math.min(NR, Math.round(Math.pow(lum, .7) * NR)));
+    ink[i] = ci; chars++;
+    keys[nk++] = ((r >> 4) << 8 | (g >> 4) << 4 | (b >> 4)) << 19 | (i >>> 0);
+  }
+  return { chars, nk };
+}
+
+// ---------- frame ----------
 function frame(t) {
-  light.fill(0);
-  // background: slow caustics and light shafts from the surface
-  for (let r = 0; r < rows; r++) {
-    const y = r * chH, fall = 1 - y / H;
-    for (let c = 0; c < cols; c++) {
-      const x = c * cw;
-      const ca = Math.sin(x * .011 + t * .5) * Math.sin(y * .019 - t * .35) + Math.sin((x + y) * .007 + t * .27);
-      let v = Math.max(0, ca - 1.6) * .1;
-      v += Math.pow(Math.max(0, Math.sin(x * .0042 + Math.sin(t * .15) * 1.6)), 70) * .16 * fall * fall * fall;
-      light[r * cols + c] = v;
-    }
-  }
+  zb.fill(-1e9); mat.fill(0); spheres = 0;
+  const md = mouse.x > -1e3 ? (mouse.x / W - .5) : 0;
+  cam(.5 * Math.sin(t * .11) + md * .7, .5 + .08 * Math.sin(t * .17));
+  cy = H * (W > 860 ? .42 : .36) + Math.sin(t * .4) * 6;
+  build(t);
+  const { chars, nk } = shade(t);
+  const list = keys.subarray(0, nk).sort();
 
-  // the bell
-  const phase = (t * .55) % 1;
-  const squeeze = Math.pow(Math.max(0, Math.sin(phase * Math.PI * 2)), 2);
-  const baseX = W * (W > 860 ? .64 : .5), baseY = H * (W > 860 ? .34 : .32);
-  let jx = baseX + Math.sin(t * .13) * W * .06 + Math.sin(t * .31) * 18;
-  let jy = baseY + Math.sin(t * .09) * H * .05 - squeeze * R0 * .14;
-  const md = Math.hypot(mouse.x - jx, mouse.y - jy);
-  if (md < 260) { jx -= (mouse.x - jx) / md * (260 - md) * .25; jy -= (mouse.y - jy) / md * (260 - md) * .25; }
-  const R = R0 * (1 - .15 * squeeze), Hb = R0 * .98 * (1 + .13 * squeeze);
-  const tilt = Math.sin(t * .37) * .12, ct = Math.cos(tilt), st = Math.sin(tilt);
-
-  const c0 = Math.max(0, (jx - R * 1.45) / cw | 0), c1 = Math.min(cols - 1, (jx + R * 1.45) / cw | 0);
-  const r0 = Math.max(0, (jy - Hb * 1.45) / chH | 0), r1 = Math.min(rows - 1, (jy + Hb * .55) / chH | 0);
-  for (let r = r0; r <= r1; r++) for (let c = c0; c <= c1; c++) {
-    const dx = (c + .5) * cw - jx, dy = (r + .5) * chH - jy;
-    const u = (dx * ct + dy * st) / R, v = (-dx * st + dy * ct) / Hb;
-    const d = v < 0 ? Math.hypot(u, v) : Math.abs(u);
-    let L = 0;
-    if (d < 1 && v < .06) {
-      const rim = Math.pow(Math.max(0, (d - .72) / .28), 2);
-      const ang = Math.atan2(v, u);
-      const rib = Math.pow(Math.abs(Math.cos(ang * 8 + Math.sin(t) * .2)), 10) * .32 * (1 - d * .4);
-      const core = Math.exp(-(u * u + (v + .45) * (v + .45)) * 9) * (.22 + .2 * squeeze);
-      const gonad = Math.pow(Math.max(0, Math.cos(ang * 4 + Math.PI / 2)), 6) * Math.exp(-Math.pow(d - .42, 2) * 40) * .35;
-      L = .07 + rim * .85 + rib * .9 + core + gonad;
-    } else if (d < 1.35 && v < .1) {
-      L = (1.35 - d) / .35 * .14;         // halo
-    }
-    if (v >= .03 && v < .2 && Math.abs(u) < 1.02 && Math.abs(u) > .55) {   // frilly margin
-      L += .26 * Math.max(0, Math.cos(u * Math.PI * 9 + t * 2.2)) * (1 - (v - .03) / .17);
-    }
-    if (L > 0) light[r * cols + c] += L;
-  }
-
-  const rim = k => {   // world position of a point along the bell's lower edge
-    const u = (-.94 + 1.88 * k) * R, v = .08 * Hb;
-    return { x: jx + u * ct - v * st, y: jy + u * st + v * ct };
-  };
-
-  // oral arms: four sinuous ribbons under the bell
-  for (let k = 0; k < 4; k++) {
-    const o = rim(.3 + k * .13);
-    for (let i = 0; i <= 42; i++) {
-      const s = i / 42;
-      const x = o.x + Math.sin(s * 5.2 - t * 1.3 + k * 1.7) * R * .2 * s + (k - 1.5) * R * .18 * s;
-      const y = o.y + s * R * 1.7 * (.92 + .08 * squeeze);
-      blob(x, y, (1 - s) * R * .055 + cw * .8, .26 * (1 - s * .5));
-    }
-  }
-
-  // tentacles: verlet chains hanging from the rim
-  const seg = R0 * .085;
-  for (let k = 0; k < TENT; k++) {
-    const p = tent[k], a = rim(k / (TENT - 1));
-    p[0].x = a.x; p[0].y = a.y;
-    for (let i = 1; i < SEGS; i++) {
-      const q = p[i];
-      const vx = (q.x - q.px) * .965, vy = (q.y - q.py) * .965;
-      q.px = q.x; q.py = q.y;
-      q.x += vx + Math.sin(t * .7 + i * .22 + k * .9) * .09;
-      q.y += vy + .32;
-      const mx = q.x - mouse.x, my = q.y - mouse.y, m = Math.hypot(mx, my);
-      if (m < 90) { q.x += mx / m * (90 - m) * .05; q.y += my / m * (90 - m) * .05; }
-    }
-    for (let it = 0; it < 3; it++) for (let i = 1; i < SEGS; i++) {
-      const a1 = p[i - 1], b = p[i], dx = b.x - a1.x, dy = b.y - a1.y, d = Math.hypot(dx, dy) || 1;
-      const f = (d - seg) / d;
-      if (i === 1) { b.x -= dx * f; b.y -= dy * f; }
-      else { a1.x += dx * f * .5; a1.y += dy * f * .5; b.x -= dx * f * .5; b.y -= dy * f * .5; }
-    }
-    for (let i = 0; i < SEGS; i++) {
-      const s = i / SEGS;
-      blob(p[i].x, p[i].y, cw * (1 - s * .35), .38 * (1 - s * .75));
-    }
-  }
-
-  // marine snow
-  for (const f of snow) {
-    f.y += f.s; f.x += Math.sin(t * .5 + f.p) * .15;
-    if (f.y > H) { f.y = -4; f.x = Math.random() * W; }
-    add(f.x, f.y, .16 + .12 * Math.sin(t * 3 + f.p));
-  }
-
-  draw();
-  return { squeeze, jy };
-}
-
-function draw() {
-  const n = RAMP.length - 1;
-  let chars = 0;
-  for (let i = 0; i < light.length; i++) {
-    const l = Math.min(n, Math.round(Math.pow(light[i], .8) * n));
-    lvl[i] = l; if (l) chars++;
-  }
   ax.clearRect(0, 0, W, H);
-  ax.font = `${Math.round(chH * .92)}px "JetBrains Mono", ui-monospace, monospace`;
   ax.textBaseline = "top";
-  for (let l = 1; l <= n; l++) {
-    ax.fillStyle = COLORS[l];
-    const ch = RAMP[l];
-    for (let i = 0; i < lvl.length; i++) if (lvl[i] === l) ax.fillText(ch, (i % cols) * cw, (i / cols | 0) * chH);
+  ax.font = `${Math.round(chH * .95)}px "JetBrains Mono", ui-monospace, monospace`;
+  // background: god rays and drifting particles, kept faint so the animal reads
+  for (let c = 0; c < cols; c += 1) {
+    const x = c * cw, ray = Math.pow(Math.max(0, Math.sin(x * .0035 + Math.sin(t * .12) * 1.4)), 60);
+    if (ray < .05) continue;
+    ax.fillStyle = `rgba(80,170,220,${ray * .22})`;
+    for (let r = 0; r < rows * .7; r += 2) if (hash(c, r, (t * 2) | 0) < ray * .5) ax.fillText(r % 4 ? "'" : ".", x, r * chH);
+  }
+  ax.fillStyle = "rgba(120,200,235,.55)";
+  for (const f of snow) {
+    f.y += f.s; f.x += Math.sin(t * .5 + f.p) * .12;
+    if (f.y > H) { f.y = -4; f.x = Math.random() * W; }
+    ax.fillText(".", f.x, f.y);
+  }
+  // the animal, grouped by ink colour
+  let cur = -1;
+  for (let j = 0; j < nk; j++) {
+    const kk = list[j], col = kk >>> 19, i = kk & 0x7ffff;
+    if (col !== cur) {
+      cur = col;
+      ax.fillStyle = `rgb(${(col >> 8 & 15) * 17},${(col >> 4 & 15) * 17},${(col & 15) * 17})`;
+    }
+    ax.fillText(RAMP[ink[i]], (i % cols) * cw, (i / cols | 0) * chH);
   }
   gx.clearRect(0, 0, G.width, G.height);
   gx.drawImage(A, 0, 0, G.width, G.height);
+  drawCards(t);
   hud.chars = chars;
 }
 
-// ---- loop, HUD and the code window ----
+// ---------- subagent cards at the arm tips ----------
+function drawCards(t) {
+  // callouts: left-side arms report to a column on the left, right-side arms to the right
+  const small = W < 700, wide = W > 860, fs = small ? 9 : 11, fs2 = small ? 8 : 10, pad = 7;
+  const bh = small ? fs + 10 : fs + fs2 + 16, gap = small ? 6 : 10;
+  const items = tips.map((p, k) => {
+    view(p[0], p[1], p[2], V);
+    const [name, steps] = AGENTS[k];
+    const step = steps[Math.floor(t * .35 + k * .29) % steps.length];
+    const top = small ? name : `agent/${name}`, sub = `> ${step}`;
+    ax.font = `700 ${fs}px "JetBrains Mono", ui-monospace, monospace`;
+    const w1 = ax.measureText(top).width + 14;
+    ax.font = `400 ${fs2}px "JetBrains Mono", ui-monospace, monospace`;
+    const w2 = small ? 0 : ax.measureText(sub).width;
+    return { k, top, sub, tx: cx + V[0] * S, ty: cy - V[1] * S, bw: Math.max(w1, w2) + pad * 2 };
+  });
+  const colW = Math.max(...items.map(i => i.bw));
+  for (const side of [-1, 1]) {
+    const group = items.filter(i => (i.tx < cx) === (side < 0)).sort((a, b) => a.ty - b.ty);
+    const yMin = 86, yMax = wide ? (side < 0 ? H * .56 : H - 290) : H - bh - 24;
+    let y = yMin;
+    const ideal = group.map(i => i.ty - bh / 2);
+    group.forEach((it, j) => {
+      y = Math.max(y, Math.min(ideal[j], yMax - (group.length - 1 - j) * (bh + gap)));
+      it.y = y; y += bh + gap;
+      it.x = side < 0 ? Math.max(8, Math.min(cx - S * 4.4 - colW, W)) : Math.min(W - colW - 8, cx + S * 4.4);
+      if (small) it.x = side < 0 ? 8 : W - colW - 8;
+    });
+  }
+  ax.textBaseline = "middle";
+  for (const it of items) {
+    const left = it.x < cx, ax2 = left ? it.x + colW : it.x, ay = it.y + bh / 2;
+    ax.strokeStyle = "rgba(245,196,81,.32)"; ax.lineWidth = 1;
+    ax.beginPath(); ax.moveTo(it.tx, it.ty); ax.lineTo(ax2 + (left ? 14 : -14), ay); ax.lineTo(ax2, ay); ax.stroke();
+    ax.fillStyle = "rgba(245,196,81,.95)"; ax.beginPath(); ax.arc(it.tx, it.ty, 2.2, 0, Math.PI * 2); ax.fill();
+    ax.fillStyle = "rgba(3,10,18,.82)"; ax.strokeStyle = "rgba(245,196,81,.5)";
+    ax.beginPath(); ax.roundRect(it.x, it.y, colW, bh, 5); ax.fill(); ax.stroke();
+    ax.fillStyle = `rgba(110,231,168,${.55 + .45 * Math.sin(t * 4 + it.k)})`;
+    ax.beginPath(); ax.arc(it.x + pad + 3, it.y + pad + fs / 2 + 1, 3, 0, Math.PI * 2); ax.fill();
+    ax.font = `700 ${fs}px "JetBrains Mono", ui-monospace, monospace`;
+    ax.fillStyle = "#F5C451"; ax.fillText(it.top, it.x + pad + 12, it.y + pad + fs / 2 + 1);
+    if (!small) {
+      ax.font = `400 ${fs2}px "JetBrains Mono", ui-monospace, monospace`;
+      ax.fillStyle = "#8FB0C6"; ax.fillText(it.sub, it.x + pad, it.y + pad + fs + 6 + fs2 / 2);
+    }
+  }
+}
+
+// ---------- loop, HUD and the code window ----------
 const hud = { chars: 0 }, $ = id => document.getElementById(id);
-let last = 0, start = performance.now(), fpsN = 0, fpsT = 0, beats = 0, wasSq = 0, visible = true;
+let last = 0, start = performance.now(), fpsN = 0, fpsT = 0, visible = true;
 function loop(now) {
-  if (visible) {
-    if (now - last >= 1000 / 30) {
-      const t = (now - start) / 1000, s = frame(t);
-      if (s.squeeze > .5 && wasSq <= .5) beats++;
-      wasSq = s.squeeze; last = now; fpsN++;
-      if (now - fpsT > 500) {
-        const fps = Math.round(fpsN * 1000 / (now - fpsT)); fpsN = 0; fpsT = now;
-        $("h-fps").textContent = fps; $("t-fps").textContent = `running  ${fps} fps`;
-        $("h-t").textContent = t.toFixed(2).padStart(5, "0");
-        $("h-chars").textContent = hud.chars; $("h-pulse").textContent = beats;
-        $("h-depth").textContent = (412 + s.jy / H * 40).toFixed(1);
-      }
+  if (visible && now - last >= 1000 / 30) {
+    const t = (now - start) / 1000;
+    frame(t); last = now; fpsN++;
+    if (now - fpsT > 500) {
+      const fps = Math.round(fpsN * 1000 / (now - fpsT)); fpsN = 0; fpsT = now;
+      $("h-fps").textContent = fps; $("t-fps").textContent = `running  ${fps} fps`;
+      $("h-t").textContent = t.toFixed(2).padStart(5, "0");
+      $("h-chars").textContent = hud.chars; $("h-jobs").textContent = AGENTS.length;
+      $("h-sph").textContent = spheres; $("h-depth").textContent = (318 + Math.sin(t * .21) * 4).toFixed(1);
     }
   }
   if (!still) requestAnimationFrame(loop);
@@ -304,9 +405,8 @@ document.addEventListener("visibilitychange", () => { visible = !document.hidden
 })();
 
 resize();
-$("h-tent").textContent = TENT;
 (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => {
-  if (still) { for (let i = 0; i < 90; i++) frame(i / 30); } else requestAnimationFrame(loop);
+  if (still) frame(3); else requestAnimationFrame(loop);
 });
 </script>
 </body>
