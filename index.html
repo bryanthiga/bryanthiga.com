@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow, noarchive">
 <title>Performance Marketing &amp; Growth Systems</title>
-<meta name="description" content="Performance marketer. Seven years of paid media, $1M+ a month in ad spend managed, and AI systems that scale what converts.">
+<meta name="description" content="Performance marketer. Eight years of paid media, $1M+ a month in ad spend managed, and AI systems that scale what converts.">
 <meta name="theme-color" content="#F5F4EF">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -47,7 +47,7 @@ h1 em{font-style:italic;color:var(--accent)}
 .hero .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:38px}
 
 /* metrics */
-.metrics{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .metrics div{padding:34px 28px 30px;border-left:1px solid var(--line)}
 .metrics div:first-child{border-left:0;padding-left:0}
 .metrics b{display:block;font:400 54px/1 var(--serif);letter-spacing:-.02em}
@@ -133,9 +133,6 @@ footer a:hover{color:var(--ink)}
 @media(max-width:960px){
   .nav ul{display:none}
   .nav .btn{margin-left:auto}
-  .metrics{grid-template-columns:1fr 1fr}
-  .metrics div:nth-child(3){border-left:0;padding-left:0}
-  .metrics div:nth-child(n+3){border-top:1px solid var(--line)}
   .sec-head{grid-template-columns:1fr;gap:10px}
   .work li{grid-template-columns:1fr;gap:12px}
   .work .fig{text-align:left;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
@@ -264,10 +261,9 @@ footer a:hover{color:var(--ink)}
 
 <div class="wrap" style="margin-top:72px">
   <div class="metrics rv">
-    <div><b>7+</b><span>Years in paid media</span></div>
+    <div><b>8</b><span>Years in paid media</span></div>
     <div><b>$1M+</b><span>Monthly ad spend managed</span></div>
     <div><b>7x</b><span>Best reported ROAS</span></div>
-    <div><b>−32%</b><span>Cost per lead, fintech</span></div>
   </div>
 </div>
 
@@ -333,7 +329,7 @@ footer a:hover{color:var(--ink)}
       <li class="rv">
         <div class="meta"><b>Fintech</b>Meta, Google Ads</div>
         <div><h3>Options-trading acquisition at ~$1M a month</h3><p>Ran paid acquisition for a fintech brand selling options-trading products, then rebuilt the measurement under it: source tagging, lead de-duplication, and SMS and email retargeting.</p></div>
-        <div class="fig"><b>7x</b><span>reported ROAS</span><small><i>−32%</i> CPL · <i>3.5:1</i> LTV:CAC</small></div>
+        <div class="fig"><b>7x</b><span>reported ROAS</span></div>
       </li>
       <li class="rv">
         <div class="meta"><b>Precious metals</b>Facebook</div>
@@ -399,7 +395,7 @@ footer a:hover{color:var(--ink)}
   const host = document.getElementById("top");
   const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const RAMP = " .,:;-~=+*xoO0%#&@$", NR = RAMP.length;
-  const LOOP = 84;   // solar system -> aurora -> Oahu -> galaxy -> dive back in
+  const LOOP = 65;   // solar system -> aurora -> galaxy -> dive back in
   let W, H, cw, chH, cols, rows, N, dpr, U, ox, oy, wide;
   let aI, aR, aG, aB, keys, cix;
   let seed = 11; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
@@ -490,7 +486,7 @@ footer a:hover{color:var(--ink)}
   }
 
   // ---------- 3D starfield for the flight ----------
-  const STARS = Array.from({ length: 1400 }, () => ({ x: (Math.random() * 2 - 1) * 1.6, y: (Math.random() * 2 - 1) * 1.1, z: Math.random(), c: Math.random() < .2 ? [1, .85, .7] : Math.random() < .5 ? [.75, .82, 1] : [.95, .96, 1] }));
+  const STARS = Array.from({ length: 3200 }, () => ({ x: (Math.random() * 2 - 1) * 1.6, y: (Math.random() * 2 - 1) * 1.1, z: Math.random(), c: Math.random() < .2 ? [1, .85, .7] : Math.random() < .5 ? [.75, .82, 1] : [.95, .96, 1] }));
 
   function resize() {
     dpr = Math.min(devicePixelRatio || 1, 2);
@@ -532,10 +528,9 @@ footer a:hover{color:var(--ink)}
     // phases
     const aSolar = sstep(13, 16, t) * (1 - sstep(37.5, 40.5, t));
     const aAur = sstep(38, 41, t) * (1 - sstep(55, 58, t));
-    const aOahu = sstep(55, 58, t) * (1 - sstep(74, 77, t));
-    const aGal = t < 30 ? 1 - sstep(13, 16, t) : sstep(74, 77, t);
+    const aGal = t < 30 ? 1 - sstep(13, 16, t) : sstep(55, 58, t);
     const zoom = t < 30 ? 1 - sstep(8, 16, t) : 1;                     // 0 = at home, 1 = whole galaxy
-    const speed = .012 + .09 * aSolar;
+    const speed = .035 + .1 * aSolar;
     // a wandering camera for the solar system: smooth random drift in position, distance, tilt and angle
     const wn = (k, f) => vnoise(T * f, k * 7.3) * 2 - 1;
     const camX = wn(1, .06) * .3, camY = wn(2, .05) * .18, camZ = 1 + wn(3, .045) * .38, camInc = .42 + wn(4, .04) * .2, camRot = T * .04 + wn(5, .03) * .9;
@@ -546,8 +541,9 @@ footer a:hover{color:var(--ink)}
       s.z -= speed * dt;
       if (s.z <= .02) { s.z = 1; s.x = (Math.random() * 2 - 1) * 1.6; s.y = (Math.random() * 2 - 1) * 1.1; continue; }
       const px = scx + s.x / s.z * F, py = scy + s.y / s.z * F;
-      const b = Math.min(1.3, (1 - s.z) * 1.3) * .8;
-      splat(px, py, b * (.7 + .3 * Math.sin(T * 1.3 + s.x * 9)) * (1 - aOahu) * (1 - aAur * .6), s.c);
+      const b = Math.min(2.4, .35 + (1 - s.z) * 2.4) * (.7 + .3 * Math.sin(T * 1.3 + s.x * 9)) * (1 - aAur * .6);
+      splat(px, py, b, s.c);
+      if (s.z < .4) for (let j = 1; j < 4; j++) { const zz = s.z + j * (.012 + .03 * aSolar); splat(scx + s.x / zz * F, scy + s.y / zz * F, b * (1 - j / 4) * .7, s.c); }   // short trails on near stars
     }
 
     // --- solar system: first-person flight out through the planets
@@ -705,51 +701,6 @@ footer a:hover{color:var(--ink)}
       const sp = ta % 7; if (sp < .9) { const sx = (.3 + .5 * hash(Math.floor(ta / 7), 3)) * W, sy = .06 * H; for (let j = 0; j < 20; j++) splat(sx + (sp * 280 - j * 6), sy + (sp * 75 - j * 1.6), (1 - j / 20) * 2.4 * aAur, [.9, .95, 1]); }
     }
 
-    // --- Oahu: a drone drifting along the windward coast below a fluted green ridge
-    if (aOahu > .01) {
-      const to = T - 55, zm = 1 + .06 * sstep(0, 22, to), pan = .02 * Math.sin(to * .12);
-      const bump = (x, c, w) => Math.exp(-((x - c) * (x - c)) / (w * w));
-      const ridge = x => .42 - .24 * bump(x, .66, .15) - .19 * bump(x, .86, .1) - .11 * bump(x, 1, .08) - .06 * bump(x, .52, .06) + .03 * (vnoise(x * 22, 2) - .5) + .014 * (vnoise(x * 90, 5) - .5);
-      const shore = v => v < .44 ? .03 : .03 + .62 * Math.pow((v - .44) / .56, 1.25);
-      for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
-        const k = r * cols + c, x0 = wide ? .34 : 0, u = ((c / cols - x0) / (1 - x0) - .5) / zm + .5 + pan, v = (r / rows - .45) / zm + .45;
-        let w = 0, col;
-        const top = ridge(u), foot = .52 + .07 * (u - .3), sh = shore(v);
-        if (u > .27 && v > top && v < foot) {                                   // the ridge: cliff faces, flutes, green ledges
-          const flute = vnoise(u * 120, v * 5), ledge = vnoise(u * 30, v * 22 + 5), d = (v - top) / (foot - top);
-          const green = ledge > .62 || d > .74 ? 1 : 0, lit = .15 + .85 * Math.pow(flute, 1.5);
-          col = green ? mix([.2, .46, .2], [.46, .74, .34], lit) : mix([.26, .3, .27], [.72, .74, .66], lit);
-          w = (.8 + 1.8 * lit) * (1 - .2 * d);
-        } else if (v < .405) {                                                   // sky and clouds
-          const cl = fbm(u * 3.2 - to * .012, v * 7, 3.3) - .15 * (v / .4);
-          if (cl > .43) { const d = Math.min(1, (cl - .43) * 5); col = mix([.78, .84, .95], [1, 1, 1], d); w = 1.5 + 1.6 * d; }
-          else { col = mix([.25, .5, 1], [.62, .82, 1], v / .4); w = .75 + .35 * (v / .4); }
-          if (u > .08 && u < .2 && v > .39) { col = [.45, .55, .65]; w = .8; }   // far headland
-          const ix = (u - .14) / .022, iy = (v - .4) / .018;                     // the little islet
-          if (iy < 0 && iy > -1 && Math.abs(ix) < 1 + iy) { col = [.3, .4, .32]; w = 1.6; }
-        } else if (u < sh) {                                                     // ocean: deep blue to turquoise, rolling surf
-          const near = Math.min(1, (sh - u) / .12), wave = Math.sin((sh - u) * 160 - to * 2.4 + vnoise(u * 20, v * 20) * 3);
-          col = mix([.12, .82, .86], [.1, .36, .82], Math.min(1, near * 1.3 + (.6 - v) * .8));
-          w = 1.15 + .4 * wave * (1 - near) + .25 * vnoise(u * 50 + to * .3, v * 50);
-          if (sh - u < .012 + .006 * Math.sin(v * 60 - to * 2)) { col = [1, 1, 1]; w = 2.3; }   // foam line
-        } else if (u < sh + .03) { col = [1, .86, .6]; w = 1.6 + .3 * vnoise(u * 80, v * 80); }     // sand
-        else if (u < sh + .042) { col = [.42, .42, .44]; w = 1.1 + .6 * vnoise(u * 120, v * 120); } // rock wall
-        else if (u < sh + .075) {                                                // the road, with a centre line and cars
-          const lane = (u - sh - .042) / .033;
-          col = [.5, .5, .54]; w = 1.05;
-          if (Math.abs(lane - .5) < .06 && Math.sin(v * 140) > 0) { col = [1, .85, .3]; w = 1.6; }
-          for (let j = 0; j < 5; j++) { const cv = ((j * .23 + to * (j & 1 ? .035 : -.03)) % 1 + 1) % 1 * .6 + .42;
-            if (Math.abs(v - cv) < .007 && Math.abs(lane - (j & 1 ? .25 : .75)) < .18) { col = j % 3 ? [1, 1, 1] : [.95, .3, .25]; w = 2.6; } }
-        } else {                                                                 // fields, trees, roofs
-          const tr = fbm(u * 14, v * 14, 7.1), g = vnoise(u * 40, v * 40);
-          if (tr > .6) { col = mix([.1, .35, .14], [.2, .5, .2], g); w = 1.9; }
-          else { col = mix([.38, .7, .28], [.55, .8, .35], g); w = 1.2 + .3 * g; }
-          if (hash((u * 60) | 0, (v * 90) | 0) > .992) { col = [.9, .9, .92]; w = 2.2; }
-        }
-        if (w > 0) put(k, w * 1.9 * aOahu, col);
-      }
-    }
-
     // --- galaxy: zoom out from home to the whole disk
     if (aGal > .01) {
       const rot = T * .02, inc = 1.05 + my * .08, roll = -.42 + mx * .06;
@@ -776,11 +727,6 @@ footer a:hover{color:var(--ink)}
     if (aSolar > .01) {
       const g = cx.createRadialGradient(W * 1.02, H * .05, 0, W * 1.02, H * .05, Math.max(W, H) * .75);
       g.addColorStop(0, `rgba(255,170,90,${.2 * aSolar})`); g.addColorStop(.5, `rgba(255,120,60,${.05 * aSolar})`); g.addColorStop(1, "rgba(0,0,0,0)");
-      cx.fillStyle = g; cx.fillRect(0, 0, W, H);
-    }
-    if (aOahu > .01) {
-      const g = cx.createLinearGradient(0, 0, 0, H);
-      g.addColorStop(0, `rgba(24,58,120,${.75 * aOahu})`); g.addColorStop(.42, `rgba(70,110,160,${.55 * aOahu})`); g.addColorStop(.6, `rgba(10,60,70,${.5 * aOahu})`); g.addColorStop(1, `rgba(6,20,30,${.6 * aOahu})`);
       cx.fillStyle = g; cx.fillRect(0, 0, W, H);
     }
     if (aAur > .01) {
