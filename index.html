@@ -165,6 +165,8 @@ footer a:hover{color:var(--ink)}
 #skyglow{filter:blur(10px) saturate(1.4);opacity:.85;mix-blend-mode:screen;pointer-events:none}
 .sky-fade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,6,11,.7) 0,rgba(5,6,11,0) 16%),linear-gradient(90deg,rgba(5,6,11,.94) 0%,rgba(5,6,11,.72) 34%,rgba(5,6,11,0) 62%),linear-gradient(0deg,rgba(5,6,11,.7),rgba(5,6,11,0) 30%)}
 .hero-in{position:relative;z-index:2;width:100%}
+.hud{position:absolute;left:0;right:0;bottom:26px;z-index:2;text-align:right;font:500 11px/1 "JetBrains Mono",ui-monospace,Menlo,monospace;letter-spacing:.02em;color:rgba(255,255,255,.42);white-space:pre;pointer-events:none}
+.hud b{font-weight:500;color:rgba(255,255,255,.72)}
 .hero h1{max-width:720px;font-size:clamp(46px,6.2vw,90px);color:#fff}
 .hero h1 em{color:#AFC2FF}
 .hero p.sub{color:rgba(255,255,255,.72);max-width:560px}
@@ -176,6 +178,8 @@ footer a:hover{color:var(--ink)}
 @media(max-width:900px){
   .hero{align-items:flex-end;min-height:max(880px,100svh);padding:120px 0 64px}
   .sky-fade{background:linear-gradient(0deg,rgba(5,6,11,.96) 0%,rgba(5,6,11,.85) 42%,rgba(5,6,11,0) 70%)}
+  .hud{text-align:left;bottom:22px;font-size:10px}
+  .hud .x{display:none}
 }
 
 /* calmer header */
@@ -259,6 +263,7 @@ footer a:hover{color:var(--ink)}
     <h1 class="rv in">Paid media, creative,<br>and the <em>systems</em> behind them.</h1>
     <a class="scroll rv in" href="#projects">See what I've built ↓</a>
   </div>
+  <div class="wrap hud" id="hud" aria-hidden="true"></div>
 </header>
 
 <div class="wrap" style="margin-top:72px">
@@ -523,7 +528,7 @@ footer a:hover{color:var(--ink)}
   }
   const put = (k, w, c) => { aI[k] += w; aR[k] += w * c[0]; aG[k] += w * c[1]; aB[k] += w * c[2]; };
 
-  let mx = 0, my = 0, lastT = 0;
+  let mx = 0, my = 0, lastT = 0, glyphs = 0;
   addEventListener("pointermove", e => { mx = e.clientX / innerWidth - .5; my = e.clientY / innerHeight - .5; }, { passive: true });
 
   function frame(T) {
@@ -759,6 +764,7 @@ footer a:hover{color:var(--ink)}
       const key = (Math.round(r * 15) << 8) | (Math.round(gg * 15) << 4) | Math.round(bb * 15);
       cix[i] = ch; keys[n++] = ((key << 19) | i) >>> 0;
     }
+    glyphs = n;
     const sorted = keys.subarray(0, n).sort();
     let cur = -1;
     for (let j = 0; j < n; j++) {
@@ -773,15 +779,24 @@ footer a:hover{color:var(--ink)}
   let on = true, vis = true, last = 0, clock = +(new URLSearchParams(location.search).get("t")) || 15.5;   // open on the solar-system flight (?t= jumps to a scene)
   new IntersectionObserver(([e]) => { on = e.isIntersecting; }).observe(host);
   document.addEventListener("visibilitychange", () => { vis = !document.hidden; });
+  // a stats line under the scene: what is playing, and how much text it took to draw it
+  const hud = document.getElementById("hud");
+  const scene = t => t < 13 ? "galaxy" : t < 38.5 ? "solar system" : t < 56 ? "aurora" : "galaxy";
+  let frames = 0, hudAt = 0;
+  function stats(now) {
+    if (now - hudAt < 250) return; hudAt = now;
+    const t = clock % LOOP;
+    hud.innerHTML = `<b>${scene(t)}</b>  t ${t.toFixed(1).padStart(4)}s  <span class="x">frame ${String(frames).padStart(5)}  </span>${glyphs.toLocaleString("en-US").padStart(6)} glyphs  <span class="x">${cols}×${rows} grid</span>`;
+  }
   function loop(now) {
-    if (on && vis && now - last >= 1000 / 30) { clock += Math.min(.1, (now - last) / 1000); frame(clock); last = now; }
+    if (on && vis && now - last >= 1000 / 30) { clock += Math.min(.1, (now - last) / 1000); frame(clock); last = now; frames++; stats(now); }
     else if (!(on && vis)) last = now;
     requestAnimationFrame(loop);
   }
   addEventListener("resize", resize);
   resize();
   (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => {
-    if (still) { lastT = 33; frame(33); } else requestAnimationFrame(t => { last = t; requestAnimationFrame(loop); });
+    if (still) { lastT = 33; frame(33); hud.innerHTML = `<b>solar system</b>  still frame  ${glyphs.toLocaleString("en-US")} glyphs  ${cols}×${rows}`; } else requestAnimationFrame(t => { last = t; requestAnimationFrame(loop); });
   });
 })();
 </script>
