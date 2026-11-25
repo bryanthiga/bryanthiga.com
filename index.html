@@ -3,17 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>BRYBOT · Brief in. Campaign out.</title>
-<meta name="description" content="Ads for local service businesses. Brief in. Campaign out.">
+<title>Quorum · Meta ads for local service businesses</title>
+<meta name="description" content="Quorum runs Facebook and Instagram ads for local service businesses: eight AI subagents, one media buyer signing off. Brief in. Campaign out.">
 <meta name="theme-color" content="#03060C">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#03060C;--ink:#D8F6FF;--dim:#5B7A93;--cyan:#22D3EE;--line:rgba(34,211,238,.18)}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
-body{background:var(--bg);color:var(--ink);font:13px/1.5 "JetBrains Mono",ui-monospace,Menlo,monospace;overflow:hidden}
+body{background:var(--bg);color:var(--ink);font:13px/1.5 "JetBrains Mono",ui-monospace,Menlo,monospace}
 .stage{position:fixed;inset:0;background:radial-gradient(60% 70% at 64% 30%,#0a2236 0%,#051120 45%,#02050b 100%)}
 canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 #glow{filter:blur(7px) saturate(1.5);opacity:1;mix-blend-mode:screen;pointer-events:none}
@@ -46,9 +46,187 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 .code i{font-style:normal;color:#35506A;display:inline-block;width:34px}
 @media(max-width:860px){.term{display:none}.hud .r{display:none}}
 @media(prefers-reduced-motion:reduce){.core,.cursor{animation:none}}
+
+/* ================= site: nav + sections below the octopus ================= */
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{overflow-x:hidden}
+.hero{position:relative;height:100vh;height:100svh;min-height:560px;overflow:hidden}
+.hero .stage{position:absolute}
+.hero .hud{position:absolute;top:84px}
+.hero .copy,.hero .term{position:absolute}
+.copy .ctas{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 18px;border-radius:999px;font:600 13px/1 "JetBrains Mono",monospace;letter-spacing:.02em;text-decoration:none;transition:transform .15s,box-shadow .15s,background .15s;white-space:nowrap}
+.btn.pri{background:var(--cyan);color:#021018;box-shadow:0 0 0 1px rgba(34,211,238,.4),0 10px 30px -8px rgba(34,211,238,.6)}
+.btn.pri:hover{transform:translateY(-1px);box-shadow:0 0 0 1px rgba(34,211,238,.6),0 14px 36px -8px rgba(34,211,238,.8)}
+.btn.ghost{color:var(--ink);border:1px solid rgba(216,246,255,.22);background:rgba(3,10,18,.4);backdrop-filter:blur(6px)}
+.btn.ghost:hover{border-color:var(--cyan);color:#fff}
+
+/* nav */
+.nav{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;align-items:center;gap:28px;padding:16px 22px;transition:background .25s,border-color .25s;border-bottom:1px solid transparent}
+.nav.solid{background:rgba(3,6,12,.82);backdrop-filter:blur(12px);border-bottom-color:var(--line)}
+.nav .brand{margin:0;text-decoration:none}
+.nav ul{display:flex;gap:4px;list-style:none;margin-left:auto}
+.nav ul a{display:block;padding:8px 11px;border-radius:8px;color:#9FB8CB;text-decoration:none;font-size:12px;letter-spacing:.04em}
+.nav ul a:hover,.nav ul a.on{color:#fff;background:rgba(34,211,238,.08)}
+.nav .btn{padding:10px 15px;font-size:12px}
+.menu{display:none;margin-left:auto;background:none;border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:8px 11px;font:600 12px "JetBrains Mono",monospace;cursor:pointer}
+
+/* shared section system */
+.sec{position:relative;z-index:2;background:var(--bg);padding:120px 22px;border-top:1px solid rgba(34,211,238,.08)}
+.sec.alt{background:#050A13}
+.wrap{max-width:1180px;margin:0 auto}
+.kicker{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--cyan);display:flex;gap:14px;align-items:center}
+.kicker::after{content:"";height:1px;width:60px;background:var(--line)}
+.sec h2{font:800 clamp(30px,4.6vw,58px)/1.02 Inter,system-ui,sans-serif;letter-spacing:-.035em;margin:18px 0 20px;max-width:900px;color:#F2FBFF}
+.sec h2 em{font-style:normal;color:var(--cyan)}
+.lead{font:400 clamp(16px,1.5vw,19px)/1.6 Inter,system-ui,sans-serif;color:#9DB4C6;max-width:720px}
+.lead b{color:#E6F7FF;font-weight:600}
+.sans{font-family:Inter,system-ui,sans-serif}
+.grid{display:grid;gap:16px}
+.card{border:1px solid var(--line);border-radius:16px;background:linear-gradient(180deg,rgba(34,211,238,.045),rgba(34,211,238,.01));padding:26px}
+.card h3{font:700 19px/1.3 Inter,system-ui,sans-serif;color:#EAF8FF;margin:12px 0 8px;letter-spacing:-.01em}
+.card p{font:400 15px/1.6 Inter,system-ui,sans-serif;color:#8FA8BC}
+.num{font-size:11px;color:var(--dim);letter-spacing:.12em}
+
+/* what we do */
+.pillars{grid-template-columns:repeat(3,1fr);margin-top:56px}
+.split{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:start}
+.deliver{list-style:none;margin-top:8px}
+.deliver li{display:flex;gap:14px;padding:15px 0;border-bottom:1px dashed rgba(34,211,238,.14);font:400 15px/1.5 Inter,system-ui,sans-serif;color:#C9DCE8}
+.deliver li span{color:var(--cyan);font:600 12px/1.9 "JetBrains Mono",monospace;min-width:28px}
+.trades{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px}
+.trades span{border:1px solid var(--line);border-radius:999px;padding:7px 13px;font-size:12px;color:#9FB8CB}
+.trades span.on{color:#021018;background:var(--cyan);border-color:var(--cyan);font-weight:600}
+
+/* agents */
+.agents{grid-template-columns:repeat(4,1fr);margin-top:56px}
+.agent{position:relative;overflow:hidden}
+.agent .id{display:flex;justify-content:space-between;font-size:11px;color:var(--dim)}
+.agent .id b{color:var(--cyan);font-weight:600}
+.agent .st{margin-top:18px;padding-top:12px;border-top:1px solid rgba(34,211,238,.1);font-size:11px;color:#6EE7A8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.agent .st::before{content:"● "}
+.agent:hover{border-color:rgba(34,211,238,.45)}
+.human{grid-column:1/-1;display:flex;gap:22px;align-items:center;border-color:rgba(245,196,81,.35);background:linear-gradient(90deg,rgba(245,196,81,.08),rgba(245,196,81,.01))}
+.human .mono{flex:none;width:54px;height:54px;border-radius:14px;display:grid;place-items:center;background:rgba(245,196,81,.12);color:#F5C451;font-weight:800;letter-spacing:.06em}
+.human h3{margin:0 0 4px}
+
+/* work */
+.stats{grid-template-columns:repeat(4,1fr);margin:48px 0 64px}
+.stat{border-left:1px solid var(--line);padding:4px 0 4px 20px}
+.stat b{display:block;font:800 clamp(34px,4vw,52px)/1 Inter,system-ui,sans-serif;color:#F2FBFF;letter-spacing:-.04em}
+.stat span{display:block;margin-top:10px;font:400 14px/1.45 Inter,system-ui,sans-serif;color:#8FA8BC}
+.reels{grid-template-columns:repeat(3,1fr);gap:28px;max-width:940px}
+.reel{margin:0}
+.phone{position:relative;aspect-ratio:9/16;border-radius:22px;overflow:hidden;border:1px solid rgba(216,246,255,.14);background:#000;box-shadow:0 30px 80px -30px rgba(34,211,238,.35)}
+.phone video,.phone img{width:100%;height:100%;object-fit:cover;display:block}
+.reel figcaption{margin-top:14px}
+.reel q{display:block;font:600 16px/1.4 Inter,system-ui,sans-serif;color:#EAF8FF;quotes:"\201C" "\201D"}
+.reel small{display:inline-block;margin-top:8px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan)}
+.note{margin-top:28px;font:400 13px/1.6 Inter,system-ui,sans-serif;color:var(--dim)}
+
+/* process */
+.steps{grid-template-columns:repeat(5,1fr);margin-top:56px;counter-reset:s}
+.step{border-top:2px solid rgba(34,211,238,.25);padding-top:20px}
+.step:first-child{border-top-color:var(--cyan)}
+.step .num{color:var(--cyan)}
+.step h3{font:700 17px/1.3 Inter,system-ui,sans-serif;color:#EAF8FF;margin:10px 0 8px}
+.step p{font:400 14px/1.55 Inter,system-ui,sans-serif;color:#8FA8BC}
+.rules{grid-template-columns:repeat(4,1fr);margin-top:72px}
+.rules .card{padding:22px}
+.rules .ic{font-size:20px;color:var(--cyan)}
+.rules h3{font-size:16px}
+.rules p{font-size:14px}
+
+/* pricing */
+.plans{grid-template-columns:repeat(3,1fr);margin-top:56px;align-items:stretch}
+.plan{display:flex;flex-direction:column}
+.plan .price{font:800 46px/1 Inter,system-ui,sans-serif;letter-spacing:-.04em;color:#F2FBFF;margin:18px 0 6px}
+.plan .price small{font:500 14px Inter,system-ui,sans-serif;color:var(--dim);letter-spacing:0}
+.plan ul{list-style:none;margin:20px 0 26px;flex:1}
+.plan li{font:400 14px/1.5 Inter,system-ui,sans-serif;color:#B8CCDA;padding:8px 0;border-bottom:1px dashed rgba(34,211,238,.1)}
+.plan li::before{content:"+ ";color:var(--cyan);font-family:"JetBrains Mono",monospace}
+.plan .btn{justify-content:center}
+.plan.hot{border-color:rgba(34,211,238,.55);background:linear-gradient(180deg,rgba(34,211,238,.12),rgba(34,211,238,.02));box-shadow:0 30px 80px -40px rgba(34,211,238,.6)}
+.badge{align-self:flex-start;font-size:10px;letter-spacing:.16em;color:#021018;background:var(--cyan);padding:4px 8px;border-radius:6px;font-weight:600}
+
+/* about */
+.about{display:grid;grid-template-columns:340px 1fr;gap:64px;align-items:start}
+.portrait{position:sticky;top:100px;border:1px solid var(--line);border-radius:20px;overflow:hidden;background:#02060C}
+.portrait pre{font:600 12px/1.05 "JetBrains Mono",monospace;color:var(--cyan);padding:22px 18px;text-shadow:0 0 12px rgba(34,211,238,.5);overflow:hidden}
+.portrait .cap{border-top:1px solid var(--line);padding:16px 18px;font-size:12px;color:#9FB8CB}
+.portrait .cap b{display:block;color:#EAF8FF;font:700 18px Inter,system-ui,sans-serif;margin-bottom:3px}
+.about .lead+.lead{margin-top:18px}
+.beliefs{grid-template-columns:1fr 1fr;margin-top:40px}
+.beliefs .card{padding:20px}
+.beliefs h3{margin-top:0;font-size:16px}
+.beliefs p{font-size:14px}
+
+/* faq */
+.faq{max-width:860px;margin-top:40px}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{list-style:none;cursor:pointer;padding:22px 40px 22px 0;position:relative;font:600 17px/1.4 Inter,system-ui,sans-serif;color:#EAF8FF}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";position:absolute;right:6px;top:18px;font:400 24px "JetBrains Mono",monospace;color:var(--cyan);transition:transform .2s}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq details p{font:400 15px/1.65 Inter,system-ui,sans-serif;color:#9DB4C6;padding:0 0 22px;max-width:720px}
+
+/* contact + footer */
+.final{text-align:center;padding:140px 22px;background:radial-gradient(60% 80% at 50% 100%,rgba(34,211,238,.14),transparent 70%),var(--bg)}
+.final h2{margin-left:auto;margin-right:auto}
+.final .lead{margin:0 auto}
+.final .ctas{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin-top:34px}
+footer{position:relative;z-index:2;background:#02040A;border-top:1px solid var(--line);padding:34px 22px;font-size:12px;color:var(--dim)}
+footer .wrap{display:flex;flex-wrap:wrap;gap:18px;justify-content:space-between;align-items:center}
+footer nav{display:flex;flex-wrap:wrap;gap:16px}
+footer a{color:#9FB8CB;text-decoration:none}
+footer a:hover{color:#fff}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
+.rv.in{opacity:1;transform:none}
+
+@media(max-width:1080px){
+  .nav ul{display:none}
+  .menu{display:block}
+  .nav .btn{display:none}
+  .nav.open{background:rgba(3,6,12,.96);backdrop-filter:blur(12px);flex-wrap:wrap;border-bottom-color:var(--line)}
+  .nav.open ul{display:flex;flex-direction:column;width:100%;order:3;margin:6px 0 4px}
+  .nav.open ul a{padding:12px 6px;font-size:14px}
+  .agents{grid-template-columns:repeat(2,1fr)}
+  .steps{grid-template-columns:repeat(2,1fr);row-gap:34px}
+  .rules{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:860px){
+  .sec{padding:88px 16px}
+  .split,.about{grid-template-columns:1fr;gap:36px}
+  .portrait{position:relative;top:0;max-width:340px}
+  .pillars,.plans,.reels{grid-template-columns:1fr}
+  .reels{max-width:340px}
+  .stats{grid-template-columns:1fr 1fr;row-gap:28px}
+  .beliefs{grid-template-columns:1fr}
+  .copy{left:16px;max-width:calc(100% - 32px)}
+  .hero .hud{left:16px;right:16px}
+}
+@media(max-width:520px){
+  .agents,.steps,.rules{grid-template-columns:1fr}
+  .copy .btn{padding:11px 14px;font-size:12px}
+  .hero .hud>div>div:nth-child(2){display:none}
+}
+@media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
 </style>
 </head>
 <body>
+<nav class="nav" aria-label="Main">
+  <a class="brand" href="#top"><span class="core"></span>QUORUM</a>
+  <ul>
+    <li><a href="#services">Services</a></li><li><a href="#agents">Agents</a></li><li><a href="#work">Work</a></li><li><a href="#process">Process</a></li><li><a href="#pricing">Pricing</a></li><li><a href="#about">About</a></li><li><a href="#faq">FAQ</a></li>
+  </ul>
+  <a class="btn pri js-cta" href="#contact">Free sample ad</a>
+  <button class="menu" aria-expanded="false" aria-label="Menu">Menu</button>
+</nav>
+
+<header class="hero" id="top">
 <div class="stage" aria-hidden="true">
   <canvas id="ascii"></canvas>
   <canvas id="glow"></canvas>
@@ -58,31 +236,222 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 
 <div class="hud">
   <div>
-    <div class="brand"><span class="core"></span>BRYBOT</div>
     <div>octo.js &nbsp; platform <b>meta</b> &nbsp; subagents <b id="h-jobs">0</b>/8 running &nbsp; depth <b id="h-depth">0</b> m</div>
     <div>spheres <b id="h-sph">0</b> &nbsp; chars <b id="h-chars">0</b> &nbsp; grid <b id="h-grid">0</b></div>
   </div>
   <div class="r" style="text-align:right">t <b id="h-t">00.00</b>s<br><b id="h-fps">0</b> fps</div>
 </div>
 
-<main class="copy">
+<div class="copy">
   <div class="tag">Ads for local service businesses</div>
   <h1>Brief in.<br><span>Campaign out.</span></h1>
-  <p>Eight arms. Eight BRYBOT subagents. Your whole Meta ads operation, handled, with a human signing off.</p>
-  <p class="soon">New site coming soon<span class="cursor"></span></p>
-</main>
+  <p>Eight arms. Eight Quorum subagents. Your whole Meta ads operation, handled, with a human signing off.</p>
+  <div class="ctas"><a class="btn pri js-cta" href="#contact">Get a free sample ad →</a><a class="btn ghost" href="#services">What Quorum does</a></div>
+</div>
 
 <div class="term" aria-hidden="true">
   <div class="bar"><span class="dot" style="background:#FF5F57"></span><span class="dot" style="background:#FEBC2E"></span><span class="dot" style="background:#28C840"></span>&nbsp; octo.js<span class="run" id="t-fps">running</span></div>
   <div class="code" id="code"></div>
 </div>
+</header>
+
+<main>
+<!-- ============ SERVICES: what Quorum does ============ -->
+<section class="sec" id="services">
+  <div class="wrap">
+    <div class="kicker rv">01 &nbsp;/&nbsp; What Quorum does</div>
+    <h2 class="rv">An ads department for businesses that <em>don't have one.</em></h2>
+    <p class="lead rv">Quorum runs Facebook and Instagram ads for local service businesses. <b>Eight AI subagents</b> do the research, writing, editing, campaign building and reporting. <b>A media buyer checks every piece and signs off</b> before a dollar of yours is spent. You get the output of a full ad team without hiring one.</p>
+
+    <div class="grid pillars">
+      <div class="card rv"><div class="num">// 01</div><h3>Made from what's true</h3><p>Every ad is built from your own website, your photos and your real reviews. No stock smiles, no made-up numbers, no claims you can't back up.</p></div>
+      <div class="card rv"><div class="num">// 02</div><h3>More creative, tested faster</h3><p>The agents do the hours of production. That means several hooks for every offer, fresh ads every month, and losers cut before they waste your budget.</p></div>
+      <div class="card rv"><div class="num">// 03</div><h3>A human on the hook</h3><p>Agents don't spend your money. A person who buys media for a living sets up, watches and adjusts every campaign, and answers your messages.</p></div>
+    </div>
+
+    <div class="split" style="margin-top:96px">
+      <div class="rv">
+        <div class="kicker">What you get</div>
+        <h2 style="font-size:clamp(26px,3.2vw,40px)">Brief in. Campaign out.</h2>
+        <p class="lead">Your website is the brief. From there, Quorum handles the whole Meta ads operation and hands you the parts that matter: the ads to approve, and the calls coming in.</p>
+        <div class="trades">
+          <span class="on">HVAC</span><span>Plumbing</span><span>Roofing</span><span>Electrical</span><span>Landscaping</span><span>Pest control</span><span>Garage doors</span><span>Pool service</span>
+        </div>
+      </div>
+      <ul class="deliver rv">
+        <li><span>01</span>Research on your business, your reviews and the ads your competitors are running</li>
+        <li><span>02</span>15-second vertical videos and stills, sized for Reels, Stories and Feed</li>
+        <li><span>03</span>Several hooks per offer, so the first three seconds get tested, not guessed</li>
+        <li><span>04</span>Campaign setup aimed at your service area and the jobs you want more of</li>
+        <li><span>05</span>Daily budget management that moves spend toward what's working</li>
+        <li><span>06</span>A plain-English weekly report: what ran, what it cost, what's next</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ AGENTS: the eight arms ============ -->
+<section class="sec alt" id="agents">
+  <div class="wrap">
+    <div class="kicker rv">02 &nbsp;/&nbsp; The eight arms</div>
+    <h2 class="rv">Eight subagents. <em>One campaign.</em></h2>
+    <p class="lead rv">Each arm of the octopus is a specialist agent with one job. They work in parallel, hand off to each other, and stop at one gate: a human sign-off.</p>
+    <div class="grid agents" id="agentGrid">
+      <div class="card agent rv"><div class="id"><b>agent/research</b><span>01</span></div><h3>Research</h3><p>Reads your website and reviews, pulls the claims you can prove, and studies what competitors are running.</p><div class="st">reading website</div></div>
+      <div class="card agent rv"><div class="id"><b>agent/hooks</b><span>02</span></div><h3>Hooks</h3><p>Writes the opening lines that stop the scroll: urgency, trust, price clarity. Scores them and keeps the best three.</p><div class="st">drafting hooks</div></div>
+      <div class="card agent rv"><div class="id"><b>agent/creative</b><span>03</span></div><h3>Creative</h3><p>Cuts 15-second videos and stills from your own photos, in your colors, sized for every Meta placement.</p><div class="st">cutting 15s video</div></div>
+      <div class="card agent rv"><div class="id"><b>agent/audiences</b><span>04</span></div><h3>Audiences</h3><p>Maps your service area, builds the audiences worth paying for, and keeps past customers out of prospecting.</p><div class="st">mapping service area</div></div>
+      <div class="card agent rv"><div class="id"><b>agent/campaign</b><span>05</span></div><h3>Campaign</h3><p>Builds the campaign, ad sets and placements in your ad account, then waits for the OK before anything goes live.</p><div class="st">building campaign</div></div>
+      <div class="card agent rv"><div class="id"><b>agent/budget</b><span>06</span></div><h3>Budget</h3><p>Paces spend every day, watches cost per lead, and shifts money toward the ads that are bringing in calls.</p><div class="st">pacing daily spend</div></div>
+      <div class="card agent rv"><div class="id"><b>agent/testing</b><span>07</span></div><h3>Testing</h3><p>Runs hook against hook, cuts the losers early and scales the winners, so every month starts smarter.</p><div class="st">hook A vs hook B</div></div>
+      <div class="card agent rv"><div class="id"><b>agent/reports</b><span>08</span></div><h3>Reports</h3><p>Tracks calls and leads, then writes the weekly summary in plain English. No dashboards to decode.</p><div class="st">tracking calls</div></div>
+      <div class="card human rv"><div class="mono">BH</div><div><h3>Plus the head: a real media buyer.</h3><p>Every ad, audience and budget change is checked by Bryant before it touches your money. The agents bring speed. The judgment stays human.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WORK ============ -->
+<section class="sec" id="work">
+  <div class="wrap">
+    <div class="kicker rv">03 &nbsp;/&nbsp; Work</div>
+    <h2 class="rv">Spec work, built <em>before the first call.</em></h2>
+    <p class="lead rv">Before pitching anyone, Quorum built finished ads for real HVAC companies across the US, each one from that company's own website, photos and reviews. Here's how that looks, shown on a demo brand.</p>
+    <div class="grid stats">
+      <div class="stat rv"><b data-n="120">120</b><span>finished spec ads, video and stills</span></div>
+      <div class="stat rv"><b data-n="40">40</b><span>HVAC companies researched and built for</span></div>
+      <div class="stat rv"><b data-n="3">3</b><span>hooks per business, ready to test</span></div>
+      <div class="stat rv"><b data-n="0">0</b><span>invented claims or made-up reviews</span></div>
+    </div>
+    <div class="grid reels">
+      <figure class="reel rv"><div class="phone"><video src="assets/demo1.mp4" poster="assets/demo1.jpg" muted loop playsinline preload="none"></video></div><figcaption><q>Furnace quit on the first cold night?</q><small>Hook · Urgency</small></figcaption></figure>
+      <figure class="reel rv"><div class="phone"><video src="assets/demo2.mp4" poster="assets/demo2.jpg" muted loop playsinline preload="none"></video></div><figcaption><q>Meet the family behind the van.</q><small>Hook · Trust</small></figcaption></figure>
+      <figure class="reel rv"><div class="phone"><video src="assets/demo3.mp4" poster="assets/demo3.jpg" muted loop playsinline preload="none"></video></div><figcaption><q>Know the price before the repair.</q><small>Hook · Price clarity</small></figcaption></figure>
+    </div>
+    <p class="note rv">Demo ads made for a fictional company. Your ads use your real photos, colors, claims and reviews, and only what's actually true about your business.</p>
+  </div>
+</section>
+
+<!-- ============ PROCESS ============ -->
+<section class="sec alt" id="process">
+  <div class="wrap">
+    <div class="kicker rv">04 &nbsp;/&nbsp; Process</div>
+    <h2 class="rv">From website to live campaign <em>in five steps.</em></h2>
+    <div class="grid steps">
+      <div class="step rv"><div class="num">STEP 01</div><h3>Send your website</h3><p>That's the whole brief. No forms, no onboarding deck.</p></div>
+      <div class="step rv"><div class="num">STEP 02</div><h3>Get a free sample ad</h3><p>A finished 15-second ad built from your own photos, claims and reviews. Keep it either way.</p></div>
+      <div class="step rv"><div class="num">STEP 03</div><h3>15-minute call</h3><p>We pick the jobs you want more of, your service area and a test budget.</p></div>
+      <div class="step rv"><div class="num">STEP 04</div><h3>You approve, we launch</h3><p>You see every ad first. Nothing goes live until you say yes.</p></div>
+      <div class="step rv"><div class="num">STEP 05</div><h3>Test, report, scale</h3><p>Daily adjustments, a weekly report, and more budget behind what works.</p></div>
+    </div>
+    <div class="grid rules">
+      <div class="card rv"><div class="ic">✦</div><h3>Only what's true</h3><p>Every claim comes from your website or from you.</p></div>
+      <div class="card rv"><div class="ic">❝</div><h3>Real reviews</h3><p>Customer quotes are used word for word, with the name as it appears.</p></div>
+      <div class="card rv"><div class="ic">✓</div><h3>You approve first</h3><p>Nothing runs until you've seen it and said yes.</p></div>
+      <div class="card rv"><div class="ic">$</div><h3>Your money, your account</h3><p>Ad spend goes straight to Meta on your card. You see every dollar.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRICING ============ -->
+<section class="sec" id="pricing">
+  <div class="wrap">
+    <div class="kicker rv">05 &nbsp;/&nbsp; Pricing</div>
+    <h2 class="rv">Start small. <em>Scale what works.</em></h2>
+    <p class="lead rv">Try one campaign first. Keep going only if it's bringing in calls.</p>
+    <div class="grid plans">
+      <div class="card plan rv">
+        <div class="num">FREE SAMPLE</div>
+        <div class="price">$0</div>
+        <p>See your ad before you spend a dollar.</p>
+        <ul><li>One finished 15-second ad</li><li>Built from your website and reviews</li><li>Yours to keep, no strings</li></ul>
+        <a class="btn ghost js-cta" href="#contact">Get my free sample ad</a>
+      </div>
+      <div class="card plan rv">
+        <div class="num">STARTER LAUNCH</div>
+        <div class="price">$500 <small>one time</small></div>
+        <p>One campaign, built and launched.</p>
+        <ul><li>Research and hook testing</li><li>Video and still ads in every size</li><li>Campaign set up in your ad account</li><li>Launch after your approval</li></ul>
+        <a class="btn ghost js-cta" href="#contact">Start with a free sample</a>
+      </div>
+      <div class="card plan hot rv">
+        <span class="badge">MOST POPULAR</span>
+        <div class="num" style="margin-top:12px">MONTHLY GROWTH</div>
+        <div class="price">$1,500 <small>/ month</small></div>
+        <p>Your ads, run for you, every month.</p>
+        <ul><li>Ad spend managed daily</li><li>8 fresh creatives every month</li><li>Ongoing testing of new hooks</li><li>Weekly performance report</li></ul>
+        <a class="btn pri js-book" href="#contact">Book a 15-minute call</a>
+      </div>
+    </div>
+    <p class="note rv">Ad spend is separate and paid directly to Meta.</p>
+  </div>
+</section>
+
+<!-- ============ ABOUT ME ============ -->
+<!-- EDIT HERE: swap the ASCII monogram for a real photo, and add your real years / spend / verticals to the paragraphs below -->
+<section class="sec alt" id="about">
+  <div class="wrap about">
+    <div class="portrait rv">
+      <pre id="mono" aria-hidden="true"></pre>
+      <div class="cap"><b>Bryant Higa</b>Media buyer · Founder of Quorum</div>
+    </div>
+    <div>
+      <div class="kicker rv">06 &nbsp;/&nbsp; About</div>
+      <h2 class="rv">Hi, I'm Bryant. <em>I buy ads for a living.</em></h2>
+      <p class="lead rv">I'm a media buyer. My job is deciding where ad money goes, what creative runs, and when to cut something that isn't working. I've watched what separates the campaigns that make money from the ones that burn it, and most of it comes down to <b>better creative, tested faster, with someone actually paying attention</b>.</p>
+      <p class="lead rv">Local service businesses rarely get that. The choice is usually boosting posts yourself or paying an agency retainer to be a small account on someone's list. <b>I built Quorum to close that gap.</b> The agents handle the volume of work a big team would. I handle the decisions, and I'm the one you talk to.</p>
+      <div class="grid beliefs">
+        <div class="card rv"><h3>Honest ads outperform clever ones</h3><p>Real photos, real reviews, real prices. Homeowners can tell.</p></div>
+        <div class="card rv"><h3>The first 3 seconds decide everything</h3><p>That's why every campaign ships with several hooks, not one.</p></div>
+        <div class="card rv"><h3>Calls, not clicks</h3><p>Reports measure what you care about: the phone ringing.</p></div>
+        <div class="card rv"><h3>You can always reach a person</h3><p>No ticket queue. You message me, I answer.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="sec" id="faq">
+  <div class="wrap">
+    <div class="kicker rv">07 &nbsp;/&nbsp; FAQ</div>
+    <h2 class="rv">Questions owners ask.</h2>
+    <div class="faq rv">
+      <details><summary>Is this just AI-generated ads?</summary><p>No. AI agents speed up research, writing and editing, but they work from your real website, photos and reviews, and nothing ships until a media buyer has checked it and you've approved it.</p></details>
+      <details><summary>Do I need professional photos or video?</summary><p>No. I start with what's already on your website. Real photos of your crew and your trucks do even better, so send them if you have them.</p></details>
+      <details><summary>Who actually runs the ads?</summary><p>I do. Agents speed up research and production, but a working media buyer sets up, watches and adjusts every campaign.</p></details>
+      <details><summary>How much should I spend on ads?</summary><p>We'll set a test budget together on the call, based on your area and how many jobs you can take on. You can change it anytime.</p></details>
+      <details><summary>Where does my ad money go?</summary><p>Straight to Meta, on your own card. My fee is separate, so you can see exactly what the ads cost.</p></details>
+      <details><summary>What kinds of businesses do you work with?</summary><p>Local service businesses: HVAC, plumbing, roofing, electrical, landscaping and similar trades that win work from nearby homeowners.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section class="sec final" id="contact">
+  <div class="wrap">
+    <div class="kicker rv" style="justify-content:center">Your turn</div>
+    <h2 class="rv">See your ad <em>before you spend a dollar.</em></h2>
+    <p class="lead rv">Send your website. The sample is free.</p>
+    <div class="ctas rv">
+      <a class="btn pri js-cta" href="#contact">Get my free sample ad →</a>
+      <a class="btn ghost js-book" href="#contact">Book a 15-minute call</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div><span style="color:#EAF8FF;font-weight:800;letter-spacing:.18em">QUORUM</span> &nbsp;Brief in. Campaign out. &nbsp;·&nbsp; © <span id="yr"></span> Bryant Higa</div>
+    <nav><a href="#services">Services</a><a href="#agents">Agents</a><a href="#work">Work</a><a href="#process">Process</a><a href="#pricing">Pricing</a><a href="#about">About</a><a href="#faq">FAQ</a></nav>
+  </div>
+</footer>
+</main>
 
 <script id="sim">
 // octo.js: a 3D octopus, ray-lit and printed as text. Every character is placed by this script.
 // 1. the body is ~900 spheres: an egg-shaped mantle, a head with two eyes, eight tapering arms, webbing, suckers
 // 2. each sphere is drawn into a depth buffer; every text cell keeps the nearest surface and its normal
 // 3. cells are lit like a photo: warm key light, cyan rim light, specular, mottled skin texture
-// 4. brightness picks the character, lit colour picks the ink; each arm is a BRYBOT subagent for your Meta ads
+// 4. brightness picks the character, lit colour picks the ink; each arm is a Quorum subagent for your Meta ads
 const RAMP = " .,:;-~=+*xoO0%#&@$";
 const AGENTS = [
   ["research",  ["reading website", "pulling reviews", "scanning competitor ads"]],
@@ -366,9 +735,9 @@ function drawCards(t) {
 
 // ---------- loop, HUD and the code window ----------
 const hud = { chars: 0 }, $ = id => document.getElementById(id);
-let last = 0, start = performance.now(), fpsN = 0, fpsT = 0, visible = true;
+let last = 0, start = performance.now(), fpsN = 0, fpsT = 0, visible = true, heroOn = true;
 function loop(now) {
-  if (visible && now - last >= 1000 / 30) {
+  if (visible && heroOn && now - last >= 1000 / 30) {
     const t = (now - start) / 1000;
     frame(t); last = now; fpsN++;
     if (now - fpsT > 500) {
@@ -382,7 +751,7 @@ function loop(now) {
   if (!still) requestAnimationFrame(loop);
 }
 addEventListener("resize", resize);
-addEventListener("pointermove", e => { mouse.x = e.clientX; mouse.y = e.clientY; }, { passive: true });
+addEventListener("pointermove", e => { mouse.x = e.clientX; mouse.y = e.clientY + scrollY; }, { passive: true });
 addEventListener("pointerleave", () => { mouse.x = mouse.y = -1e4; });
 document.addEventListener("visibilitychange", () => { visible = !document.hidden; });
 
@@ -408,6 +777,83 @@ resize();
 (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => {
   if (still) frame(3); else requestAnimationFrame(loop);
 });
+</script>
+
+<script id="site">
+/* ===== EDIT HERE: where the buttons go ===== */
+const CONTACT_EMAIL = "hello@bryanthiga.com";   // replace once your inbox exists
+const BOOKING_URL   = "";                        // e.g. https://cal.com/yourname/15min ; empty = email instead
+
+(function site() {
+  const q = s => document.querySelectorAll(s);
+  document.getElementById("yr").textContent = new Date().getFullYear();
+  const mail = (subj, body) => `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subj)}&body=${encodeURIComponent(body)}`;
+  q(".js-cta").forEach(a => a.href = mail("Free sample ad", "Hi Bryant, here's my website: "));
+  q(".js-book").forEach(a => {
+    if (BOOKING_URL) { a.href = BOOKING_URL; a.target = "_blank"; a.rel = "noopener"; }
+    else a.href = mail("15-minute call", "Hi Bryant, I'd like to book a call. My website: ");
+  });
+
+  // nav: solid after the hero, mobile menu, active link
+  const nav = document.querySelector(".nav"), hero = document.getElementById("top");
+  const onScroll = () => nav.classList.toggle("solid", scrollY > 40);
+  addEventListener("scroll", onScroll, { passive: true }); onScroll();
+  document.querySelector(".menu").addEventListener("click", e => {
+    const open = nav.classList.toggle("open"); e.currentTarget.setAttribute("aria-expanded", open);
+  });
+  q(".nav ul a").forEach(a => a.addEventListener("click", () => nav.classList.remove("open")));
+  const links = new Map([...q(".nav ul a")].map(a => [a.getAttribute("href").slice(1), a]));
+  const spy = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) { links.forEach(a => a.classList.remove("on")); links.get(e.target.id)?.classList.add("on"); }
+  }), { rootMargin: "-45% 0px -50% 0px" });
+  q("section[id]").forEach(s => spy.observe(s));
+
+  // pause the octopus while it's scrolled away
+  new IntersectionObserver(([e]) => { heroOn = e.isIntersecting; }).observe(hero);
+
+  // reveal on scroll, and play demo videos only while visible
+  const rv = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add("in"); rv.unobserve(e.target); }
+  }), { rootMargin: "0px 0px -8% 0px" });
+  q(".rv").forEach((el, i) => { el.style.transitionDelay = (i % 4) * 70 + "ms"; rv.observe(el); });
+  const vids = new IntersectionObserver(es => es.forEach(e => {
+    const v = e.target; if (e.isIntersecting && !still) v.play().catch(() => {}); else v.pause();
+  }), { threshold: .35 });
+  q(".reel video").forEach(v => vids.observe(v));
+
+  // agent cards: live status lines, same jobs as the octopus arms
+  const sts = q("#agentGrid .agent .st");
+  if (!still) setInterval(() => {
+    const i = Math.floor(Math.random() * sts.length), jobs = AGENTS[i][1];
+    sts[i].textContent = jobs[(jobs.indexOf(sts[i].textContent) + 1) % jobs.length];
+  }, 900);
+
+  // about: ASCII monogram, drawn with the octopus' character ramp
+  const pre = document.getElementById("mono"), C = 40, R = 26;
+  const PW = C * 8, PH = R * 14;   // mask drawn at real cell proportions, sampled at each cell centre
+  const m = document.createElement("canvas"); m.width = PW; m.height = PH;
+  const mx = m.getContext("2d", { willReadFrequently: true }); mx.fillStyle = "#fff"; mx.font = "800 210px Inter, Arial, sans-serif";
+  mx.textAlign = "center"; mx.textBaseline = "middle"; mx.fillText("BH", PW / 2, PH / 2 + 8);
+  const full = mx.getImageData(0, 0, PW, PH).data, mask = new Uint8Array(C * R * 4);
+  for (let y = 0; y < R; y++) for (let x = 0; x < C; x++) mask[(y * C + x) * 4 + 3] = full[((y * 14 + 7) * PW + x * 8 + 4) * 4 + 3];
+  function drawMono(t) {
+    let s = "";
+    for (let y = 0; y < R; y++) {
+      for (let x = 0; x < C; x++) {
+        const on = mask[(y * C + x) * 4 + 3] / 255;
+        const n = noise(x * .16, y * .22, t * .35);
+        const v = on > .3 ? .55 + .45 * n : n * n * .55 * (1 - Math.hypot(x / C - .5, y / R - .5) * 1.2);
+        s += RAMP[Math.max(0, Math.min(RAMP.length - 1, Math.round(v * (RAMP.length - 1))))];
+      }
+      s += "\n";
+    }
+    pre.textContent = s;
+  }
+  drawMono(0);
+  let monoOn = false;
+  new IntersectionObserver(([e]) => { monoOn = e.isIntersecting; }).observe(pre);
+  if (!still) setInterval(() => { if (monoOn && !document.hidden) drawMono(performance.now() / 1000); }, 90);
+})();
 </script>
 </body>
 </html>
