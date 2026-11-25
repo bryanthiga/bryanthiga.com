@@ -1,0 +1,3 @@
+# Site is not public yet: pages carry a noindex tag; keep crawlers out of files.
+User-agent: *
+Disallow: /assets/
