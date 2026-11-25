@@ -54,19 +54,6 @@ section.block{padding:120px 0 40px}
 h2{font:400 clamp(36px,4.4vw,58px)/1.05 var(--serif);letter-spacing:-.015em}
 h2 em{font-style:italic}
 
-/* selected work */
-.work{list-style:none;border-top:1px solid var(--ink)}
-.work li{display:grid;grid-template-columns:260px 1fr 200px;gap:40px;padding:34px 0;border-bottom:1px solid var(--line)}
-.work .meta{font-size:13px;color:var(--muted);line-height:1.5}
-.work .meta b{display:block;color:var(--ink);font-weight:500;font-size:14px;margin-bottom:2px}
-.work h3{font:500 21px/1.3 var(--sans);letter-spacing:-.01em;margin-bottom:8px}
-.work p{color:var(--ink2);font-size:15.5px;max-width:560px}
-.work .fig{text-align:right}
-.work .fig b{display:block;font:400 46px/1 var(--serif);letter-spacing:-.02em}
-.work .fig span{display:block;margin-top:8px;font-size:13px;color:var(--muted)}
-.work .fig small{display:block;margin-top:14px;font-size:13px;color:var(--muted)}
-.work .fig small i{font-style:normal;color:var(--ink);font-weight:500}
-
 /* projects */
 .proj{display:grid;grid-template-columns:1fr 1.15fr;gap:56px;padding:56px 0;border-top:1px solid var(--line);align-items:center}
 .proj:first-of-type{border-top:1px solid var(--ink)}
@@ -128,9 +115,6 @@ footer a:hover{color:var(--ink)}
   .nav ul{display:none}
   .nav .btn{margin-left:auto}
   .sec-head{grid-template-columns:1fr;gap:10px}
-  .work li{grid-template-columns:1fr;gap:12px}
-  .work .fig{text-align:left;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
-  .work .fig span,.work .fig small{margin-top:0}
   .proj{grid-template-columns:1fr;gap:32px}
   .small-projects,.caps{grid-template-columns:1fr;gap:0}
   .caps>div{margin-bottom:26px}
@@ -241,7 +225,6 @@ footer a:hover{color:var(--ink)}
     <a class="mark" href="#top" aria-label="Home">BH.</a>
     <ul>
       <li><a href="#projects">Projects</a></li>
-      <li><a href="#work">Work</a></li>
       <li><a href="#capabilities">Capabilities</a></li>
       <li><a href="assets/resume.pdf" download>Résumé</a></li>
     </ul>
@@ -314,40 +297,6 @@ footer a:hover{color:var(--ink)}
   </div>
 </dialog>
 
-<!-- ============ SELECTED WORK ============ -->
-<section class="block" id="work">
-  <div class="wrap">
-    <div class="sec-head rv"><div class="label">Selected work</div><h2>Campaigns I've <em>scaled.</em></h2></div>
-    <ol class="work">
-      <li class="rv">
-        <div class="meta"><b>Fintech</b>Meta, Google Ads</div>
-        <div><h3>Options-trading acquisition at ~$1M a month</h3><p>Ran paid acquisition for a fintech brand selling options-trading products, then rebuilt the measurement under it: source tagging, lead de-duplication, and SMS and email retargeting.</p></div>
-        <div class="fig"><b>7x</b><span>reported ROAS</span></div>
-      </li>
-      <li class="rv">
-        <div class="meta"><b>Precious metals</b>Facebook</div>
-        <div><h3>Seven figures a month across multiple ad accounts</h3><p>Lead generation for a precious-metals company, with pixels, phone-call tracking and landing pages built to match the spend.</p></div>
-        <div class="fig"><b>$1M+</b><span>monthly spend</span></div>
-      </li>
-      <li class="rv">
-        <div class="meta"><b>Financial publishing</b>Meta</div>
-        <div><h3>Lead generation into daily live webinars</h3><p>Webinar funnels backed by email and SMS remarketing, and an early test bed for AI-generated presenters in ad creative.</p></div>
-        <div class="fig"><b>6x</b><span>reported ROAS</span></div>
-      </li>
-      <li class="rv">
-        <div class="meta"><b>Insurance &amp; home services</b>Google Search, Performance Max</div>
-        <div><h3>Pay-per-call for auto, health and final expense</h3><p>Search and Performance Max campaigns routed through Ringba, bought against the cost of a qualified phone conversation rather than a click.</p></div>
-        <div class="fig"><b>&lt;$700</b><span>per qualified call</span></div>
-      </li>
-      <li class="rv">
-        <div class="meta"><b>Search arbitrage</b>Portfolio of campaigns</div>
-        <div><h3>A 70-campaign arbitrage book</h3><p>Built and ran a portfolio of search arbitrage campaigns while leading a small team of buyers, creators and copywriters.</p></div>
-        <div class="fig"><b>~$2.5K</b><span>daily gross profit</span></div>
-      </li>
-    </ol>
-  </div>
-</section>
-
 <!-- ============ CAPABILITIES ============ -->
 <section class="block" id="capabilities">
   <div class="wrap">
@@ -375,7 +324,7 @@ footer a:hover{color:var(--ink)}
 <footer>
   <div class="wrap">
     <span>© <span id="yr"></span></span>
-    <nav><a href="#work">Work</a><a href="#projects">Projects</a><a href="work/quorum.html">Case studies</a><a href="quorum.html">Quorum</a><a href="assets/resume.pdf" download>Résumé</a></nav>
+    <nav><a href="#projects">Projects</a><a href="work/quorum.html">Case studies</a><a href="quorum.html">Quorum</a><a href="assets/resume.pdf" download>Résumé</a></nav>
   </div>
 </footer>
 <script id="sky-sim">
