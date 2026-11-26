@@ -1,1015 +1,397 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex, nofollow, noarchive">
-<title>Performance Marketing &amp; Growth Systems</title>
-<meta name="description" content="Performance marketer. Eight years of paid media, $1M+ a month in ad spend managed, and AI systems that scale what converts.">
-<meta name="theme-color" content="#F5F4EF">
+<title>BH. · Paid media and the systems behind it</title>
+<meta name="description" content="Paid media, creative, and the systems behind them. Agents draft the work; a person reviews anything that spends money.">
+<meta name="theme-color" content="#05060A">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#F5F4EF; --paper:#FFFFFF; --ink:#141414; --ink2:#3C3C3A; --muted:#75736C; --line:#DEDCD4; --line2:#E9E7E0;
-  --accent:#2742D8; --dark:#0B0C14;
-  --serif:"Instrument Serif",Georgia,"Times New Roman",serif; --sans:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
-}
+  --bg:#05060A;--bg2:#090B12;--card:#0B0D15;--ink:#ECEEF5;--ink2:#A4AABD;--muted:#666D84;--line:#181B27;--line2:#252A3B;
+  --accent:#5BF0D2;--accent2:#8BF6E1;--pink:#FF7AB8;--amber:#F5C451;
+  --sans:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,monospace;--serif:"Instrument Serif",Georgia,serif}
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;scroll-padding-top:80px}
-body{background:var(--bg);color:var(--ink);font:400 16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
-a{color:inherit}
-.wrap{max-width:1160px;margin:0 auto;padding:0 32px}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{background:var(--bg);color:var(--ink);font:400 15px/1.65 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--accent);color:#03110D}
+.wrap{max-width:1200px;margin:0 auto;padding:0 32px}
+.m{font:500 11.5px/1.45 var(--mono);color:var(--muted)}
+.m b{font-weight:500;color:var(--ink2)}
+em.s{font:400 italic 1.08em/1 var(--serif);letter-spacing:0;color:var(--accent)}
 
-/* nav */
-.nav{position:sticky;top:0;z-index:20;background:rgba(245,244,239,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid transparent;transition:border-color .2s}
-.nav.solid{border-bottom-color:var(--line)}
-.nav .wrap{display:flex;align-items:center;height:68px;gap:36px}
-.mark{font:400 26px/1 var(--serif);text-decoration:none;letter-spacing:-.01em}
-.nav ul{display:flex;gap:30px;list-style:none;margin-left:auto}
-.nav ul a{text-decoration:none;font-size:14px;color:var(--ink2)}
-.nav ul a:hover{color:var(--ink)}
-.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:999px;font:500 14px/1 var(--sans);text-decoration:none;transition:background .15s,color .15s,border-color .15s}
-.btn.dark{background:var(--ink);color:#fff}
-.btn.dark:hover{background:#000}
-.btn.line{border:1px solid var(--ink);color:var(--ink)}
-.btn.line:hover{background:var(--ink);color:#fff}
-.nav .btn{padding:9px 16px;font-size:13px}
+/* ---------- bar ---------- */
+.bar{position:fixed;inset:0 0 auto;z-index:20;border-bottom:1px solid transparent;transition:background .25s,border-color .25s}
+.bar.solid{background:rgba(5,6,10,.8);backdrop-filter:blur(14px) saturate(1.2);-webkit-backdrop-filter:blur(14px) saturate(1.2);border-color:var(--line)}
+.bar .wrap{display:flex;align-items:center;height:60px;gap:28px}
+.mark{font:400 26px/1 var(--serif)}
+.bar nav{display:flex;gap:4px;margin-left:auto;font:500 12px/1 var(--mono)}
+.bar nav a{color:var(--ink2);padding:8px 10px;border-radius:6px;transition:color .15s,background .15s}
+.bar nav a:hover{color:var(--ink)}
+.bar nav a.on{color:var(--ink);background:rgba(255,255,255,.06)}
+.bar nav a.cta{color:#03110D;background:var(--accent);margin-left:8px}
+.bar nav a.cta:hover{background:var(--accent2)}
 
-/* hero */
-.hero{padding:120px 0 96px}
-.eyebrow{font-size:13px;color:var(--muted);letter-spacing:.02em;display:flex;align-items:center;gap:10px}
-.eyebrow .dot{width:7px;height:7px;border-radius:50%;background:#2BA84A}
-h1{font:400 clamp(48px,7.2vw,104px)/.98 var(--serif);letter-spacing:-.02em;margin:26px 0 30px;max-width:1040px}
-h1 em{font-style:italic;color:var(--accent)}
-.hero p.sub{font-size:19px;line-height:1.6;color:var(--ink2);max-width:640px}
-.hero .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:38px}
-
-
-/* sections */
-section.block{padding:120px 0 40px}
-.sec-head{display:grid;grid-template-columns:260px 1fr;gap:40px;margin-bottom:48px;align-items:baseline}
-.sec-head .label{font-size:13px;color:var(--muted);letter-spacing:.02em}
-h2{font:400 clamp(36px,4.4vw,58px)/1.05 var(--serif);letter-spacing:-.015em}
-h2 em{font-style:italic}
-
-/* projects */
-.proj{display:grid;grid-template-columns:1fr 1.15fr;gap:56px;padding:56px 0;border-top:1px solid var(--line);align-items:center}
-.proj:first-of-type{border-top:1px solid var(--ink)}
-.proj .tagline{font-size:13px;color:var(--muted);margin-bottom:14px}
-.proj h3{font:400 38px/1.08 var(--serif);letter-spacing:-.015em;margin-bottom:16px}
-.proj p{color:var(--ink2);font-size:16px;margin-bottom:14px;max-width:520px}
-.proj ul{list-style:none;margin:20px 0 26px;max-width:520px}
-.proj ul li{display:flex;justify-content:space-between;gap:20px;padding:10px 0;border-top:1px solid var(--line2);font-size:14px;color:var(--ink2)}
-.proj ul li b{font-weight:500;color:var(--ink)}
-.textlink{font-size:15px;font-weight:500;text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:2px}
-.textlink:hover{color:var(--accent)}
-.reels{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.reels figure{margin:0}
-.phone{aspect-ratio:9/16;border-radius:14px;overflow:hidden;background:#111;box-shadow:0 1px 0 rgba(0,0,0,.04),0 18px 40px -22px rgba(0,0,0,.45)}
-.phone video,.phone img{width:100%;height:100%;object-fit:cover;display:block}
-.reels figcaption{margin-top:10px;font-size:13px;color:var(--muted);line-height:1.4}
-.panel{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:30px}
-.agents{display:grid;grid-template-columns:1fr 1fr;gap:0 28px}
-.agents div{padding:12px 0;border-top:1px solid var(--line2);font-size:14px}
-.agents div b{display:block;font-weight:500}
-.agents div span{color:var(--muted);font-size:13px}
-.agents .signoff{grid-column:1/-1;margin-top:8px;padding:14px 16px;border:1px solid var(--line);border-radius:10px;background:var(--bg);font-size:14px;color:var(--ink2)}
-.small-projects{display:grid;grid-template-columns:1fr 1fr;gap:0 56px;border-top:1px solid var(--line);padding-top:8px}
-.small-projects div{padding:26px 0;border-bottom:1px solid var(--line2)}
-.small-projects h4{font:500 18px/1.3 var(--sans);margin-bottom:6px}
-.small-projects p{color:var(--ink2);font-size:15px}
-.small-projects .tagline{font-size:13px;color:var(--muted);margin-bottom:8px}
-
-/* live jellyfish */
-.demo{border-radius:16px;overflow:hidden;background:var(--dark);box-shadow:0 30px 60px -36px rgba(20,20,60,.6)}
-.jelly{position:relative;height:520px}
-.jelly canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
-#glow{filter:blur(9px) saturate(1.6);opacity:.9;mix-blend-mode:screen;pointer-events:none}
-.demo .bar{display:flex;justify-content:space-between;gap:12px;padding:12px 16px;border-top:1px solid rgba(255,255,255,.08);font:500 12px/1.4 "JetBrains Mono",ui-monospace,monospace;color:#8E93B5}
-.demo .bar b{color:#E6E8FF;font-weight:500}
-
-/* capabilities */
-.caps{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;border-top:1px solid var(--ink);padding-top:30px}
-.caps h4{font-size:13px;font-weight:500;color:var(--muted);margin-bottom:14px}
-.caps ul{list-style:none}
-.caps li{padding:9px 0;border-bottom:1px solid var(--line2);font-size:15px}
-
-/* contact */
-.contact{padding:140px 0 120px;text-align:left}
-.contact h2{font-size:clamp(48px,7vw,96px);line-height:.98;max-width:900px}
-.contact p{font-size:18px;color:var(--ink2);margin:26px 0 36px;max-width:560px}
-.contact .actions{display:flex;flex-wrap:wrap;gap:12px}
-footer{border-top:1px solid var(--line);padding:28px 0;font-size:13px;color:var(--muted)}
-footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px}
-footer nav{display:flex;gap:22px}
-footer a{text-decoration:none}
-footer a:hover{color:var(--ink)}
-
-/* reveal */
-.rv{opacity:0;transform:translateY(14px);transition:opacity .8s ease,transform .8s ease}
-.rv.in{opacity:1;transform:none}
-
-@media(max-width:960px){
-  .nav ul{display:none}
-  .nav .btn{margin-left:auto}
-  .sec-head{grid-template-columns:1fr;gap:10px}
-  .proj{grid-template-columns:1fr;gap:32px}
-  .small-projects,.caps{grid-template-columns:1fr;gap:0}
-  .caps>div{margin-bottom:26px}
-}
-@media(max-width:560px){
-  .wrap{padding:0 20px}
-  .hero{padding:72px 0 64px}
-  .hero p.sub{font-size:17px}
-  .agents{grid-template-columns:1fr}
-  .jelly{height:440px}
-  .reels{gap:10px}
-}
-@media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
-
-/* ================= dark galaxy header ================= */
-.nav{position:fixed;left:0;right:0}
-.nav.dark{background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;border-bottom-color:transparent}
-.nav.dark .mark,.nav.dark ul a{color:#fff}
-.nav.dark ul a{opacity:.78}.nav.dark ul a:hover{opacity:1}
-.nav.dark .btn.dark{background:#fff;color:var(--ink)}
-.hero{position:relative;background:#05060B;color:#fff;min-height:max(640px,min(100vh,920px));display:flex;align-items:center;padding:140px 0 100px;overflow:hidden}
+/* ---------- hero ---------- */
+.hero{position:relative;height:max(640px,min(100svh,920px));overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end}
 .sky{position:absolute;inset:0}
 .sky canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 #skyglow{filter:blur(10px) saturate(1.4);opacity:.85;mix-blend-mode:screen;pointer-events:none}
-.sky-fade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,6,11,.7) 0,rgba(5,6,11,0) 16%),linear-gradient(90deg,rgba(5,6,11,.94) 0%,rgba(5,6,11,.72) 34%,rgba(5,6,11,0) 62%),linear-gradient(0deg,rgba(5,6,11,.7),rgba(5,6,11,0) 30%)}
-.hero-in{position:relative;z-index:2;width:100%}
-.hud{position:absolute;left:0;right:0;bottom:26px;z-index:2;text-align:right;font:500 11px/1 "JetBrains Mono",ui-monospace,Menlo,monospace;letter-spacing:.02em;color:rgba(255,255,255,.42);white-space:pre;pointer-events:none}
-.hud b{font-weight:500;color:rgba(255,255,255,.72)}
-.hero h1{max-width:720px;font-size:clamp(46px,6.2vw,90px);color:#fff}
-.hero h1 em{color:#AFC2FF}
-.hero p.sub{color:rgba(255,255,255,.72);max-width:560px}
-.hero .eyebrow{color:rgba(255,255,255,.62)}
-.btn.light{background:#fff;color:var(--ink)}
-.btn.light:hover{background:#E9ECFF}
-.btn.wline{border:1px solid rgba(255,255,255,.5);color:#fff}
-.btn.wline:hover{background:#fff;color:var(--ink)}
-@media(max-width:900px){
-  .hero{align-items:flex-end;min-height:max(880px,100svh);padding:120px 0 64px}
-  .sky-fade{background:linear-gradient(0deg,rgba(5,6,11,.96) 0%,rgba(5,6,11,.85) 42%,rgba(5,6,11,0) 70%)}
-  .hud{text-align:left;bottom:22px;font-size:10px}
-  .hud .x{display:none}
-}
+.fade{position:absolute;inset:0;background:linear-gradient(0deg,var(--bg) 0%,rgba(5,6,10,.7) 26%,rgba(5,6,10,0) 58%),linear-gradient(90deg,rgba(5,6,10,.82),rgba(5,6,10,0) 56%),linear-gradient(180deg,rgba(5,6,10,.6),rgba(5,6,10,0) 14%)}
+.hero-in{position:relative;z-index:2;padding-bottom:84px;width:100%}
+.hero h1{font:500 clamp(36px,4.8vw,66px)/1.04 var(--sans);letter-spacing:-.04em;max-width:760px}
+.hero p{margin-top:20px;max-width:500px;color:var(--ink2);font-size:16.5px}
+.hud-row{position:absolute;left:0;right:0;bottom:24px;z-index:2}
+#hud{white-space:pre;font:500 11px/1 var(--mono);color:var(--muted);text-align:right}
+#hud b{font-weight:500;color:var(--ink2)}
 
-/* calmer header */
-.hero h1{font-size:clamp(38px,4.6vw,66px);line-height:1.06;max-width:640px;margin:0 0 18px}
-.hero p.sub{font-size:15px;color:rgba(255,255,255,.55);letter-spacing:.02em}
-.hero .scroll{display:inline-block;margin-top:44px;font-size:14px;color:rgba(255,255,255,.75);text-decoration:none;border-bottom:1px solid rgba(255,255,255,.3);padding-bottom:3px}
-.hero .scroll:hover{color:#fff;border-bottom-color:#fff}
+/* ---------- sections ---------- */
+.sec{padding:120px 0 0}
+.head{display:grid;grid-template-columns:120px 1fr;gap:24px;margin-bottom:44px;align-items:end}
+.head .m{padding-bottom:6px}
+.head h2{font:500 clamp(30px,3.4vw,44px)/1.08 var(--sans);letter-spacing:-.035em;max-width:720px}
+.head p{grid-column:2;color:var(--ink2);max-width:560px;margin-top:-28px}
 
-/* project tiles + detail sheet */
-.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:28px}
-.tile{all:unset;box-sizing:border-box;display:flex;flex-direction:column;cursor:pointer;border-radius:16px;background:var(--paper);border:1px solid var(--line);overflow:hidden;transition:transform .25s ease,box-shadow .25s ease}
-.tile:hover{transform:translateY(-3px);box-shadow:0 24px 50px -30px rgba(20,20,40,.45)}
-.tile:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-.tile.big{grid-column:1/-1}
-.tile .media{position:relative;aspect-ratio:16/9;overflow:hidden;background:#EDEBE4}
-.tile.big .media{aspect-ratio:16/9}
-.tile .media.dark{background:var(--dark)}
-.tile .media img,.tile .media>video{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease}
-.tile:hover .media img{transform:scale(1.03)}
-.tile .cap{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;padding:22px 24px 24px}
-.tile .tag,.minor .tag,.sheet .tag{display:block;font-size:12px;color:var(--muted);margin-bottom:6px;letter-spacing:.02em}
-.tile h3{font:400 30px/1.1 var(--serif);letter-spacing:-.01em;margin-bottom:6px}
-.tile p{font-size:15px;color:var(--ink2);max-width:520px}
-.tile .more{flex:none;font-size:13px;font-weight:500;border-bottom:1px solid currentColor;padding-bottom:2px;white-space:nowrap}
-.tile .more b{font-weight:500}
-.term{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:24px 28px;font:500 13px/1.4 "JetBrains Mono",ui-monospace,monospace;color:#C9CEF0}
-.term .tl i{font-style:normal;display:inline-block;width:78px;color:#7F8CFF}
-.term .tl.dim{color:#6C7090;margin-top:6px}
-.reels3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:18px 28px;align-items:center}
-.reels3 video{width:100%;aspect-ratio:9/16;object-fit:cover;border-radius:10px;display:block}
-.tile .jelly{position:absolute;inset:0;height:auto}
-.minor{display:grid;grid-template-columns:1fr 1fr;gap:0 56px;margin-top:40px;border-top:1px solid var(--line)}
-.minor>div,.minor>a{padding:24px 0;border-bottom:1px solid var(--line2)}
-.minor a.case{display:block;text-decoration:none}
-.minor a.case:hover h4{color:var(--accent)}
-.minor h4{font:500 18px/1.3 var(--sans);margin-bottom:6px}
-.minor p{color:var(--ink2);font-size:15px}
-.sheet{border:0;padding:0;border-radius:18px;width:min(980px,calc(100% - 32px));max-height:calc(100vh - 48px);background:var(--paper);color:var(--ink);overflow:auto;box-shadow:0 40px 100px -30px rgba(0,0,0,.6)}
-.sheet::backdrop{background:rgba(10,10,20,.55);backdrop-filter:blur(4px)}
-.sheet .x{position:sticky;top:12px;float:right;margin:12px 12px 0 0;width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--paper);font-size:22px;line-height:1;cursor:pointer;z-index:2}
-.sheet-media{background:var(--dark)}
-.sheet-media .media{position:relative;aspect-ratio:16/9;overflow:hidden}
-.sheet-media .media img,.sheet-media .media>video{width:100%;height:100%;object-fit:cover;display:block}
-.sheet-media .media.term,.sheet-media .media.reels3{aspect-ratio:auto}
-.sheet-media .term,.sheet-media .reels3{min-height:300px}
-.sheet-media .reels3{max-width:560px;margin:0 auto}
-.sheet-body{padding:30px 36px 36px}
-.sheet h3{font:400 44px/1.05 var(--serif);letter-spacing:-.015em;margin-bottom:16px}
-#sheet-text p{font-size:16.5px;color:var(--ink2);margin-bottom:12px;max-width:680px}
-#sheet-facts{list-style:none;margin:20px 0 26px;columns:2;column-gap:40px}
-#sheet-facts li{break-inside:avoid;padding:9px 0;border-top:1px solid var(--line2);font-size:14.5px;color:var(--ink2)}
-.sheet-actions{display:flex;gap:12px;flex-wrap:wrap}
-@media(max-width:860px){
-  .tiles{grid-template-columns:1fr}
-  .tile.big .media{aspect-ratio:16/10}
-  .tile .cap{flex-direction:column;align-items:flex-start;gap:12px}
-  .minor{grid-template-columns:1fr}
-  .sheet-body{padding:24px 22px 28px}
-  .sheet h3{font-size:34px}
-  #sheet-facts{columns:1}
+/* project panels */
+.proj{display:grid;grid-template-columns:7fr 5fr;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--card);margin-bottom:16px}
+.proj .vis{position:relative;background:#000;min-height:420px;border-right:1px solid var(--line)}
+.proj .vis video,.proj .vis img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.proj .vis video{object-fit:contain;background:#05060C}
+.proj .vis .tagline{position:absolute;left:14px;bottom:12px;z-index:3}
+.proj .txt{padding:30px 30px 28px;display:flex;flex-direction:column}
+.proj .kick{display:flex;align-items:center;gap:10px}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent)}
+.dot.amber{background:var(--amber);box-shadow:0 0 10px var(--amber)}
+.proj h3{font:500 30px/1.1 var(--sans);letter-spacing:-.035em;margin:16px 0 12px}
+.proj p{color:var(--ink2)}
+.proj ul{list-style:none;margin:22px 0 0;border-top:1px solid var(--line)}
+.proj li{display:flex;gap:12px;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px;color:var(--ink2)}
+.proj li:before{content:"→";font:500 12px/1.9 var(--mono);color:var(--muted)}
+.proj .links{display:flex;gap:10px;flex-wrap:wrap;margin-top:auto;padding-top:26px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 16px;border-radius:999px;font:500 12.5px/1 var(--mono);transition:background .15s,border-color .15s,color .15s}
+.btn.fill{background:var(--accent);color:#03110D}
+.btn.fill:hover{background:var(--accent2)}
+.btn.line{border:1px solid var(--line2);color:var(--ink)}
+.btn.line:hover{border-color:var(--ink2)}
+/* jellyfish */
+.jelly{position:absolute;inset:0}
+.jelly canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+#glow{filter:blur(9px) saturate(1.6);opacity:.9;mix-blend-mode:screen;pointer-events:none}
+.readout{display:flex;gap:16px;margin-top:18px}
+.readout div{flex:1;border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.readout b{display:block;font:500 22px/1 var(--mono);color:var(--ink);letter-spacing:-.02em}
+.readout span{display:block;margin-top:6px}
+/* about */
+.about{display:grid;grid-template-columns:5fr 7fr;gap:48px;align-items:start}
+.jel{position:sticky;top:90px}
+.jel .jelly{position:relative;inset:auto;aspect-ratio:4/5;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#000}
+.jel figcaption{margin-top:12px}
+.bio p{color:var(--ink2);margin-bottom:16px;max-width:600px}
+.bio .lead{color:var(--ink);font-size:19px;line-height:1.55;letter-spacing:-.01em}
+.bio .facts{display:grid;grid-template-columns:repeat(3,auto);justify-content:start;column-gap:40px;margin-top:30px;border-top:1px solid var(--line)}
+.bio .facts div{padding:14px 0;border-bottom:1px solid var(--line)}
+.bio .facts dd{margin-top:4px;font-size:14.5px}
+/* pipeline diagram */
+#pipe{position:absolute;inset:0;width:100%;height:100%;display:block;background:radial-gradient(120% 90% at 30% 20%,#0D1322,#05060A 70%)}
+
+/* also */
+.also{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
+.also>*{border:1px solid var(--line);border-radius:14px;padding:22px;background:var(--bg2);transition:border-color .2s}
+.also a:hover{border-color:var(--line2)}
+.also h4{font:500 17px/1.2 var(--sans);letter-spacing:-.02em;margin:12px 0 6px}
+.also p{color:var(--ink2);font-size:14px}
+
+/* principles */
+.rules{list-style:none;border-top:1px solid var(--line)}
+.rules li{display:grid;grid-template-columns:120px 1fr 1.25fr;gap:24px;padding:26px 0;border-bottom:1px solid var(--line);align-items:baseline}
+.rules h3{font:500 21px/1.25 var(--sans);letter-spacing:-.025em}
+.rules p{color:var(--ink2)}
+.rules a{color:var(--ink);border-bottom:1px solid var(--line2)}
+.rules a:hover{border-color:var(--accent)}
+
+/* case studies */
+.cases{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.case{border:1px solid var(--line);border-radius:14px;padding:26px;background:var(--card);display:flex;flex-direction:column;transition:border-color .2s,transform .2s}
+.case:hover{border-color:var(--line2);transform:translateY(-2px)}
+.case h3{font:500 24px/1.15 var(--sans);letter-spacing:-.03em;margin:14px 0 8px}
+.case p{color:var(--ink2);max-width:460px}
+.chips{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:26px 0 22px;font:500 11px/1 var(--mono)}
+.chips span{padding:7px 9px;border:1px solid var(--line2);border-radius:6px;color:var(--ink2)}
+.chips span.g{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chips em{font-style:normal;color:var(--muted)}
+.case .go{margin-top:auto;font:500 12px/1 var(--mono);color:var(--accent)}
+
+/* stack */
+.agentic{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:44px}
+.agentic>div{border:1px solid var(--line);border-radius:12px;padding:18px 18px 8px;background:var(--bg2)}
+.agentic .chips{margin:14px 0 10px}
+.stack{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line)}
+.stack div{padding:22px 24px 6px 0}
+.stack div+div{padding-left:24px;border-left:1px solid var(--line)}
+.stack ul{list-style:none;margin-top:12px}
+.stack li{padding:7px 0;font-size:14.5px;color:var(--ink2)}
+
+/* contact */
+.end{margin-top:140px;border-top:1px solid var(--line);padding:84px 0 96px}
+.end h2{font:500 clamp(40px,5.4vw,76px)/1 var(--sans);letter-spacing:-.045em}
+.end .row{display:flex;justify-content:space-between;align-items:end;gap:32px;flex-wrap:wrap}
+.end .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:30px}
+footer{border-top:1px solid var(--line);padding:20px 0}
+footer .wrap{display:flex;justify-content:space-between;gap:16px}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(14px);transition:opacity .7s ease,transform .7s ease}
+.rv.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+
+@media(max-width:960px){
+  .wrap{padding:0 20px}
+  .bar nav a.opt{display:none}
+  #hud{text-align:left;font-size:10px}
+  #hud .x{display:none}
+  .hero-in{padding-bottom:70px}
+  .head{grid-template-columns:1fr;gap:10px}
+  .head p{grid-column:1;margin-top:0}
+  .proj{grid-template-columns:1fr}
+  .proj .vis{min-height:0;aspect-ratio:4/3;border-right:0;border-bottom:1px solid var(--line)}
+  .proj .txt{padding:22px 20px 22px}
+  .also,.cases,.about{grid-template-columns:1fr}
+  .about{gap:28px}
+  .jel{position:static}
+  .jel .jelly{aspect-ratio:1}
+  .bio .facts{grid-template-columns:1fr}
+  .rules li{grid-template-columns:1fr;gap:6px;padding:22px 0}
+  .stack,.agentic{grid-template-columns:1fr}
+  .stack div+div{padding-left:0;border-left:0;border-top:1px solid var(--line)}
+  .sec{padding-top:88px}
+  .end{margin-top:100px;padding:64px 0 80px}
 }
 </style>
 </head>
 <body>
-<nav class="nav dark" aria-label="Main">
+<header class="bar" id="bar">
   <div class="wrap">
     <a class="mark" href="#top" aria-label="Home">BH.</a>
-    <ul>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#capabilities">Capabilities</a></li>
-      <li><a href="assets/resume.pdf" download>Résumé</a></li>
-    </ul>
-    <a class="btn dark" href="#contact">Get in touch</a>
+    <nav aria-label="Main">
+      <a class="opt" href="#projects">Projects</a>
+      <a class="opt" href="#about">About</a>
+      <a class="opt" href="#principles">Principles</a>
+      <a class="opt" href="#cases">Case studies</a>
+      <a class="opt" href="assets/resume.pdf" download>Résumé</a>
+      <a class="cta" href="#contact">Contact</a>
+    </nav>
   </div>
-</nav>
-
-<header class="hero" id="top">
-  <div class="sky" aria-hidden="true"><canvas id="sky"></canvas><canvas id="skyglow"></canvas><div class="sky-fade"></div></div>
-  <div class="wrap hero-in">
-    <h1 class="rv in">Paid media, creative,<br>and the <em>systems</em> behind them.</h1>
-    <a class="scroll rv in" href="#projects">See what I've built ↓</a>
-  </div>
-  <div class="wrap hud" id="hud" aria-hidden="true"></div>
 </header>
 
-<!-- ============ PROJECTS ============ -->
-<section class="block" id="projects">
-  <div class="wrap">
-    <div class="sec-head rv"><div class="label">Projects</div><h2>Things I've <em>built.</em></h2></div>
+<section class="hero" id="top">
+  <div class="sky" aria-hidden="true"><canvas id="sky"></canvas><canvas id="skyglow"></canvas><div class="fade"></div></div>
+  <div class="wrap hero-in">
+    <h1>Paid media, creative, and the <em class="s">systems</em> behind them.</h1>
+    <p>I run ad accounts, and I build the software that runs them with me. Agents draft the work; a person reviews anything that spends money.</p>
+  </div>
+  <div class="hud-row"><div class="wrap" id="hud" aria-hidden="true"></div></div>
+</section>
 
-    <div class="tiles">
-      <button class="tile big rv" data-p="quorum" aria-haspopup="dialog">
-        <div class="media dark"><video id="quorum-reel" src="assets/quorum.mp4" poster="assets/quorum.jpg" muted loop playsinline preload="none"></video></div>
-        <div class="cap"><div><span class="tag">Agency · Live</span><h3>Quorum</h3><p>Meta ads for local businesses, run by eight AI agents and signed off by a human.</p></div><span class="more">View project</span></div>
-      </button>
+<main class="wrap">
+  <section class="sec" id="projects">
+    <div class="head rv"><span class="m">01 / projects</span><h2>Things I've built and run.</h2></div>
 
-      <button class="tile rv" data-p="sharkbait" aria-haspopup="dialog">
-        <div class="media"><img src="assets/sharkbait.jpg" alt="Sharkbait live map of shark sightings along the US west coast" loading="lazy"></div>
-        <div class="cap"><div><span class="tag">Web app · Live</span><h3>Sharkbait</h3><p>A real-time map of shark sightings, warnings and attacks.</p></div><span class="more">View project</span></div>
-      </button>
+    <article class="proj rv">
+      <div class="vis"><video src="assets/quorum.mp4" poster="assets/quorum.jpg" muted loop playsinline preload="none"></video></div>
+      <div class="txt">
+        <div class="kick"><span class="dot"></span><span class="m"><b>Quorum</b> · agency · live</span></div>
+        <h3>An ads team made of agents, with a person signing off.</h3>
+        <p>Meta ads for local service businesses. Eight agents handle research, hooks, creative, audiences, campaign builds, budgets, testing and reports.</p>
+        <ul><li>Every ad, audience and budget change is reviewed before it spends</li><li>Grew out of my own engine: 103 scripts, 146 tested hooks</li><li>A website is the whole brief</li></ul>
+        <div class="links"><a class="btn fill" href="work/quorum.html">Read the case study →</a><a class="btn line" href="quorum.html">Visit Quorum</a></div>
+      </div>
+    </article>
 
-      <button class="tile rv" data-p="trading" aria-haspopup="dialog">
-        <div class="media dark term">
-          <div class="tl"><i>scan</i> every 30s · 20 stocks in play</div>
-          <div class="tl"><i>scanner</i> technical setups → candidates</div>
-          <div class="tl"><i>claude</i> take / pass / reduce + confidence</div>
-          <div class="tl"><i>risk</i> hard-coded gates · approve / resize / reject</div>
-          <div class="tl"><i>execute</i> bracket order · trailing stop</div>
-          <div class="tl"><i>journal</i> SQLite · counterfactual replay</div>
-          <div class="tl dim">paper trading · no real money</div>
-        </div>
-        <div class="cap"><div><span class="tag">Autonomous system · Paper</span><h3>Trading bot</h3><p>An intraday trading agent with Claude judging every setup and hard risk rules around it.</p></div><span class="more">View project</span></div>
-      </button>
+    <article class="proj rv">
+      <div class="vis"><canvas id="pipe" aria-label="Diagram of the trading pipeline: candidates pass through a scanner, Claude and a risk gate before any order"></canvas><span class="m tagline">diagram · illustrative, not live data</span></div>
+      <div class="txt">
+        <div class="kick"><span class="dot amber"></span><span class="m"><b>Trading bot</b> · autonomous · paper</span></div>
+        <h3>A model judges the setup. Hard rules decide the order.</h3>
+        <p>Every 30 seconds it scans the stocks in play and sends each setup to Claude, which takes it, passes or reduces size. A risk gate between the model and the broker approves, resizes or rejects every order.</p>
+        <ul><li>Bracket orders, trailing stops, end-of-day exits</li><li>Circuit breakers for daily loss and losing streaks</li><li>Counterfactual replay of every signal, taken or not</li><li>Paper only, until an edge is proven</li></ul>
+      </div>
+    </article>
 
-      <div class="tile big rv" data-p="medusa" role="button" tabindex="0" aria-haspopup="dialog">
-        <div class="media dark"><div class="jelly" id="jelly"><canvas id="ascii"></canvas><canvas id="glow"></canvas></div></div>
-        <div class="cap"><div><span class="tag">Generative graphics · Live</span><h3>medusa.js</h3><p>A jellyfish drawn entirely in text, running in your browser right now.</p></div><span class="more"><b id="j-fps">0</b> fps · <b id="j-pts">0</b> pts</span></div>
+    <article class="proj rv">
+      <div class="vis"><img src="assets/sharkbait.jpg" alt="Sharkbait map of shark sightings along the US west coast" loading="lazy"></div>
+      <div class="txt">
+        <div class="kick"><span class="dot"></span><span class="m"><b>Sharkbait</b> · web app · live</span></div>
+        <h3>Check the water before you go out.</h3>
+        <p>Pulls shark reports from news and wildlife sources, classifies each as an attack, a warning or a sighting, identifies the species and pins it on a map in real time.</p>
+        <ul><li>Filters for today, 7 days, 30 days and all time</li><li>Alerts for sightings near you</li></ul>
+        <div class="links"><a class="btn line" href="https://sharkbait.io" target="_blank" rel="noopener">sharkbait.io ↗</a></div>
+      </div>
+    </article>
+
+    <div class="also rv">
+      <a href="work/growth-ops.html"><span class="m">internal tool · case study</span><h4>Growth ops agent →</h4><p>Performance reviews, creative briefs, test plans and weekly roll-ups on a schedule.</p></a>
+      <div><span class="m">in development</span><h4>Creative intelligence</h4><p>Sorts ad creative by angle and hook, shows what's working and recommends the next test.</p></div>
+      <div><span class="m">e-commerce tooling</span><h4>Etsy listings</h4><p>Validates listing data and creates or publishes listings from a single file.</p></div>
+    </div>
+  </section>
+
+  <section class="sec" id="about">
+    <div class="head rv"><span class="m">02 / about</span><h2>From buying ads to building what runs them.</h2></div>
+    <div class="about rv">
+      <figure class="jel"><div class="jelly" id="jelly"><canvas id="ascii"></canvas><canvas id="glow"></canvas></div>
+        <figcaption class="m"><b>medusa.js</b> · <span id="j-pts">0</span> points, drawn as text, live</figcaption></figure>
+      <div class="bio">
+        <p class="lead">I started in paid media in 2018 and spent the years after on direct-response acquisition: fintech, financial publishing, insurance, home services and e-commerce.</p>
+        <p>Over time the work became less about the ad and more about the system under it: tracking, source tagging, retargeting, and then scripts that watched campaigns so I didn't have to. Today I'm a growth marketing engineer, working on subscription acquisition across Meta and TikTok and building AI-native creative and analysis tools.</p>
+        <p>The jellyfish is a side project. Each of its points adds light to a character cell; the light picks the character and the mix of colours picks the ink. No libraries and no images. The sky at the top of the page is built the same way.</p>
+        <dl class="facts">
+          <div><dt class="m">started</dt><dd>2018</dd></div>
+          <div><dt class="m">now</dt><dd>Growth marketing engineer</dd></div>
+          <div><dt class="m">channels</dt><dd>Meta, Google, TikTok</dd></div>
+        </dl>
       </div>
     </div>
+  </section>
 
-    <div class="minor rv">
-      <a class="case" href="work/growth-ops.html"><span class="tag">Case study · Internal tool</span><h4>Growth ops agent <span aria-hidden="true">→</span></h4><p>Runs the daily loop of paid growth: performance reviews, creative briefs, test plans and weekly roll-ups. It recommends; a person decides.</p></a>
-      <a class="case" href="work/quorum.html"><span class="tag">Case study · Agency</span><h4>How Quorum works <span aria-hidden="true">→</span></h4><p>Eight agents, one human sign-off, and the media-buying engine it grew out of.</p></a>
-      <div><span class="tag">In development</span><h4>Creative intelligence</h4><p>Sorts ad creative by angle and hook, shows what is working, and recommends the next test.</p></div>
-      <div><span class="tag">E-commerce tooling</span><h4>Etsy listing automation</h4><p>Validates listing data and creates or publishes listings in Etsy Shop Manager from a single file.</p></div>
+  <section class="sec" id="principles">
+    <div class="head rv"><span class="m">03 / principles</span><h2>The rules every system here follows.</h2></div>
+    <ol class="rules">
+      <li class="rv"><span class="m">01</span><h3>Agents draft. People decide.</h3><p>Nothing that spends, sends or publishes goes out without a person. In <a href="work/quorum.html">Quorum</a> that's every ad, audience and budget change.</p></li>
+      <li class="rv"><span class="m">02</span><h3>One job per agent.</h3><p>A narrow job gives an output you can check. One large prompt doing everything is hard to review and hard to fix.</p></li>
+      <li class="rv"><span class="m">03</span><h3>Only what's true.</h3><p>Every claim in an ad comes from the client's website or the client. Reviews are quoted word for word.</p></li>
+      <li class="rv"><span class="m">04</span><h3>Leave receipts.</h3><p>Every request logs its time, model and output, so any answer can be traced. See the <a href="work/growth-ops.html">growth ops agent</a>.</p></li>
+      <li class="rv"><span class="m">05</span><h3>Paper before money.</h3><p>The trading bot proves or disproves an edge on paper before any real money is involved.</p></li>
+    </ol>
+  </section>
+
+  <section class="sec" id="cases">
+    <div class="head rv"><span class="m">04 / case studies</span><h2>How they're built.</h2></div>
+    <div class="cases">
+      <a class="case rv" href="work/quorum.html">
+        <span class="m">case study · agency</span>
+        <h3>How Quorum works</h3>
+        <p>Eight agents, one human sign-off, and the media-buying engine it grew out of.</p>
+        <div class="chips"><span>research</span><em>→</em><span>hooks</span><em>→</em><span>creative</span><em>→</em><span>audiences</span><em>→</em><span class="g">human review</span><em>→</em><span>budget + tests</span></div>
+        <span class="go">read →</span>
+      </a>
+      <a class="case rv" href="work/growth-ops.html">
+        <span class="m">case study · internal tool</span>
+        <h3>Growth ops agent</h3>
+        <p>The daily loop of paid growth on a schedule. It recommends; a person decides.</p>
+        <div class="chips"><span>plan today</span><em>→</em><span>ad review</span><em>→</em><span>creative brief</span><em>→</em><span>test plan</span><em>→</em><span class="g">weekly review</span><em>↺</em></div>
+        <span class="go">read →</span>
+      </a>
     </div>
-  </div>
-</section>
+  </section>
 
-<dialog class="sheet" id="sheet" aria-labelledby="sheet-title">
-  <button class="x" aria-label="Close">×</button>
-  <div class="sheet-media" id="sheet-media"></div>
-  <div class="sheet-body">
-    <span class="tag" id="sheet-tag"></span>
-    <h3 id="sheet-title"></h3>
-    <div id="sheet-text"></div>
-    <ul id="sheet-facts"></ul>
-    <div class="sheet-actions" id="sheet-actions"></div>
-  </div>
-</dialog>
-
-<!-- ============ CAPABILITIES ============ -->
-<section class="block" id="capabilities">
-  <div class="wrap">
-    <div class="sec-head rv"><div class="label">Capabilities</div><h2>What I <em>work with.</em></h2></div>
-    <div class="caps rv">
-      <div><h4>Channels</h4><ul><li>Meta (Facebook, Instagram)</li><li>Google Search &amp; Performance Max</li><li>TikTok</li><li>YouTube</li><li>Microsoft, LinkedIn</li></ul></div>
-      <div><h4>Disciplines</h4><ul><li>Media buying &amp; scaling</li><li>Creative strategy &amp; testing</li><li>Funnels &amp; landing pages</li><li>Attribution &amp; tracking</li><li>Email &amp; SMS retention</li></ul></div>
-      <div><h4>Tools</h4><ul><li>Meta CAPI, server-side GTM, GA4</li><li>Triple Whale, Northbeam, Voluum</li><li>Motion, Ringba, Shopify</li><li>Claude Code, Codex, Cursor</li><li>Node.js, AI agents</li></ul></div>
+  <section class="sec" id="stack">
+    <div class="head rv"><span class="m">05 / stack</span><h2>What I work with.</h2><p>The agent tools first, then the marketing ones.</p></div>
+    <div class="agentic rv">
+      <div><span class="m">models</span><p class="chips"><span>Claude · API</span><span>Claude · headless</span><span>OpenAI Codex</span><span>DeepSeek via OpenRouter</span><span>Fable 5.2 via Higgsfield</span></p></div>
+      <div><span class="m">agent runtimes</span><p class="chips"><span>Claude Code</span><span>Codex CLI</span><span>Hermes Agent</span><span>Python &amp; Node.js agents</span></p></div>
+      <div><span class="m">orchestration</span><p class="chips"><span>multi-agent pipelines</span><span>tiered model routing</span><span>fallback chains</span><span>scheduled agents</span><span>Telegram-triggered agents</span></p></div>
+      <div><span class="m">context &amp; tools</span><p class="chips"><span>agent skills (SKILL.md)</span><span>MCP servers</span><span>markdown memory</span><span>scheduled jobs (cron)</span></p></div>
+      <div><span class="m">guardrails</span><p class="chips"><span class="g">human approval gates</span><span>hard-coded risk gates</span><span>request receipts</span><span>paper mode</span><span>secrets read in place</span></p></div>
+      <div><span class="m">generative media</span><p class="chips"><span>Remotion</span><span>ElevenLabs</span><span>Whisper</span><span>Higgsfield</span><span>Kling</span><span>Veo</span><span>ASCII renderers</span></p></div>
     </div>
-  </div>
-</section>
-
-<!-- ============ CONTACT ============ -->
-<section class="contact" id="contact">
-  <div class="wrap">
-    <h2 class="rv">Have something that needs to <em>grow?</em></h2>
-    <p class="rv">Open to roles, partnerships and select client work. The fastest way to reach me is email.</p>
-    <div class="actions rv">
-      <a class="btn dark js-hello" href="#contact">Email me</a>
-      <a class="btn line" href="assets/resume.pdf" download>Download résumé</a>
+    <div class="stack rv">
+      <div><span class="m">channels</span><ul><li>Meta (Facebook, Instagram)</li><li>Google Search &amp; Performance Max</li><li>TikTok, YouTube</li><li>Microsoft, LinkedIn</li></ul></div>
+      <div><span class="m">disciplines</span><ul><li>Media buying &amp; scaling</li><li>Creative strategy &amp; testing</li><li>Funnels &amp; landing pages</li><li>Attribution, email &amp; SMS</li></ul></div>
+      <div><span class="m">tools</span><ul><li>Meta CAPI, server-side GTM, GA4</li><li>Triple Whale, Northbeam, Motion</li><li>Voluum, Ringba, Looker Studio</li><li>Cursor, GitHub</li></ul></div>
     </div>
-  </div>
-</section>
+  </section>
 
-<footer>
-  <div class="wrap">
-    <span>© <span id="yr"></span></span>
-    <nav><a href="#projects">Projects</a><a href="work/quorum.html">Case studies</a><a href="quorum.html">Quorum</a><a href="assets/resume.pdf" download>Résumé</a></nav>
-  </div>
-</footer>
-<script id="sky-sim">
-// universe.js: a 48-second camera loop, printed as text.
-// the galaxy turning -> dive in to home -> drift around the sun and its planets -> pull back out to the galaxy.
-// Every layer adds light to text cells; light picks the character, the mix of colours picks the ink.
-(function universe() {
-  const C = document.getElementById("sky"), cx = C.getContext("2d");
-  const GL = document.getElementById("skyglow"), gx = GL.getContext("2d");
-  const host = document.getElementById("top");
-  const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const RAMP = " .,:;-~=+*xoO0%#&@$", NR = RAMP.length;
-  const LOOP = 65;   // solar system -> aurora -> galaxy -> dive back in
-  let W, H, cw, chH, cols, rows, N, dpr, U, ox, oy, wide;
-  let aI, aR, aG, aB, keys, cix;
-  let seed = 11; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
-  const gauss = () => { let u = 0, v = 0; while (!u) u = rnd(); while (!v) v = rnd(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(6.2832 * v); };
-  const sstep = (a, b, x) => { const k = Math.min(1, Math.max(0, (x - a) / (b - a))); return k * k * (3 - 2 * k); };
-  const hash = (i, j) => { let h = Math.imul(i, 374761393) ^ Math.imul(j, 668265263); h = Math.imul(h ^ (h >>> 13), 1274126177); return ((h ^ (h >>> 16)) >>> 0) / 4294967295; };
-  const vnoise = (x, y) => { const i = Math.floor(x), j = Math.floor(y), fx = x - i, fy = y - j, u = fx * fx * (3 - 2 * fx), v = fy * fy * (3 - 2 * fy);
-    return (hash(i, j) * (1 - u) + hash(i + 1, j) * u) * (1 - v) + (hash(i, j + 1) * (1 - u) + hash(i + 1, j + 1) * u) * v; };
+  <section class="end" id="contact">
+    <div class="row">
+      <div class="rv">
+        <h2>Say <em class="s">hello.</em></h2>
+        <div class="btns"><a class="btn fill js-hello" href="#contact">Email me</a><a class="btn line" href="assets/resume.pdf" download>Résumé (PDF)</a></div>
+      </div>
+    </div>
+  </section>
+</main>
+<footer><div class="wrap m"><span>© <span id="yr"></span> BH.</span><span>drawn in text · no libraries</span></div></footer>
 
-  // ---------- the galaxy: polar coords in the disk plane ----------
-  const CORE = [1, .8, .52], ARM = [.62, .74, 1], DISK = [.78, .78, .95], HII = [1, .45, .74], WARM = [1, .9, .72];
-  const pr = [], pt = [], ph = [], pw = [], pc = [];
-  const add = (r, t, h, w, c) => { pr.push(r); pt.push(t); ph.push(h); pw.push(w); pc.push(c); };
-  const WIND = 1 / Math.tan(17 * Math.PI / 180), R0 = .07;
-  const armAngle = (r, arm) => arm * Math.PI + Math.log(r / R0) * WIND;
-  for (let i = 0; i < 15000; i++) { const arm = i & 1, r = R0 + Math.pow(rnd(), .8) * .98;
-    add(r * (1 + gauss() * .05), armAngle(r, arm) + gauss() * (.2 + .12 * r), gauss() * .02, .55 + .6 * Math.exp(-r * 1.6), r < .22 ? WARM : ARM); }
-  for (let i = 0; i < 6500; i++) { const arm = i & 1, r = .14 + rnd() * .8;
-    add(r, armAngle(r, arm) - .3 + gauss() * .07, gauss() * .01, -.75 * (1 - r * .5), CORE); }
-  for (let k = 0; k < 70; k++) { const arm = k & 1, r = .25 + rnd() * .7, t0 = armAngle(r, arm) + gauss() * .1;
-    for (let j = 0; j < 9; j++) add(r + gauss() * .012, t0 + gauss() * .03, 0, 1.3, HII); }
-  for (let i = 0; i < 6000; i++) add(Math.min(1.15, -Math.log(rnd()) * .33), rnd() * 6.2832, gauss() * .03, .22, DISK);
-  for (let i = 0; i < 4200; i++) { const r = Math.abs(gauss()) * .11, bar = rnd() < .35;
-    add(bar ? Math.abs(gauss()) * .2 : r, bar ? (rnd() < .5 ? 0 : Math.PI) + gauss() * .18 : rnd() * 6.2832, gauss() * .05 * (1 - r * 2), 1.15, CORE); }
-  const NP = pr.length;
-  const SUN_R = .6, SUN_T = armAngle(.6, 0) - .12;          // where "home" sits, on an arm
-
-  // ---------- the solar system ----------
-  // a fly-through: the camera flies outward from the sun (behind it, right shoulder), passing planets on either side,
-  // easing almost to a stop beside Earth for a slow, rolling look before heading out past Jupiter and Saturn
-  const SUN = [10, 1.2, 18], SUN_RAD = 2.6;
-  const PLANETS = [   // name, x, y, z, radius, spin speed
-    ["mercury", 1.3, 0, -3, .45, .2],
-    ["venus", -1.7, 0, -7.5, .66, .08],
-    ["earth", 1.35, -.15, -14.6, .95, .11],
-    ["mars", -1.5, 0, -19.5, .58, .14],
-    ["jupiter", 3, 0, -25, 1.75, .18],
-    ["saturn", -2.7, 0, -30.4, 1.3, .16],
-  ];
-  const EARTH = PLANETS[2];
-  const ORBITS = PLANETS.map(p => Math.hypot(p[1] - SUN[0], p[3] - SUN[2]));
-  const BELT_R = (ORBITS[3] + ORBITS[4]) / 2;
-  const BELT = Array.from({ length: 2600 }, () => [BELT_R + gauss() * .7, Math.random() * 6.2832, gauss() * .08, .4 + Math.random() * .8]);
-  // camera path: distance travelled vs time, with a long slow stretch beside Earth
-  const EWIN = u => sstep(.2, .32, u) * (1 - sstep(.58, .7, u));
-  const ZTAB = (() => { const n = 400, a = new Float32Array(n + 1); let acc = 0;
-    for (let i = 1; i <= n; i++) { acc += 1 - .88 * EWIN(i / n); a[i] = acc; } for (let i = 0; i <= n; i++) a[i] /= acc; return a; })();
-  const pathZ = u => { const f = Math.min(400, Math.max(0, u * 400)), i = Math.floor(f), r = f - i; return 4 - 36 * (ZTAB[i] + (ZTAB[Math.min(400, i + 1)] - ZTAB[i]) * r); };
-  // 3D value noise for planet surfaces
-  const h3 = (i, j, k) => { let h = Math.imul(i, 374761393) ^ Math.imul(j, 668265263) ^ Math.imul(k, 1440662683); h = Math.imul(h ^ (h >>> 13), 1274126177); return ((h ^ (h >>> 16)) >>> 0) / 4294967295; };
-  function n3(x, y, z) {
-    const i = Math.floor(x), j = Math.floor(y), k = Math.floor(z), fx = x - i, fy = y - j, fz = z - k;
-    const u = fx * fx * (3 - 2 * fx), v = fy * fy * (3 - 2 * fy), w = fz * fz * (3 - 2 * fz), L = (a, b, q) => a + (b - a) * q;
-    return L(L(L(h3(i, j, k), h3(i + 1, j, k), u), L(h3(i, j + 1, k), h3(i + 1, j + 1, k), u), v),
-             L(L(h3(i, j, k + 1), h3(i + 1, j, k + 1), u), L(h3(i, j + 1, k + 1), h3(i + 1, j + 1, k + 1), u), v), w);
-  }
-  const fbm = (x, y, z) => n3(x, y, z) * .55 + n3(x * 2.1, y * 2.1, z * 2.1) * .3 + n3(x * 4.3, y * 4.3, z * 4.3) * .15;
-  const mix = (a, b, q) => [a[0] + (b[0] - a[0]) * q, a[1] + (b[1] - a[1]) * q, a[2] + (b[2] - a[2]) * q];
-  // surface colour and brightness at a point on the unit sphere (planet frame, y = spin axis)
-  function surface(name, x, y, z, T) {
-    if (name === "earth") {
-      const h = fbm(x * 1.8 + 3, y * 1.8, z * 1.8);
-      let c = h > .53 ? mix([.3, .58, .26], [.62, .5, .3], Math.min(1, n3(x * 4, y * 4, z * 4) * 1.3)) : mix([.05, .2, .62], [.14, .44, .86], Math.max(0, (h - .38) / .15));
-      if (Math.abs(y) > .84) c = [.95, .97, 1];
-      const cl = fbm(x * 2.6 + T * .05, y * 3.4, z * 2.6 - T * .03);
-      if (cl > .55) c = mix(c, [1, 1, 1], Math.min(1, (cl - .55) * 4));
-      return [c, 1];
-    }
-    if (name === "mars") {
-      let c = mix([.86, .4, .2], [.5, .24, .14], sstep(.5, .66, fbm(x * 2.5, y * 2.5, z * 2.5)));
-      if (Math.abs(y) > .88) c = [.98, .95, .92];
-      return [c, 1];
-    }
-    if (name === "jupiter") {
-      const lat = Math.asin(Math.max(-1, Math.min(1, y))), lon = Math.atan2(z, x);
-      const band = Math.sin(y * 17 + n3(x * 2.5, y * 6, z * 2.5) * 2.2);
-      let c = mix([.98, .9, .74], [.74, .5, .32], band * .5 + .5);
-      if (Math.abs(y) > .8) c = mix(c, [.55, .45, .4], .5);
-      const sl = (lon - .6) / .34, sa = (lat + .36) / .12;
-      if (sl * sl + sa * sa < 1) c = mix([.92, .38, .26], c, Math.sqrt(sl * sl + sa * sa) * .6);
-      return [c, 1];
-    }
-    if (name === "saturn") { const band = Math.sin(y * 12 + n3(x * 2, y * 5, z * 2) * 1.2); return [mix([.98, .88, .66], [.82, .7, .5], band * .5 + .5), 1]; }
-    if (name === "venus") { const sw = Math.sin(y * 7 + fbm(x * 2.2, y * 2.2, z * 2.2) * 5); return [mix([1, .9, .68], [.88, .72, .5], sw * .5 + .5), 1]; }
-    // mercury and the moon: grey, cratered
-    const cr = n3(x * 7, y * 7, z * 7), base = .72 + .28 * fbm(x * 3, y * 3, z * 3);
-    return [[.66 * base, .63 * base, .6 * base], cr > .72 ? .55 : 1];
-  }
-
-  // ---------- 3D starfield for the flight ----------
-  const STARS = Array.from({ length: 3200 }, () => ({ x: (Math.random() * 2 - 1) * 1.6, y: (Math.random() * 2 - 1) * 1.1, z: Math.random(), c: Math.random() < .2 ? [1, .85, .7] : Math.random() < .5 ? [.75, .82, 1] : [.95, .96, 1] }));
-
-  function resize() {
-    dpr = Math.min(devicePixelRatio || 1, 2);
-    W = host.clientWidth; H = host.clientHeight; wide = W > 900;
-    cw = W < 700 ? 4 : 5; chH = Math.round(cw * 1.75);
-    cols = Math.ceil(W / cw); rows = Math.ceil(H / chH); N = cols * rows;
-    aI = new Float32Array(N); aR = new Float32Array(N); aG = new Float32Array(N); aB = new Float32Array(N);
-    keys = new Uint32Array(N); cix = new Uint8Array(N);
-    C.width = W * dpr; C.height = H * dpr; cx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    GL.width = W / 2; GL.height = H / 2;
-    U = wide ? Math.min(H * .58, W * .34) : Math.min(W * .42, H * .2);
-    ox = W * (wide ? .7 : .58); oy = H * (wide ? .5 : .17);
-  }
-
-  // add light at a screen point
-  function splat(x, y, w, c) {
-    const col = (x / cw) | 0, row = (y / chH) | 0;
-    if (col < 0 || row < 0 || col >= cols || row >= rows) return;
-    const k = row * cols + col;
-    aI[k] += w; if (w > 0) { aR[k] += w * c[0]; aG[k] += w * c[1]; aB[k] += w * c[2]; }
-  }
-  // fill a disc of cells (sun, planets)
-  function ball(px, py, R, fn) {
-    const c0 = Math.max(0, ((px - R) / cw) | 0), c1 = Math.min(cols - 1, ((px + R) / cw) | 0);
-    const r0 = Math.max(0, ((py - R) / chH) | 0), r1 = Math.min(rows - 1, ((py + R) / chH) | 0);
-    for (let r = r0; r <= r1; r++) for (let c = c0; c <= c1; c++) {
-      const dx = ((c + .5) * cw - px) / R, dy = ((r + .5) * chH - py) / R, d = Math.hypot(dx, dy);
-      fn(r * cols + c, dx, dy, d);
-    }
-  }
-  const put = (k, w, c) => { aI[k] += w; aR[k] += w * c[0]; aG[k] += w * c[1]; aB[k] += w * c[2]; };
-
-  let mx = 0, my = 0, lastT = 0, glyphs = 0;
-  addEventListener("pointermove", e => { mx = e.clientX / innerWidth - .5; my = e.clientY / innerHeight - .5; }, { passive: true });
-
-  function frame(T) {
-    const t = T % LOOP, dt = Math.min(.1, Math.max(0, T - lastT)); lastT = T;
-    aI.fill(0); aR.fill(0); aG.fill(0); aB.fill(0);
-    // phases
-    const aSolar = sstep(13, 16, t) * (1 - sstep(37.5, 40.5, t));
-    const aAur = sstep(38, 41, t) * (1 - sstep(55, 58, t));
-    const aGal = t < 30 ? 1 - sstep(13, 16, t) : sstep(55, 58, t);
-    const zoom = t < 30 ? 1 - sstep(8, 16, t) : 1;                     // 0 = at home, 1 = whole galaxy
-    const speed = .035 + .1 * aSolar;
-    // a wandering camera for the solar system: smooth random drift in position, distance, tilt and angle
-    const wn = (k, f) => vnoise(T * f, k * 7.3) * 2 - 1;
-    const camX = wn(1, .06) * .3, camY = wn(2, .05) * .18, camZ = 1 + wn(3, .045) * .38, camInc = .42 + wn(4, .04) * .2, camRot = T * .04 + wn(5, .03) * .9;
-
-    // --- stars: fly forward; fast = streaks
-    const F = Math.min(W, H) * .55, scx = ox - mx * 30, scy = oy - my * 20;
-    for (const s of STARS) {
-      s.z -= speed * dt;
-      if (s.z <= .02) { s.z = 1; s.x = (Math.random() * 2 - 1) * 1.6; s.y = (Math.random() * 2 - 1) * 1.1; continue; }
-      const px = scx + s.x / s.z * F, py = scy + s.y / s.z * F;
-      const b = Math.min(2.4, .35 + (1 - s.z) * 2.4) * (.7 + .3 * Math.sin(T * 1.3 + s.x * 9)) * (1 - aAur * .6);
-      splat(px, py, b, s.c);
-      if (s.z < .4) for (let j = 1; j < 4; j++) { const zz = s.z + j * (.012 + .03 * aSolar); splat(scx + s.x / zz * F, scy + s.y / zz * F, b * (1 - j / 4) * .7, s.c); }   // short trails on near stars
-    }
-
-    // --- solar system: first-person flight out through the planets
-    if (aSolar > .01) {
-      const u = Math.min(1, Math.max(0, (t - 12.5) / 25)), ew = EWIN(u);
-      const F = Math.min(W, H) * (wide ? .62 : .8);
-      const camx = .35 * Math.sin(T * .27) * (1 - ew) + mx * .4, camy = 1.35 + .15 * Math.sin(T * .19) - my * .3, camz = pathZ(u);
-      // beside Earth the camera turns to hold it in frame and rolls slowly
-      const edx = EARTH[1] - camx, edz = EARTH[3] - camz, edy = EARTH[2] - camy;
-      const yawE = -Math.atan2(edx, Math.max(.3, -edz)), pitE = Math.atan2(-edy, Math.max(.3, Math.hypot(edx, edz)));
-      const yaw = (.07 * Math.sin(T * .23) + .1 * mx) * (1 - ew) + yawE * .85 * ew, cyw = Math.cos(yaw), syw = Math.sin(yaw);
-      const pit = .3 * (1 - ew) + pitE * .85 * ew, cp = Math.cos(pit), sp = Math.sin(pit);
-      const roll = ew * (.1 + .14 * Math.sin(T * .22)), crl = Math.cos(roll), srl = Math.sin(roll);
-      const vx = wide ? W * .66 : ox, vy = wide ? H * .56 : oy * 1.25;
-      // world -> screen; returns null behind the camera
-      const P = (x, y, z) => { const dx = x - camx, dy = y - camy, dz = z - camz;
-        const rx = dx * cyw - dz * syw, rz = dx * syw + dz * cyw;
-        const ry = dy * cp - rz * sp, depth = -(dy * sp + rz * cp);
-        if (depth < .08) return null;
-        const X = rx / depth * F, Y = ry / depth * F;
-        return [vx + X * crl - Y * srl, vy - (X * srl + Y * crl), depth]; };
-      // camera-space vector (x right, y up, z toward viewer) -> world
-      const toWorld = (nx, ny, nz) => { const dy = ny * cp + nz * sp, rz = -ny * sp + nz * cp; return [nx * cyw + rz * syw, dy, -nx * syw + rz * cyw]; };
-      // orbit rings on the plane of the system, sweeping under the camera
-      for (const R of ORBITS) for (let j = 0; j < 420; j++) {
-        const a = j / 420 * 6.2832, q = P(SUN[0] + Math.cos(a) * R, SUN[1], SUN[2] + Math.sin(a) * R);
-        if (q) splat(q[0], q[1], Math.min(1.6, 2.6 / q[2]) * .8 * aSolar, [.55, .62, .88]);
-      }
-      // asteroid belt
-      for (const [r, a, h, br] of BELT) { const q = P(SUN[0] + Math.cos(a) * r, SUN[1] + h, SUN[2] + Math.sin(a) * r);
-        if (q) splat(q[0], q[1], Math.min(2, 3 / q[2]) * br * aSolar, [.85, .8, .72]); }
-      // one textured, sun-lit sphere
-      const drawBody = (name, x, y, z, rad, spinRate, atmo) => {
-        const q = P(x, y, z); if (!q) return null;
-        const R = rad / q[2] * F; if (R < 1.5) { splat(q[0], q[1], 1.2 * aSolar, [.9, .9, .9]); return q; }
-        let lx = SUN[0] - x, ly = SUN[1] - y, lz = SUN[2] - z; const ll = Math.hypot(lx, ly, lz); lx /= ll; ly /= ll; lz /= ll;
-        const spin = T * spinRate, cs = Math.cos(spin), ss = Math.sin(spin);
-        ball(q[0], q[1], R * (atmo ? 1.08 : 1), (k, sdx, sdy, d) => {
-          d *= atmo ? 1.08 : 1;
-          const ux = (sdx * crl + sdy * srl) * (atmo ? 1.08 : 1), uy = (-sdx * srl + sdy * crl) * (atmo ? 1.08 : 1);   // undo the roll
-          if (d >= 1) { if (atmo && d < 1.08) { const n = toWorld(ux / d, -uy / d, 0), li = Math.max(0, n[0] * lx + n[1] * ly + n[2] * lz);
-              put(k, (1.4 * li + .15) * (1 - (d - 1) / .08) * aSolar, [.45, .65, 1]); } return; }
-          const nz = Math.sqrt(1 - d * d), n = toWorld(ux, -uy, nz);
-          const lam = Math.max(0, n[0] * lx + n[1] * ly + n[2] * lz);
-          const px = n[0] * cs - n[2] * ss, pz = n[0] * ss + n[2] * cs;
-          const [c, alb] = surface(name, px, n[1], pz, T);
-          const rim = atmo ? .5 * Math.pow(1 - nz, 2.5) * (lam > 0 ? 1 : .2) : 0;
-          put(k, (2.9 * lam * alb + .06) * aSolar, rim ? mix(c, [.5, .7, 1], Math.min(1, rim)) : c);
-        });
-        return [q[0], q[1], q[2], R];
-      };
-      for (const [name, x, y, z, rad, spinRate] of PLANETS) {
-        const body = drawBody(name, x, y, z, rad, spinRate, name === "earth");
-        if (name === "earth") {                                   // the Moon
-          const ma = T * .16 + 1.2; drawBody("moon", x + Math.cos(ma) * rad * 2.6, y + .25, z + Math.sin(ma) * rad * 2.6, rad * .27, .05, false);
-        }
-        if (name === "saturn" && body) {                          // rings with the Cassini gap, hidden behind the planet
-          for (let j = 0; j < 30; j++) {
-            const rr = 1.25 + j / 29 * 1.05, dens = rr > 1.93 && rr < 2.02 ? 0 : rr < 1.48 ? .3 : rr < 1.93 ? 1 : .65;
-            if (!dens) continue;
-            for (let i = 0; i < 300; i++) { const a = i / 300 * 6.2832;
-              const rq = P(x + Math.cos(a) * rad * rr, y + Math.sin(a) * rad * rr * .42, z + Math.sin(a) * rad * rr * .9);
-              if (!rq || (rq[2] > body[2] && Math.hypot(rq[0] - body[0], rq[1] - body[1]) < body[3])) continue;
-              splat(rq[0], rq[1], .5 * dens * aSolar, mix([.98, .9, .72], [.78, .66, .5], j / 29)); }
-          }
-        }
-      }
-    }
-
-    // --- aurora over a frozen lake: navy sky, ray curtains with a crisp lit edge, a pine treeline, ice with streaked reflections
-    if (aAur > .01) {
-      const hz = Math.round((wide ? .6 : .46) * rows), ta = T - 38;
-      const sky = new Float32Array(cols * hz), skC = new Float32Array(cols * hz * 3);
-      const mixc = (a, b, t) => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t];
-      const EDGE = [.8, 1, 1], LOW = [.22, 1, .88], MID = [.1, .92, .74], HIGH = [.25, .72, 1], PINK = [1, .36, .7], ROSE = [1, .32, .5];
-      // edge height, sway, ray length, phase, strength, how much pink at the tops
-      const RIB = [[.16, .045, .18, 3.4, .45, 1], [.3, .085, .34, 0, 1, .75], [.47, .05, .22, 1.9, .7, .2]];
-      for (const [base, amp, len, ph, st, pink] of RIB) {
-        const sx = Math.min(1, Math.max(.45, W / 1200));                                         // fewer, gentler waves on narrow screens
-        const yAt = x => (x *= sx, base + amp * Math.sin(x * 4.2 + ta * .12 + ph) + amp * .45 * Math.sin(x * 9.5 - ta * .23 + ph * 2) + .01 * Math.sin(x * 31 + ta * .6));
-        for (let c = 0; c < cols; c++) {
-          const x = c / cols, yn = yAt(x), yb = yn * rows;
-          const slope = Math.abs(yAt(x + .002) - yn) / .002;
-          const fold = 1 + 1.3 * sstep(.2, .75, slope);                                         // seen edge-on where it bends: a bright pillar
-          const clump = vnoise(c * .04 + ta * .05, ph * 3), stripe = vnoise(c * .42 + ta * .3, ph * 7 + ta * .2);   // broad bundles of thin rays
-          const ray = (.12 + 1.9 * Math.pow(clump, 1.3)) * (.15 + 1.7 * Math.pow(stripe, 2.4)) * (.75 + .25 * hash(c, ph * 10 | 0));
-          const hgt = Math.max(4, len * rows * (.45 + .9 * vnoise(c * .03 - ta * .08, ph + 9)) * (.6 + .6 * stripe) * Math.sqrt(fold));
-          const lit = (.55 + .45 * vnoise(x * 7 + ta * .35, ph * 2)) * (.8 + .2 * Math.sin(ta * .9 + x * 6 + ph));
-          const pk = pink * sstep(.35, .7, vnoise(x * 2.2 + ta * .04, ph * 5));
-          const topC = mixc(HIGH, mixc(PINK, ROSE, vnoise(x * 5, ph)), pk);
-          for (let r = Math.max(0, Math.floor(yb - hgt)); r < Math.min(hz, Math.ceil(yb + 5)); r++) {
-            const d = yb - r, f = d / hgt;
-            let w, col;
-            if (d < 0) { w = Math.exp(d * 1.1) * .9; col = LOW; }                                // soft glow just under the edge
-            else {
-              const edge = Math.exp(-d * 1.5) * 6.5;                                             // the thin lit hem
-              const body = Math.pow(Math.max(0, 1 - f), 1.35 - .85 * pk) * ray * 2.4 * (1 + 1.8 * pk * sstep(.4, .85, f));
-              w = edge + body;
-              col = d < 1.5 ? EDGE : f < .3 ? mixc(LOW, MID, f / .3) : mixc(MID, topC, sstep(.3, .8, f));
-            }
-            w *= st * fold * lit * 1.5;
-            if (w < .02) continue;
-            const k = r * cols + c;
-            sky[k] += w; skC[k * 3] += w * col[0]; skC[k * 3 + 1] += w * col[1]; skC[k * 3 + 2] += w * col[2];
-          }
-        }
-      }
-      // pointed pines along the far shore
-      const tree = c => { const id = Math.floor(c / 5), pos = ((c % 5) + 5) % 5, h = 1 + Math.floor(hash(id, 41) * 4 + (vnoise(c * .05, 6) > .55 ? 2 : 0));
-        return Math.max(1, Math.round(h * (1 - Math.abs(pos - 2) / 3))); };
-      const isStar = (c, r) => hash(c, r * 7 + 3) > .985;
-      // per column: average aurora colour (tints the ice) and how much aurora there is (feeds the streaks on the water)
-      const tint = new Float32Array(cols * 3), colW = new Float32Array(cols);
-      for (let c = 0; c < cols; c++) { let s0 = 0, s1 = 0, s2 = 0, sw = 0;
-        for (let r = 0; r < hz; r++) { const k = r * cols + c; sw += sky[k]; s0 += skC[k * 3]; s1 += skC[k * 3 + 1]; s2 += skC[k * 3 + 2]; }
-        colW[c] = Math.min(2.2, sw / (hz * .12));
-        tint[c * 3] = sw > .1 ? s0 / sw : .3; tint[c * 3 + 1] = sw > .1 ? s1 / sw : .9; tint[c * 3 + 2] = sw > .1 ? s2 / sw : .8; }
-      const NAVY = [.3, .46, 1];
-      for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
-        const k = r * cols + c;
-        if (r < hz) {
-          if (r >= hz - tree(c)) continue;                                                     // silhouette: leave it dark
-          const h = r / hz, fill = (.05 + .3 * h * h) * (.7 + .3 * hash(c, r));                // faint navy grain, lighter toward the horizon
-          const glow = r > hz - 8 ? 1.1 * Math.pow(1 - (hz - r) / 8, 2) : 0;
-          put(k, (fill + glow) * aAur, glow ? [.4, .75, 1] : NAVY);
-          if (sky[k] > .02) { const m = sky[k]; put(k, m * aAur, [skC[k * 3] / m, skC[k * 3 + 1] / m, skC[k * 3 + 2] / m]); }
-          if (isStar(c, r) && sky[k] < .6) put(k, (1.1 + .8 * Math.sin(T * 2 + c)) * aAur, [.9, .95, 1]);   // stars
-          continue;
-        }
-        // lake: dark water mirroring the sky, ice floes drifting on it
-        const dy = (r - hz + 1) / (rows - hz), z = 1 / (dy + .06), u = (c / cols - .5) * z;
-        if (r === hz) { put(k, (.7 + .4 * vnoise(c * .3, 1)) * aAur, [.75, .9, 1]); continue; }  // pale snow line on the far shore
-        const wob = Math.sin(r * 1.3 - T * 1.9 + vnoise(c * .08, r * .4) * 3) * (.3 + dy * 2.6);
-        const mr = hz - 1 - Math.round((r - hz - 1) * .9), mc = Math.min(cols - 1, Math.max(0, Math.round(c + wob)));
-        let ref = 0, rcol = [tint[mc * 3], tint[mc * 3 + 1], tint[mc * 3 + 2]];
-        if (mr >= 0 && mr < hz - tree(mc)) {
-          const mk = mr * cols + mc;
-          if (sky[mk] > .03) { const m = sky[mk]; ref = m * .55; rcol = [skC[mk * 3] / m, skC[mk * 3 + 1] / m, skC[mk * 3 + 2] / m]; }
-          else if (isStar(mc, mr) && dy < .5) { ref = .7 * (1 - dy * 2); rcol = [.85, .92, 1]; }
-        }
-        const streak = Math.pow(vnoise(c * .6 + T * .15, r * .035 - T * .2), 2) * 1.6;            // long vertical smears of the aurora's light
-        ref += colW[mc] * streak * (1 - .55 * dy);
-        put(k, (.16 + .1 * dy) * aAur, [.22, .38, .9]);                                         // the water itself is deep blue, not black
-        const n = fbm(u * 2.4 + T * .02, z * 1.5, 1.7), ice = n > .545;
-        if (ice) {
-          const e = Math.max(0, 1 - (n - .545) / .03);                                         // bright rim along each floe's edge
-          const crack = Math.abs(vnoise(u * 3.2, z * 2.4) - .5) < .022 ? .5 : 0;
-          const tx = vnoise(u * 7, z * 5) * .35;
-          const lum = (1.5 + 1.1 * dy + tx * 1.6 + e * 2 + ref * .4) * (1 - crack);
-          put(k, lum * aAur, mixc([.74, .86, 1], rcol, .15 + .25 * e + .15 * Math.min(1, ref)));
-        } else if (ref > .03) {
-          const band = .7 + .3 * Math.sin(r * 2.3 - T * 2.2 + c * .02);                        // ripples
-          put(k, ref * (1.3 - .5 * dy) * band * aAur, rcol);
-        } else if (hash(c, r * 13 + (T * 4 | 0)) > .996) put(k, .5 * aAur, [.6, .95, .9]);     // glints
-      }
-      // shooting star every ~7 s
-      const sp = ta % 7; if (sp < .9) { const sx = (.3 + .5 * hash(Math.floor(ta / 7), 3)) * W, sy = .06 * H; for (let j = 0; j < 20; j++) splat(sx + (sp * 280 - j * 6), sy + (sp * 75 - j * 1.6), (1 - j / 20) * 2.4 * aAur, [.9, .95, 1]); }
-    }
-
-    // --- galaxy: zoom out from home to the whole disk
-    if (aGal > .01) {
-      const rot = T * .02, inc = 1.05 + my * .08, roll = -.42 + mx * .06;
-      const ci = Math.cos(inc), si = Math.sin(inc), cr = Math.cos(roll), sr = Math.sin(roll);
-      const proj = (r, th, h) => { const a = th + rot, x1 = r * Math.cos(a), z1 = r * Math.sin(a), y2 = h * ci - z1 * si; return [x1 * cr - y2 * sr, x1 * sr + y2 * cr]; };
-      const S = U * Math.exp(Math.log(7) * (1 - zoom));
-      const home = proj(SUN_R, SUN_T, 0);
-      const gox = ox + (-home[0] * S) * (1 - zoom), goy = oy - (-home[1] * S) * (1 - zoom);
-      const fade = aGal;
-      for (let i = 0; i < NP; i++) {
-        const a = pt[i] + rot, r = pr[i], x1 = r * Math.cos(a), z1 = r * Math.sin(a), y2 = ph[i] * ci - z1 * si;
-        const X = x1 * cr - y2 * sr, Y = x1 * sr + y2 * cr;
-        const sx = gox + X * S, sy = goy - Y * S;
-        if (sx < 0 || sy < 0 || sx >= W || sy >= H) continue;
-        const k = ((sy / chH) | 0) * cols + ((sx / cw) | 0), w = pw[i] * fade * (1 + (1 - zoom) * .6), c = pc[i];
-        aI[k] += w; if (w > 0) { aR[k] += w * c[0]; aG[k] += w * c[1]; aB[k] += w * c[2]; }
-      }
-      // a marker for home while zoomed in
-      if (zoom < .9) { const hx = gox + home[0] * S, hy = goy - home[1] * S; splat(hx, hy, 3 * (1 - zoom) * fade, [1, .9, .6]); }
-    }
-
-    // --- draw
-    cx.fillStyle = "#05060B"; cx.fillRect(0, 0, W, H);
-    if (aSolar > .01) {
-      const g = cx.createRadialGradient(W * 1.02, H * .05, 0, W * 1.02, H * .05, Math.max(W, H) * .75);
-      g.addColorStop(0, `rgba(255,170,90,${.2 * aSolar})`); g.addColorStop(.5, `rgba(255,120,60,${.05 * aSolar})`); g.addColorStop(1, "rgba(0,0,0,0)");
-      cx.fillStyle = g; cx.fillRect(0, 0, W, H);
-    }
-    if (aAur > .01) {
-      const g = cx.createLinearGradient(0, 0, 0, H);
-      const hzf = wide ? .6 : .46;   // navy sky, lightest at the horizon, then dark blue water
-      g.addColorStop(0, `rgba(4,8,28,${aAur})`); g.addColorStop(hzf * .55, `rgba(9,22,58,${aAur})`); g.addColorStop(hzf, `rgba(22,48,92,${aAur})`);
-      g.addColorStop(Math.min(1, hzf + .04), `rgba(8,20,48,${aAur})`); g.addColorStop(1, `rgba(3,8,22,${aAur})`);
-      cx.fillStyle = g; cx.fillRect(0, 0, W, H);
-    }
-    if (aGal > .01) {
-      const g = cx.createRadialGradient(ox, oy, 0, ox, oy, U * 1.1);
-      g.addColorStop(0, `rgba(255,190,120,${.16 * aGal * zoom})`); g.addColorStop(.35, `rgba(120,130,255,${.06 * aGal})`); g.addColorStop(1, "rgba(0,0,0,0)");
-      cx.fillStyle = g; cx.fillRect(0, 0, W, H);
-    }
-    cx.font = `500 ${Math.round(chH * .98)}px "JetBrains Mono",ui-monospace,Menlo,monospace`; cx.textBaseline = "top";
-    let n = 0;
-    for (let i = 0; i < N; i++) {
-      const I = aI[i]; if (I < .08) continue;
-      const lum = 1 - Math.exp(-I * .42);
-      const ch = Math.round(Math.pow(lum, .9) * (NR - 1)); if (ch < 1) continue;
-      const m = (aR[i] + aG[i] + aB[i]) / 3 || 1;
-      const hot = Math.max(0, lum - .8) * 3, b = .3 + .85 * lum;
-      const r = Math.min(1, (aR[i] / m * .75 * (1 - hot) + hot) * b), gg = Math.min(1, (aG[i] / m * .75 * (1 - hot) + hot) * b), bb = Math.min(1, (aB[i] / m * .75 * (1 - hot) + hot) * b);
-      const key = (Math.round(r * 15) << 8) | (Math.round(gg * 15) << 4) | Math.round(bb * 15);
-      cix[i] = ch; keys[n++] = ((key << 19) | i) >>> 0;
-    }
-    glyphs = n;
-    const sorted = keys.subarray(0, n).sort();
-    let cur = -1;
-    for (let j = 0; j < n; j++) {
-      const key = sorted[j] >>> 19, i = sorted[j] & 0x7FFFF;
-      if (key !== cur) { cur = key; cx.fillStyle = `rgb(${((key >> 8) & 15) * 17},${((key >> 4) & 15) * 17},${(key & 15) * 17})`; }
-      cx.fillText(RAMP[cix[i]], (i % cols) * cw, ((i / cols) | 0) * chH);
-    }
-    gx.clearRect(0, 0, GL.width, GL.height); gx.drawImage(C, 0, 0, GL.width, GL.height);
-    GL.style.opacity = (.85 * (1 - .2 * aAur)).toFixed(2);
-  }
-
-  let on = true, vis = true, last = 0, clock = +(new URLSearchParams(location.search).get("t")) || 15.5;   // open on the solar-system flight (?t= jumps to a scene)
-  new IntersectionObserver(([e]) => { on = e.isIntersecting; }).observe(host);
-  document.addEventListener("visibilitychange", () => { vis = !document.hidden; });
-  // a stats line under the scene: what is playing, and how much text it took to draw it
-  const hud = document.getElementById("hud");
-  const scene = t => t < 13 ? "galaxy" : t < 38.5 ? "solar system" : t < 56 ? "aurora" : "galaxy";
-  let frames = 0, hudAt = 0;
-  function stats(now) {
-    if (now - hudAt < 250) return; hudAt = now;
-    const t = clock % LOOP;
-    hud.innerHTML = `<b>${scene(t)}</b>  t ${t.toFixed(1).padStart(4)}s  <span class="x">frame ${String(frames).padStart(5)}  </span>${glyphs.toLocaleString("en-US").padStart(6)} glyphs  <span class="x">${cols}×${rows} grid</span>`;
-  }
-  function loop(now) {
-    if (on && vis && now - last >= 1000 / 30) { clock += Math.min(.1, (now - last) / 1000); frame(clock); last = now; frames++; stats(now); }
-    else if (!(on && vis)) last = now;
-    requestAnimationFrame(loop);
-  }
-  addEventListener("resize", resize);
-  resize();
-  (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => {
-    if (still) { lastT = 33; frame(33); hud.innerHTML = `<b>solar system</b>  still frame  ${glyphs.toLocaleString("en-US")} glyphs  ${cols}×${rows}`; } else requestAnimationFrame(t => { last = t; requestAnimationFrame(loop); });
-  });
-})();
-</script>
-<script id="sim">
-// medusa.js: a translucent jellyfish, lit from above and printed as text. Every character is placed by this script.
-// 1. the body is ~22k points: a pulsing bell with sixteen ribs, four gonads, four frilled oral arms, 48 tentacles
-// 2. the bell is see-through, so every point adds light to its text cell instead of hiding what is behind it
-// 3. violet light falls from the surface; a teal glow rises from the lower left
-// 4. light in each cell picks the character, its mix of colours picks the ink
-const RAMP = " .,:;-~=+*xoO0%#&@$";
-const A = document.getElementById("ascii"), ax = A.getContext("2d");
-const G = document.getElementById("glow"), gx = G.getContext("2d");
-const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
-let W, H, cw, chH, cols, rows, N, S, cx, cy, dpr, wide;
-let accI, accR, accG, accB, keys, cix;
-let mouse = { x: -1e4, y: -1e4 }, snow = [], points = 0;
-
-// ---------- noise (skin shimmer, sway) ----------
-function hash(i, j, k) {
-  let h = Math.imul(i, 374761393) ^ Math.imul(j, 668265263) ^ Math.imul(k, 1440662683);
-  h = Math.imul(h ^ (h >>> 13), 1274126177);
-  return ((h ^ (h >>> 16)) >>> 0) / 4294967295;
-}
-function noise(x, y, z) {
-  const i = Math.floor(x), j = Math.floor(y), k = Math.floor(z);
-  const fx = x - i, fy = y - j, fz = z - k;
-  const u = fx * fx * (3 - 2 * fx), v = fy * fy * (3 - 2 * fy), w = fz * fz * (3 - 2 * fz);
-  const l = (a, b, t) => a + (b - a) * t;
-  return l(l(l(hash(i, j, k), hash(i + 1, j, k), u), l(hash(i, j + 1, k), hash(i + 1, j + 1, k), u), v),
-           l(l(hash(i, j, k + 1), hash(i + 1, j, k + 1), u), l(hash(i, j + 1, k + 1), hash(i + 1, j + 1, k + 1), u), v), w);
-}
-const sstep = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
-let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
-
-// ---------- light ----------
-const VIOLET = [.58, .34, 1], LILAC = [.86, .62, 1], PINK = [1, .46, .86], INDIGO = [.36, .38, 1], TEAL = [.22, 1, .82];
-
-// ---------- anatomy: fixed sample sets, posed every frame ----------
-const TH_MAX = 1.78, NT = 48;
-const bell = Array.from({ length: 9000 }, () => {
-  const th = Math.acos(1 - rnd() * (1 - Math.cos(TH_MAX))), ph = rnd() * 6.2832;
-  return [th, ph, Math.pow(Math.abs(Math.cos(ph * 8)), 28)];        // theta, phi, rib strength
-});
-const gonads = Array.from({ length: 1600 }, (_, i) => [i % 4, rnd() * 6.2832, rnd()]);
-const arms = Array.from({ length: 4400 }, (_, i) => [i % 4, Math.pow(rnd(), .8), rnd() * 2 - 1]);
-const tent = Array.from({ length: NT }, (_, k) => ({ k, len: 3.1 + rnd() * 1.4, ph: rnd() * 6.28 }));
-const TSTEP = 74;
-
-function resize() {
-  dpr = Math.min(devicePixelRatio || 1, 2);
-  const box = document.getElementById("jelly"); W = box.clientWidth; H = box.clientHeight; wide = W > 700;
-  cw = W < 700 ? 4 : 5; chH = Math.round(cw * 1.75);
-  cols = Math.ceil(W / cw); rows = Math.ceil(H / chH); N = cols * rows;
-  accI = new Float32Array(N); accR = new Float32Array(N); accG = new Float32Array(N); accB = new Float32Array(N);
-  keys = new Uint32Array(N); cix = new Uint8Array(N);
-  A.width = W * dpr; A.height = H * dpr; ax.setTransform(dpr, 0, 0, dpr, 0, 0);
-  G.width = W / 2; G.height = H / 2;
-  S = Math.min(H * .17, W * .2);
-  cx = W * .5; cy = H * .2;
-  snow = Array.from({ length: Math.round(N / 220) }, () => ({ x: Math.random() * W, y: Math.random() * H, s: .1 + Math.random() * .35, p: Math.random() * 6.28 }));
-}
-
-// body -> screen: spin about the body axis, lean the swim axis, tip toward the camera
-let cyaw, syaw, ctl, stl, cpi, spi, bob = 0;
-function pose(t) {
-  const yaw = t * .12 + (mouse.x > -1e3 ? (mouse.x / W - .5) * .5 : 0), tilt = -.34 + Math.sin(t * .23) * .06, pitch = .32;
-  cyaw = Math.cos(yaw); syaw = Math.sin(yaw); ctl = Math.cos(tilt); stl = Math.sin(tilt); cpi = Math.cos(pitch); spi = Math.sin(pitch);
-}
-function splat(x, y, z, w, c) {
-  const x1 = x * cyaw - z * syaw, z1 = x * syaw + z * cyaw;           // spin
-  const y2 = y * cpi - z1 * spi, z2 = y * spi + z1 * cpi;             // pitch toward camera
-  const X = x1 * ctl - y2 * stl, Y = x1 * stl + y2 * ctl + bob;       // lean
-  const col = ((cx + X * S) / cw) | 0, row = ((cy - Y * S) / chH) | 0;
-  if (col < 0 || row < 0 || col >= cols || row >= rows) return;
-  const i = row * cols + col;
-  w *= z2 < 0 ? .62 : 1;                                              // far side is seen through the bell
-  const tl = sstep(.6, 3.6, -Y - X * .7) * .85;                       // teal glow from the lower left
-  const r = c[0] + (TEAL[0] - c[0]) * tl, g = c[1] + (TEAL[1] - c[1]) * tl, b = c[2] + (TEAL[2] - c[2]) * tl;
-  accI[i] += w; accR[i] += w * r; accG[i] += w * g; accB[i] += w * b; points++;
-}
-
-// bell surface at (theta, phi), pulse p in 0..1
-function bellAt(th, ph, p, t, o) {
-  const R = 1 - .13 * p, Hh = .64 + .1 * p, m = sstep(.95, TH_MAX, th);
-  const rr = R * Math.sin(th) * (1 - .2 * p * m) + .04 * Math.sin(ph * 8 + t * 1.7) * m;
-  o[0] = rr * Math.cos(ph); o[2] = rr * Math.sin(ph);
-  o[1] = Hh * Math.cos(th) + .06 * Math.sin(ph * 6 - t * 2.1) * m - .12 * p * m;
-  return o;
-}
-
-function build(t) {
-  points = 0; accI.fill(0); accR.fill(0); accG.fill(0); accB.fill(0);
-  const T = 2.7, ph = (t % T) / T, beats = Math.floor(t / T);
-  const p = ph < .24 ? sstep(0, .24, ph) : 1 - sstep(.24, 1, ph);    // quick squeeze, slow release
-  bob = .16 * Math.sin(t * 2 * Math.PI / T - 1.2) + .08 * Math.sin(t * .31);
-  pose(t);
-  const o = [0, 0, 0];
-
-  // bell: translucent dome, bright at the silhouette, ribs and margin
-  for (const [th, phi, rib] of bell) {
-    bellAt(th, phi, p, t, o);
-    const sx = Math.sin(th) * Math.cos(phi), sz = Math.sin(th) * Math.sin(phi), sy = Math.cos(th);
-    const facing = Math.abs((sx * syaw + sz * cyaw) * cpi + sy * spi);            // normal . view
-    const fres = Math.pow(1 - facing, 2.2);
-    const mar = sstep(1.5, TH_MAX, th), top = 1 - sstep(0, .9, th);
-    const sh = noise(o[0] * 4 + t * .3, o[1] * 4, o[2] * 4);
-    const w = .05 + .6 * fres + .5 * rib * (th / TH_MAX) + .55 * mar + .08 * top + .14 * sh;
-    splat(o[0], o[1], o[2], w, rib > .3 ? LILAC : th < .55 ? LILAC : VIOLET);
-  }
-  // gonads: four glowing horseshoes under the crown
-  for (const [k, s, r] of gonads) {
-    const a = k * Math.PI / 2 + Math.PI / 4 + Math.sin(s) * .38, rad = .34 + .12 * Math.cos(s) + r * .03;
-    const y = (.42 + .06 * Math.sin(s * 2)) * (.64 + .1 * p) / .64;
-    splat(rad * Math.cos(a) * (1 - .12 * p), y, rad * Math.sin(a) * (1 - .12 * p), .42, PINK);
-  }
-  // oral arms: four frilled curtains twisting down from the mouth
-  for (const [k, u, v] of arms) {
-    const L = 2.7 * (1 - .1 * p), y = -.02 - u * L, a0 = k * Math.PI / 2 + .4, spread = .18 * u;
-    const sway = .3 * u * Math.sin(t * .7 + k * 1.7 + u * 2.6), swz = .22 * u * Math.cos(t * .55 + k + u * 2.2);
-    const a = k * Math.PI / 2 + u * 2.4 + t * .25, wdt = (.08 + .26 * Math.sin(Math.min(1, u * 1.15) * Math.PI)) * (1 + .15 * p);
-    const ruf = .1 * Math.sin(v * 7 + u * 26 - t * 2.4) * wdt * 3;
-    const ca = Math.cos(a), sa = Math.sin(a);
-    const x = ca * v * wdt - sa * ruf + sway + Math.cos(a0) * spread, z = sa * v * wdt + ca * ruf + swz + Math.sin(a0) * spread;
-    splat(x, y, z, .22 + 1.3 * Math.pow(Math.abs(v), 3) + .25 * (1 - u), Math.abs(v) > .6 ? PINK : LILAC);
-  }
-  // tentacles: 48 threads from the margin, trailing and swaying
-  for (const { k, len, ph: q } of tent) {
-    const phi = k / NT * 6.2832;
-    bellAt(TH_MAX, phi, p, t, o);
-    const rx = o[0], ry = o[1], rz = o[2];
-    for (let j = 0; j < TSTEP; j++) {
-      const s = j / TSTEP, d = s * len * (1 + .05 * p);
-      const x = rx * (1 - .2 * s) + .6 * s * Math.sin(t * 1.05 - s * 4.2 + q) + .18 * Math.sin(s * 9 - t * 1.7 + q) * s - .35 * s * s;
-      const z = rz * (1 - .2 * s) + .55 * s * Math.cos(t * .85 - s * 3.6 + q * 1.3) + .18 * Math.cos(s * 8 - t * 1.4 + q) * s;
-      splat(x, ry - d, z, 2.1 * Math.pow(1 - s, .7) + .35, s < .25 ? VIOLET : INDIGO);
-    }
-  }
-  return { beats, p };
-}
-
-// ---------- draw ----------
-const NR = RAMP.length;
-function frame(t) {
-  const st = build(t);
-  ax.globalCompositeOperation = "source-over";
-  ax.fillStyle = "#04050D"; ax.fillRect(0, 0, W, H);
-  let g = ax.createRadialGradient(cx, cy, 0, cx, cy, S * 3.2);                 // violet light from above
-  g.addColorStop(0, "rgba(140,70,230,.32)"); g.addColorStop(.5, "rgba(90,40,180,.12)"); g.addColorStop(1, "rgba(0,0,0,0)");
-  ax.fillStyle = g; ax.fillRect(0, 0, W, H);
-  const tx = cx - S * 2.2, ty = cy + S * 4.4;
-  g = ax.createRadialGradient(tx, ty, 0, tx, ty, S * 3);                      // teal glow below
-  g.addColorStop(0, "rgba(30,190,160,.22)"); g.addColorStop(1, "rgba(0,0,0,0)");
-  ax.fillStyle = g; ax.fillRect(0, 0, W, H);
-
-  ax.font = `600 ${Math.round(chH * .98)}px "JetBrains Mono",ui-monospace,Menlo,monospace`; ax.textBaseline = "top";
-  for (const f of snow) {                                                     // drifting particles
-    f.y -= f.s; f.x += Math.sin(t * .4 + f.p) * .15; if (f.y < 0) { f.y = H; f.x = Math.random() * W; }
-    ax.fillStyle = `rgba(150,130,255,${.12 + .1 * Math.sin(t + f.p)})`; ax.fillText(".", f.x, f.y);
-  }
-  let n = 0, chars = 0;
-  for (let i = 0; i < N; i++) {
-    const I = accI[i]; if (I < .05) continue;
-    const lum = 1 - Math.exp(-I * .34);
-    const ci = Math.round(Math.pow(lum, .85) * (NR - 1)); if (ci < 1) continue;
-    const hot = Math.max(0, lum - .8) * 3, b = .28 + .9 * lum;
-    const r = Math.min(1, (accR[i] / I * (1 - hot) + hot) * b), gg = Math.min(1, (accG[i] / I * (1 - hot) + hot) * b), bb = Math.min(1, (accB[i] / I * (1 - hot) + hot) * b);
-    const key = (Math.round(r * 15) << 8) | (Math.round(gg * 15) << 4) | Math.round(bb * 15);
-    cix[i] = ci; keys[n++] = ((key << 19) | i) >>> 0;                    // colour in the high bits, cell in the low
-  }
-  const sorted = keys.subarray(0, n).sort();
-  let cur = -1;
-  for (let j = 0; j < n; j++) {
-    const key = sorted[j] >>> 19, i = sorted[j] & 0x7FFFF, ci = cix[i];
-    if (key !== cur) {
-      cur = key;
-      ax.fillStyle = `rgb(${((key >> 8) & 15) * 17},${((key >> 4) & 15) * 17},${(key & 15) * 17})`;
-    }
-    ax.fillText(RAMP[ci], (i % cols) * cw, ((i / cols) | 0) * chH); chars++;
-  }
-  hud.chars = chars; hud.beats = st.beats; hud.p = st.p;
-  gx.clearRect(0, 0, G.width, G.height); gx.drawImage(A, 0, 0, G.width, G.height);
-}
-
-// ---------- loop, HUD and the code window ----------
-const hud = { chars: 0, beats: 0, p: 0 }, $ = id => document.getElementById(id);
-let last = 0, start = performance.now(), fpsN = 0, fpsT = 0, visible = true, heroOn = true;
-function loop(now) {
-  if (visible && heroOn && now - last >= 1000 / 30) {
-    const t = (now - start) / 1000;
-    frame(t); last = now; fpsN++;
-    if (now - fpsT > 500) {
-      const fps = Math.round(fpsN * 1000 / (now - fpsT)); fpsN = 0; fpsT = now;
-      $("j-fps").textContent = fps; $("j-pts").textContent = points.toLocaleString("en-US");
-    }
-  }
-  if (!still) requestAnimationFrame(loop);
-}
-addEventListener("resize", resize);
-addEventListener("pointermove", e => { const r = A.getBoundingClientRect(); mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top; }, { passive: true });
-addEventListener("pointerleave", () => { mouse.x = mouse.y = -1e4; });
-document.addEventListener("visibilitychange", () => { visible = !document.hidden; });
-
-
-resize();
-(document.fonts ? document.fonts.ready : Promise.resolve()).then(() => {
-  if (still) frame(4); else requestAnimationFrame(loop);
-});
-</script>
 <script>
-/* ===== EDIT HERE: contact address ===== */
-const CONTACT_EMAIL = "hello@bryanthiga.com";   // replace once your inbox exists
-(function () {
-  const q = s => document.querySelectorAll(s);
-  document.getElementById("yr").textContent = new Date().getFullYear();
-  q(".js-hello").forEach(a => a.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent("Hello")}`);
-  const nav = document.querySelector(".nav");
-  const hero = document.getElementById("top");
-  const onScroll = () => { const d = scrollY < hero.offsetHeight - 68; nav.classList.toggle("dark", d); nav.classList.toggle("solid", !d); };
+const CONTACT_EMAIL = "hello@bryanthiga.com";
+(function page() {
+  const $ = s => document.querySelector(s), $$ = s => document.querySelectorAll(s);
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  $("#yr").textContent = new Date().getFullYear();
+  $$(".js-hello").forEach(a => a.href = "mailto:" + CONTACT_EMAIL);
+
+  // bar turns solid past the hero; the link for the section in view lights up
+  const bar = $("#bar"), hero = $("#top");
+  const onScroll = () => bar.classList.toggle("solid", scrollY > hero.offsetHeight - 70);
   addEventListener("scroll", onScroll, { passive: true }); onScroll();
-  const rv = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); rv.unobserve(e.target); } }), { rootMargin: "0px 0px -8% 0px" });
-  q(".rv:not(.in)").forEach(el => rv.observe(el));
-  const vids = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting && !still) e.target.play().catch(() => {}); else e.target.pause(); }), { threshold: .3 });
-  q(".reels video").forEach(v => vids.observe(v));
-  new IntersectionObserver(([e]) => { heroOn = e.isIntersecting; }).observe(document.getElementById("jelly"));
-})();
-</script>
+  const links = [...$$(".bar nav a[href^='#']")];
+  const spy = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) links.forEach(a => a.classList.toggle("on", a.getAttribute("href") === "#" + e.target.id)); }),
+    { rootMargin: "-45% 0px -50% 0px" });
+  ["top", "projects", "about", "principles", "cases", "stack", "contact"].forEach(id => spy.observe(document.getElementById(id)));
 
-<script>
-/* ===== project details shown in the sheet ===== */
-const PROJECTS = {
-  quorum: { tag: "Agency · Live", title: "Quorum",
-    text: ["A Meta ads service for local service businesses. Eight specialised AI agents handle research, hooks, creative, audiences, campaign builds, budgets, testing and reporting. Every ad, audience and budget change still goes through a human before it spends a dollar.",
-           "It grew out of my own automation engine for media buying, and every ad, audience and budget change is reviewed by a human before it goes live."],
-    facts: ["Eight agents, one human sign-off", "103 automation scripts", "146 tested hooks, 18 angles, 10 creative styles", "Campaign checks every two hours", "CPA guardrails that pause, scale and reactivate", "Weekly plain-English reporting"],
-    link: [["work/quorum.html", "Read the case study"], ["quorum.html", "Visit Quorum", "line"]] },
-  sharkbait: { tag: "Web app · Live", title: "Sharkbait",
-    text: ["A live shark tracker. It pulls shark reports from news and wildlife sources, classifies each one as an attack, a warning or a sighting, identifies the species, and pins it on a map in real time.",
-           "Beachgoers can check the water before they go out, filter by date and type, and sign up to be notified when sharks are spotted near them."],
-    facts: ["Real-time map of sightings, warnings and attacks", "Species identification (great white, whale, tiger and more)", "Filters for today, 7 days, 30 days and all time", "\"Going surfing?\" check for a spot", "Accounts with alerts for nearby sightings", "Automated ingestion from news and wildlife reports"],
-    link: [["https://sharkbait.io", "Visit sharkbait.io"]] },
-  trading: { tag: "Autonomous system · Paper trading", title: "Trading bot",
-    text: ["An autonomous intraday trading system for US stocks. Every 30 seconds it builds a list of stocks in play, scans them for technical setups, and sends each candidate to Claude, which decides whether to take it, pass, or reduce size.",
-           "Hard-coded risk gates sit between the model and the broker, so no single judgment can break the rules. It runs on paper trading only: the goal is to prove or disprove an edge before any real money is involved."],
-    facts: ["Scan, monitor and supervisor loops running in parallel", "Claude decision agent with a morning market briefing", "Risk gate that approves, resizes or rejects every order", "Bracket orders with trailing stops and end-of-day exits", "Circuit breakers for daily loss and losing streaks", "Counterfactual replay engine that learns from every signal"],
-    link: null },
-  medusa: { tag: "Generative graphics · Live", title: "medusa.js",
-    text: ["A jellyfish rendered entirely as text, in real time, in the browser. Around 22,000 points make up a pulsing translucent bell, frilled oral arms and 48 tentacles. Each point adds light to its character cell; the light picks the character and the mix of colours picks the ink.",
-           "The space scene at the top of this page is built the same way."],
-    facts: ["~22,000 points per frame", "48 tentacles, 4 frilled oral arms", "Drawn as characters 30 times a second", "No libraries, no images"],
-    link: null },
-};
-(function () {
-  const sheet = document.getElementById("sheet"), $ = id => document.getElementById(id);
-  function open(key, tile) {
-    const p = PROJECTS[key]; if (!p) return;
-    $("sheet-tag").textContent = p.tag; $("sheet-title").textContent = p.title;
-    $("sheet-text").innerHTML = ""; p.text.forEach(t => { const el = document.createElement("p"); el.textContent = t; $("sheet-text").append(el); });
-    if (p.note) { const el = document.createElement("p"); el.style.cssText = "font-size:13px;color:var(--muted)"; el.textContent = p.note; $("sheet-text").append(el); }
-    $("sheet-facts").innerHTML = ""; p.facts.forEach(f => { const li = document.createElement("li"); li.textContent = f; $("sheet-facts").append(li); });
-    $("sheet-actions").innerHTML = "";
-    (p.link || []).forEach(([href, label, style]) => { const a = document.createElement("a"); a.className = "btn " + (style || "dark"); a.href = href; a.textContent = label + " →";
-      if (/^https?:/.test(href)) { a.target = "_blank"; a.rel = "noopener"; } $("sheet-actions").append(a); });
-    const media = $("sheet-media"); media.innerHTML = "";
-    const src = tile.querySelector(".media");
-    if (key !== "medusa" && src) { const c = src.cloneNode(true); c.removeAttribute("id"); c.querySelectorAll("[id]").forEach(e => e.removeAttribute("id"));
-      c.querySelectorAll("video").forEach(v => { v.preload = "auto"; v.muted = true; if (key === "quorum") { v.controls = true; v.currentTime = 0; } v.play().catch(() => {}); }); media.append(c); }
-    media.hidden = key === "medusa";
-    sheet.showModal(); sheet.scrollTop = 0;
+  // reveal on scroll
+  const rv = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); rv.unobserve(e.target); } }), { rootMargin: "0px 0px -8% 0px" });
+  $$(".rv").forEach(el => rv.observe(el));
+
+  // video plays only while visible
+  const v = $(".proj video");
+  new IntersectionObserver(([e]) => { if (e.isIntersecting && !reduce) v.play().catch(() => {}); else v.pause(); }, { threshold: .3 }).observe(v);
+
+  // trading pipeline: candidates flow left to right; Claude passes some, the risk gate resizes or rejects others
+  const C = $("#pipe"), g = C.getContext("2d");
+  const STAGES = ["scan", "scanner", "claude", "risk gate", "order", "journal"];
+  let w, h, dpr, dots = [], on = false, lastT = 0, spawnT = 0, n = 0;
+  const size = () => { dpr = Math.min(2, devicePixelRatio || 1); w = C.clientWidth; h = C.clientHeight; C.width = w * dpr; C.height = h * dpr; g.setTransform(dpr, 0, 0, dpr, 0, 0); };
+  const xAt = i => w * (.1 + .8 * i / (STAGES.length - 1));
+  function spawn() {
+    const r = Math.random(), fate = r < .35 ? "pass" : r < .5 ? "reject" : r < .68 ? "resize" : "take";
+    dots.push({ x: xAt(0), y: h * (.3 + Math.random() * .4), lane: Math.random(), fate, r: 4, a: 1, done: false, id: n++ });
   }
-  document.querySelectorAll(".tile[data-p]").forEach(t => {
-    t.addEventListener("click", () => open(t.dataset.p, t));
-    t.addEventListener("keydown", e => { if ((e.key === "Enter" || e.key === " ") && t.tagName !== "BUTTON") { e.preventDefault(); open(t.dataset.p, t); } });
-  });
-  sheet.querySelector(".x").addEventListener("click", () => sheet.close());
-  sheet.addEventListener("click", e => { if (e.target === sheet) sheet.close(); });
-  sheet.addEventListener("close", () => sheet.querySelectorAll("video").forEach(v => v.pause()));
-  // tile videos play only while visible
-  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting && !matchMedia("(prefers-reduced-motion: reduce)").matches) e.target.play().catch(() => {}); else e.target.pause(); }), { threshold: .3 });
-  document.querySelectorAll(".tile video").forEach(v => io.observe(v));
+  function draw(dt) {
+    g.clearRect(0, 0, w, h);
+    const mid = h * .5;
+    // rails and stage labels
+    g.strokeStyle = "rgba(255,255,255,.07)"; g.lineWidth = 1;
+    g.beginPath(); g.moveTo(xAt(0), mid); g.lineTo(xAt(STAGES.length - 1), mid); g.stroke();
+    g.font = "500 11px JetBrains Mono, monospace"; g.textAlign = "center";
+    STAGES.forEach((s, i) => {
+      const x = xAt(i), gate = s === "risk gate", ai = s === "claude";
+      g.strokeStyle = gate ? "rgba(245,196,81,.55)" : ai ? "rgba(91,240,210,.5)" : "rgba(255,255,255,.12)";
+      g.setLineDash(gate ? [] : [2, 4]); g.beginPath(); g.moveTo(x, h * .2); g.lineTo(x, h * .8); g.stroke(); g.setLineDash([]);
+      g.fillStyle = gate ? "#F5C451" : ai ? "#5BF0D2" : "#8C93AA"; g.fillText(s, x, h * .14);
+    });
+    g.fillStyle = "#666D84"; g.fillText("pass", xAt(2), h * .9); g.fillText("reject · resize", xAt(3), h * .9);
+    // dots
+    for (const d of dots) {
+      const speed = 70 * dt;
+      if (d.fate === "pass" && d.x >= xAt(2)) { d.y += 90 * dt; d.a -= 1.2 * dt; }
+      else if (d.fate === "reject" && d.x >= xAt(3)) { d.y += 90 * dt; d.a -= 1.2 * dt; }
+      else { d.x += speed; d.y += (mid - d.y) * Math.min(1, dt * 2.2); }
+      if (d.fate === "resize" && d.x >= xAt(3)) d.r = Math.max(2.2, d.r - 6 * dt);
+      if (d.x >= xAt(STAGES.length - 1)) d.a -= 1.5 * dt;
+      const col = d.x >= xAt(3) && d.fate !== "reject" ? "245,196,81" : d.x >= xAt(2) && d.fate !== "pass" ? "91,240,210" : "164,170,189";
+      g.fillStyle = `rgba(${col},${Math.max(0, d.a)})`;
+      g.shadowColor = `rgba(${col},.8)`; g.shadowBlur = 10;
+      g.beginPath(); g.arc(d.x, d.y, d.r, 0, 6.2832); g.fill(); g.shadowBlur = 0;
+    }
+    dots = dots.filter(d => d.a > 0 && d.y < h);
+  }
+  function tick(now) {
+    const dt = Math.min(.05, (now - lastT) / 1000 || 0); lastT = now;
+    if (on) { spawnT -= dt; if (spawnT <= 0) { spawn(); spawnT = .55 + Math.random() * .5; } draw(dt); }
+    requestAnimationFrame(tick);
+  }
+  size(); addEventListener("resize", size);
+  if (reduce) { for (let i = 0; i < 40; i++) { if (i % 3 === 0) spawn(); draw(.05); } }
+  else { new IntersectionObserver(([e]) => { on = e.isIntersecting; }).observe(C); requestAnimationFrame(tick); }
 })();
 </script>
+<script src="assets/sky.js"></script>
+<script src="assets/medusa.js"></script>
 </body>
 </html>
