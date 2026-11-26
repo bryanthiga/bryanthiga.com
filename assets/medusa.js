@@ -180,11 +180,13 @@ function frame(t) {
 
 // ---------- loop, HUD and the code window ----------
 const hud = { chars: 0, beats: 0, p: 0 }, $ = id => document.getElementById(id);
-let last = 0, start = performance.now(), fpsN = 0, fpsT = 0, visible = true, heroOn = true;
+let budget = 1000 / 60, cost = 0, last = 0, start = performance.now(), fpsN = 0, fpsT = 0, visible = true, heroOn = true;
 function loop(now) {
-  if (visible && heroOn && now - last >= 1000 / 30) {
+  if (visible && heroOn && now - last >= budget - 2) {
+    const s0 = performance.now();
     const t = (now - start) / 1000;
     frame(t); last = now; fpsN++;
+    cost = cost * .9 + (performance.now() - s0) * .1; if (cost > 14) budget = 1000 / 30; else if (cost < 9) budget = 1000 / 60;
     if (now - fpsT > 500) {
       const fps = Math.round(fpsN * 1000 / (now - fpsT)); fpsN = 0; fpsT = now;
       if ($("j-fps")) $("j-fps").textContent = fps; if ($("j-pts")) $("j-pts").textContent = points.toLocaleString("en-US");

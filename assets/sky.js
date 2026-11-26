@@ -394,8 +394,14 @@
     hud.innerHTML = `<b>${scene(t)}</b>  t ${t.toFixed(1).padStart(4)}s  <span class="x">frame ${String(frames).padStart(5)}  </span>${glyphs.toLocaleString("en-US").padStart(6)} glyphs  <span class="x">${cols}×${rows} grid</span>`;
   }
   window.skyJump = t => { clock = t; };   // let the page jump to a scene
+  // 60 fps, falling back to 30 on devices where a frame costs too much; the 2 ms slack stops timer jitter from skipping frames
+  let budget = 1000 / 60, cost = 0;
   function loop(now) {
-    if (on && vis && now - last >= 1000 / 30) { clock += Math.min(.1, (now - last) / 1000); frame(clock); last = now; frames++; stats(now); }
+    if (on && vis && now - last >= budget - 2) {
+      const s = performance.now();
+      clock += Math.min(.1, (now - last) / 1000); frame(clock); last = now; frames++; stats(now);
+      cost = cost * .9 + (performance.now() - s) * .1; if (cost > 14) budget = 1000 / 30; else if (cost < 9) budget = 1000 / 60;
+    }
     else if (!(on && vis)) last = now;
     requestAnimationFrame(loop);
   }
