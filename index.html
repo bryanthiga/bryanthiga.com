@@ -96,8 +96,6 @@ em.s{font:400 italic 1.08em/1 var(--serif);letter-spacing:0;color:var(--accent)}
 .bio .facts{display:grid;grid-template-columns:repeat(3,auto);justify-content:start;column-gap:40px;margin-top:30px;border-top:1px solid var(--line)}
 .bio .facts div{padding:14px 0;border-bottom:1px solid var(--line)}
 .bio .facts dd{margin-top:4px;font-size:14.5px}
-/* pipeline diagram */
-#pipe{position:absolute;inset:0;width:100%;height:100%;display:block;background:radial-gradient(120% 90% at 30% 20%,#0D1322,#05060A 70%)}
 
 /* also */
 .also{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
@@ -213,16 +211,6 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px}
     </article>
 
     <article class="proj rv">
-      <div class="vis"><canvas id="pipe" aria-label="Diagram of the trading pipeline: candidates pass through a scanner, Claude and a risk gate before any order"></canvas><span class="m tagline">diagram · illustrative, not live data</span></div>
-      <div class="txt">
-        <div class="kick"><span class="dot amber"></span><span class="m"><b>Trading bot</b> · autonomous · paper</span></div>
-        <h3>A model judges the setup. Hard rules decide the order.</h3>
-        <p>Every 30 seconds it scans the stocks in play and sends each setup to Claude, which takes it, passes or reduces size. A risk gate between the model and the broker approves, resizes or rejects every order.</p>
-        <ul><li>Bracket orders, trailing stops, end-of-day exits</li><li>Circuit breakers for daily loss and losing streaks</li><li>Counterfactual replay of every signal, taken or not</li><li>Paper only, until an edge is proven</li></ul>
-      </div>
-    </article>
-
-    <article class="proj rv">
       <div class="vis"><img src="assets/sharkbait.jpg" alt="Sharkbait map of shark sightings along the US west coast" loading="lazy"></div>
       <div class="txt">
         <div class="kick"><span class="dot"></span><span class="m"><b>Sharkbait</b> · web app · live</span></div>
@@ -265,7 +253,6 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px}
       <li class="rv"><span class="m">02</span><h3>One job per agent.</h3><p>A narrow job gives an output you can check. One large prompt doing everything is hard to review and hard to fix.</p></li>
       <li class="rv"><span class="m">03</span><h3>Only what's true.</h3><p>Every claim in an ad comes from the client's website or the client. Reviews are quoted word for word.</p></li>
       <li class="rv"><span class="m">04</span><h3>Leave receipts.</h3><p>Every request logs its time, model and output, so any answer can be traced. See the <a href="work/growth-ops.html">growth ops agent</a>.</p></li>
-      <li class="rv"><span class="m">05</span><h3>Paper before money.</h3><p>The trading bot proves or disproves an edge on paper before any real money is involved.</p></li>
     </ol>
   </section>
 
@@ -296,7 +283,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px}
       <div><span class="m">agent runtimes</span><p class="chips"><span>Claude Code</span><span>Codex CLI</span><span>Hermes Agent</span><span>Python &amp; Node.js agents</span></p></div>
       <div><span class="m">orchestration</span><p class="chips"><span>multi-agent pipelines</span><span>tiered model routing</span><span>fallback chains</span><span>scheduled agents</span><span>Telegram-triggered agents</span></p></div>
       <div><span class="m">context &amp; tools</span><p class="chips"><span>agent skills (SKILL.md)</span><span>MCP servers</span><span>markdown memory</span><span>scheduled jobs (cron)</span></p></div>
-      <div><span class="m">guardrails</span><p class="chips"><span class="g">human approval gates</span><span>hard-coded risk gates</span><span>request receipts</span><span>paper mode</span><span>secrets read in place</span></p></div>
+      <div><span class="m">guardrails</span><p class="chips"><span class="g">human approval gates</span><span>request receipts</span><span>secrets read in place</span></p></div>
       <div><span class="m">generative media</span><p class="chips"><span>Remotion</span><span>ElevenLabs</span><span>Whisper</span><span>Higgsfield</span><span>Kling</span><span>Veo</span><span>ASCII renderers</span></p></div>
     </div>
     <div class="stack rv">
@@ -342,53 +329,6 @@ const CONTACT_EMAIL = "hello@bryanthiga.com";
   const v = $(".proj video");
   new IntersectionObserver(([e]) => { if (e.isIntersecting && !reduce) v.play().catch(() => {}); else v.pause(); }, { threshold: .3 }).observe(v);
 
-  // trading pipeline: candidates flow left to right; Claude passes some, the risk gate resizes or rejects others
-  const C = $("#pipe"), g = C.getContext("2d");
-  const STAGES = ["scan", "scanner", "claude", "risk gate", "order", "journal"];
-  let w, h, dpr, dots = [], on = false, lastT = 0, spawnT = 0, n = 0;
-  const size = () => { dpr = Math.min(2, devicePixelRatio || 1); w = C.clientWidth; h = C.clientHeight; C.width = w * dpr; C.height = h * dpr; g.setTransform(dpr, 0, 0, dpr, 0, 0); };
-  const xAt = i => w * (.1 + .8 * i / (STAGES.length - 1));
-  function spawn() {
-    const r = Math.random(), fate = r < .35 ? "pass" : r < .5 ? "reject" : r < .68 ? "resize" : "take";
-    dots.push({ x: xAt(0), y: h * (.3 + Math.random() * .4), lane: Math.random(), fate, r: 4, a: 1, done: false, id: n++ });
-  }
-  function draw(dt) {
-    g.clearRect(0, 0, w, h);
-    const mid = h * .5;
-    // rails and stage labels
-    g.strokeStyle = "rgba(255,255,255,.07)"; g.lineWidth = 1;
-    g.beginPath(); g.moveTo(xAt(0), mid); g.lineTo(xAt(STAGES.length - 1), mid); g.stroke();
-    g.font = "500 11px JetBrains Mono, monospace"; g.textAlign = "center";
-    STAGES.forEach((s, i) => {
-      const x = xAt(i), gate = s === "risk gate", ai = s === "claude";
-      g.strokeStyle = gate ? "rgba(245,196,81,.55)" : ai ? "rgba(91,240,210,.5)" : "rgba(255,255,255,.12)";
-      g.setLineDash(gate ? [] : [2, 4]); g.beginPath(); g.moveTo(x, h * .2); g.lineTo(x, h * .8); g.stroke(); g.setLineDash([]);
-      g.fillStyle = gate ? "#F5C451" : ai ? "#5BF0D2" : "#8C93AA"; g.fillText(s, x, h * .14);
-    });
-    g.fillStyle = "#666D84"; g.fillText("pass", xAt(2), h * .9); g.fillText("reject · resize", xAt(3), h * .9);
-    // dots
-    for (const d of dots) {
-      const speed = 70 * dt;
-      if (d.fate === "pass" && d.x >= xAt(2)) { d.y += 90 * dt; d.a -= 1.2 * dt; }
-      else if (d.fate === "reject" && d.x >= xAt(3)) { d.y += 90 * dt; d.a -= 1.2 * dt; }
-      else { d.x += speed; d.y += (mid - d.y) * Math.min(1, dt * 2.2); }
-      if (d.fate === "resize" && d.x >= xAt(3)) d.r = Math.max(2.2, d.r - 6 * dt);
-      if (d.x >= xAt(STAGES.length - 1)) d.a -= 1.5 * dt;
-      const col = d.x >= xAt(3) && d.fate !== "reject" ? "245,196,81" : d.x >= xAt(2) && d.fate !== "pass" ? "91,240,210" : "164,170,189";
-      g.fillStyle = `rgba(${col},${Math.max(0, d.a)})`;
-      g.shadowColor = `rgba(${col},.8)`; g.shadowBlur = 10;
-      g.beginPath(); g.arc(d.x, d.y, d.r, 0, 6.2832); g.fill(); g.shadowBlur = 0;
-    }
-    dots = dots.filter(d => d.a > 0 && d.y < h);
-  }
-  function tick(now) {
-    const dt = Math.min(.05, (now - lastT) / 1000 || 0); lastT = now;
-    if (on) { spawnT -= dt; if (spawnT <= 0) { spawn(); spawnT = .55 + Math.random() * .5; } draw(dt); }
-    requestAnimationFrame(tick);
-  }
-  size(); addEventListener("resize", size);
-  if (reduce) { for (let i = 0; i < 40; i++) { if (i % 3 === 0) spawn(); draw(.05); } }
-  else { new IntersectionObserver(([e]) => { on = e.isIntersecting; }).observe(C); requestAnimationFrame(tick); }
 })();
 </script>
 <script src="assets/sky.js"></script>
